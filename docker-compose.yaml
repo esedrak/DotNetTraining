@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: dotnetbank
+      POSTGRES_USER: dotnettrainer
+      POSTGRES_PASSWORD: verysecret
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./migration:/migration
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dotnettrainer -d dotnetbank"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  temporal:
+    image: temporalio/temporal:1.5.1
+    command:
+      - "server"
+      - "start-dev"
+      - "--ip"
+      - "0.0.0.0"
+    ports:
+      - "7233:7233"   # gRPC
+      - "8233:8233"   # Web UI
+
+  wiremock:
+    image: wiremock/wiremock:3.3.1
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.60
+    ports:
+      - "16686:16686" # UI
+      - "4318:4318"   # OTLP HTTP
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true

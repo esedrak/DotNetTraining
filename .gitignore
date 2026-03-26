@@ -1,0 +1,79 @@
+## .NET / C#
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.filters
+*.vcxproj.user
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Rider
+.idea/
+*.sln.iml
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Test results
+TestResults/
+[Cc]overage*/
+*.coveragexml
+*.coverage
+
+# BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
+
+# dotnet publish
+publish/
+
+# dotnet tools
+.config/dotnet-tools.json~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets / env
+*.env
+.env
+local.settings.json
+secrets.json
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+
+# Docker
+.dockerignore~

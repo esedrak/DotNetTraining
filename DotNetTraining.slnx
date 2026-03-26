@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/internal/">
+    <Project Path="internal/Basics/Basics.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Bank.Api/Bank.Api.csproj" />
+    <Project Path="src/Bank.Cli/Bank.Cli.csproj" />
+    <Project Path="src/Bank.Domain/Bank.Domain.csproj" />
+    <Project Path="src/Bank.Repository/Bank.Repository.csproj" />
+    <Project Path="src/Bank.Service/Bank.Service.csproj" />
+    <Project Path="src/Hello/Hello.csproj" />
+    <Project Path="src/Temporal.Client/Temporal.Client.csproj" />
+    <Project Path="src/Temporal.Domain/Temporal.Domain.csproj" />
+    <Project Path="src/Temporal.Worker/Temporal.Worker.csproj" />
+    <Project Path="src/Temporal.Workflows/Temporal.Workflows.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/Shared.Api/Shared.Api.csproj" />
+    <Project Path="src/Shared/Shared.Http/Shared.Http.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Bank.Tests/Bank.Tests.csproj" />
+    <Project Path="tests/Basics.Tests/Basics.Tests.csproj" />
+    <Project Path="tests/Hello.Tests/Hello.Tests.csproj" />
+    <Project Path="tests/Temporal.Tests/Temporal.Tests.csproj" />
+  </Folder>
+</Solution>
