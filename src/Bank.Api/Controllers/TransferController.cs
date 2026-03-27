@@ -43,28 +43,32 @@ public class TransferController(IBankService bankService, ILogger<TransferContro
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> CreateTransfer([FromBody] CreateTransferRequest request, CancellationToken ct)
     {
-        try
-        {
-            var transfer = await bankService.CreateTransferAsync(
-                request.FromAccountId,
-                request.ToAccountId,
-                request.Amount,
-                ct);
-            return CreatedAtAction(nameof(GetTransfer), new { id = transfer.Id }, transfer);
-        }
-        catch (AccountNotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
-        catch (InsufficientFundsException ex)
-        {
-            return UnprocessableEntity(new { message = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            logger.LogWarning("Invalid transfer request: {Message}", ex.Message);
-            return BadRequest(new { message = ex.Message });
-        }
+        // TODO 1: Model binding is handled by [ApiController] and [FromBody].
+        //         Refer to AccountController.CreateAccount for the error-mapping pattern.
+
+        // TODO 2: Start an OpenTelemetry activity.
+        //         Use ActivitySource.StartActivity("transfer.create") and set tags for
+        //         fromAccountId, toAccountId, and amount.
+        //         See TracingMiddleware.cs for the ActivitySource pattern.
+
+        // TODO 3: Verify ownership.
+        //         Extract the caller's identity from HttpContext.User.
+        //         Fetch the source account via bankService.GetAccountAsync.
+        //         If User.Identity.Name does not match account.Owner, return Forbid().
+
+        // TODO 4: Call the service and map domain exceptions to HTTP responses.
+        //         AccountNotFoundException   → NotFound(new { message = ... })
+        //         InsufficientFundsException → UnprocessableEntity(new { message = ... })
+        //         ArgumentException          → BadRequest(new { message = ... })
+
+        // TODO 5: Log success and return 201 Created.
+        //         logger.LogInformation("Transfer created: ...")
+        //         return CreatedAtAction(nameof(GetTransfer), new { id = transfer.Id }, transfer)
+
+        // REMOVE THESE LINES when TODOs are implemented:
+        _ = logger;
+        await Task.CompletedTask;
+        return StatusCode(StatusCodes.Status501NotImplemented, new { message = "Not yet implemented." });
     }
 }
 

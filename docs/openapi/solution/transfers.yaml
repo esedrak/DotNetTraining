@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: Bank Transfer API
+  version: 1.0.0
+
+paths:
+  /v1/transfers:
+    post:
+      summary: Transfer funds between two accounts
+      security:
+        - bearerAuth: []
+      operationId: createTransfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequest'
+      responses:
+        "200":
+          description: Transfer completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+              example:
+                status: 'completed'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: 'invalid request body'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                insufficient_scope:
+                  summary: JWT token missing required scope
+                  value:
+                    message: 'insufficient scope'
+                not_account_owner:
+                  summary: Authenticated user does not own the source account
+                  value:
+                    message: 'forbidden: you do not own the source account'
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: 'account not found'
+        "422":
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                insufficient_funds:
+                  summary: Source account has insufficient funds
+                  value:
+                    message: 'insufficient funds'
+                account_locked:
+                  summary: Source or destination account is locked
+                  value:
+                    message: 'account is locked'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: 'internal server error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    TransferRequest:
+      type: object
+      required:
+        - from_account_id
+        - to_account_id
+        - amount
+      properties:
+        from_account_id:
+          type: string
+        to_account_id:
+          type: string
+        amount:
+          type: integer
+          minimum: 1
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string

@@ -41,11 +41,12 @@ var getCmd = new Command("get", "Get account by ID");
 getCmd.Add(idArg);
 getCmd.SetAction(async parseResult =>
 {
-    var id = parseResult.GetValue(idArg);
-    var r = await httpClient.GetAsync($"/v1/accounts/{id}");
-    Console.WriteLine(r.IsSuccessStatusCode
-        ? await r.Content.ReadAsStringAsync()
-        : $"Error {(int)r.StatusCode}: {await r.Content.ReadAsStringAsync()}");
+    // TODO (Bonus Quest 1): Check an account balance.
+    // 1. Parse the account ID argument: parseResult.GetValue(idArg)
+    // 2. Call httpClient.GetAsync($"/v1/accounts/{id}")
+    // 3. Print the response body to the console (success or error)
+    await Task.CompletedTask;
+    Console.WriteLine("Not yet implemented.");
 });
 accountCmd.Add(getCmd);
 
@@ -93,14 +94,13 @@ createTxCmd.Add(toOpt);
 createTxCmd.Add(amountOpt);
 createTxCmd.SetAction(async parseResult =>
 {
-    var from = parseResult.GetValue(fromOpt);
-    var to = parseResult.GetValue(toOpt);
-    var amount = parseResult.GetValue(amountOpt);
-    var r = await httpClient.PostAsJsonAsync("/v1/transfers",
-        new { fromAccountId = from, toAccountId = to, amount });
-    Console.WriteLine(r.IsSuccessStatusCode
-        ? await r.Content.ReadAsStringAsync()
-        : $"Error {(int)r.StatusCode}: {await r.Content.ReadAsStringAsync()}");
+    // TODO (Bonus Quest 2): Create a transfer.
+    // 1. Parse --from, --to, --amount options via parseResult.GetValue(...)
+    // 2. Set the Authorization: Bearer header from BANK_TOKEN environment variable
+    // 3. Call httpClient.PostAsJsonAsync("/v1/transfers", new { fromAccountId, toAccountId, amount })
+    // 4. Print the response body to the console (success or error)
+    await Task.CompletedTask;
+    Console.WriteLine("Not yet implemented.");
 });
 transferCmd.Add(createTxCmd);
 root.Add(transferCmd);

@@ -43,6 +43,7 @@ app.UseMiddleware<TracingMiddleware>();
 app.UseMiddleware<LoggingMiddleware>();
 
 // JWT auth — uncomment to enable (requires Jwt:Secret in appsettings.json)
+// TODO (Quest 2): Uncomment the line below to enable JWT authentication.
 // app.UseMiddleware<AuthMiddleware>();
 
 app.UseHttpsRedirection();
