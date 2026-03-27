@@ -231,7 +231,7 @@ This creates a deterministic pattern: fail → succeed → fail → succeed...
 
 ### Integration with Temporal
 
-The inventory client in `internal/integrations/inventory/client.go` interprets HTTP status codes:
+The inventory activity in `src/Temporal.Workflows/Activities/InventoryActivities.cs` interprets HTTP status codes:
 - **200**: Success - workflow continues
 - **503/500**: Retryable error - Temporal will retry the activity based on retry policy
 - **400**: Non-retryable error - Temporal will fail the activity without retrying
