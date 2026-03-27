@@ -32,7 +32,9 @@ public class ProductService(IProductRepository repo, IEmailService email)
     {
         var products = await repo.GetAllAsync(ct);
         if (products.Count == 0)
+        {
             await email.SendAsync(adminEmail, "Low Stock Alert", "No products in catalog.", ct);
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-﻿namespace Bank.Tests;
+namespace Bank.Tests;
 
 public class UnitTest1
 {

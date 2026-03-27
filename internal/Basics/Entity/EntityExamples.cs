@@ -56,7 +56,10 @@ public class BankAccount
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount, nameof(amount));
         if (amount > Balance)
+        {
             throw new InvalidOperationException("Insufficient funds.");
+        }
+
         Balance -= amount;
     }
 }
@@ -82,7 +85,10 @@ public readonly struct Money : IEquatable<Money>
     public Money Add(Money other)
     {
         if (Currency != other.Currency)
+        {
             throw new InvalidOperationException($"Cannot add {Currency} and {other.Currency}.");
+        }
+
         return new Money(Amount + other.Amount, Currency);
     }
 

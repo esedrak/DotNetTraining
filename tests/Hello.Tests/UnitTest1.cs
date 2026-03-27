@@ -1,4 +1,4 @@
-﻿namespace Hello.Tests;
+namespace Hello.Tests;
 
 public class UnitTest1
 {

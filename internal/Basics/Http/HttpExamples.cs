@@ -20,7 +20,10 @@ public class BankApiClient(HttpClient client)
     {
         var response = await client.GetAsync("/v1/accounts", ct);
         if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
             return null;
+        }
+
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<List<AccountDto>>(JsonOptions, ct);
     }
@@ -30,7 +33,10 @@ public class BankApiClient(HttpClient client)
     {
         var response = await client.GetAsync($"/v1/accounts/{id}", ct);
         if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
             return null;
+        }
+
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<AccountDto>(JsonOptions, ct);
     }

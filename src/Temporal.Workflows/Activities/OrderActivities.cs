@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
-using Temporalio.Activities;
 using Temporal.Domain;
+using Temporalio.Activities;
 
 namespace Temporal.Workflows.Activities;
 
@@ -18,9 +18,14 @@ public class OrderActivities(ILogger<OrderActivities> logger)
         logger.LogInformation("Validating order {OrderId}", order.Id);
 
         if (order.Quantity <= 0)
+        {
             throw new InvalidOperationException("Order quantity must be positive.");
+        }
+
         if (order.TotalAmount <= 0)
+        {
             throw new InvalidOperationException("Order total must be positive.");
+        }
 
         await Task.Delay(100); // simulate validation
         return order;

@@ -22,7 +22,10 @@ public static class ParameterExamples
     public static bool TryParsePositive(string input, out int result)
     {
         if (int.TryParse(input, out result) && result > 0)
+        {
             return true;
+        }
+
         result = 0;
         return false;
     }
@@ -47,7 +50,11 @@ public static class ParameterExamples
     public static int Sum(params int[] nums)
     {
         int total = 0;
-        foreach (var n in nums) total += n;
+        foreach (var n in nums)
+        {
+            total += n;
+        }
+
         return total;
     }
 
@@ -56,9 +63,17 @@ public static class ParameterExamples
     /// </summary>
     public static double Average(params ReadOnlySpan<double> values)
     {
-        if (values.IsEmpty) return 0;
+        if (values.IsEmpty)
+        {
+            return 0;
+        }
+
         double sum = 0;
-        foreach (var v in values) sum += v;
+        foreach (var v in values)
+        {
+            sum += v;
+        }
+
         return sum / values.Length;
     }
 

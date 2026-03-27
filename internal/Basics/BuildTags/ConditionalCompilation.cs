@@ -47,9 +47,21 @@ public static class ConditionalCompilation
     /// </summary>
     public static string RuntimeOsPlatform()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return "windows";
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))   return "linux";
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))     return "darwin";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            return "windows";
+        }
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            return "linux";
+        }
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            return "darwin";
+        }
+
         return "unknown";
     }
 
@@ -59,10 +71,10 @@ public static class ConditionalCompilation
     public static string RuntimeArchitecture()
         => RuntimeInformation.ProcessArchitecture switch
         {
-            Architecture.X64   => "amd64",
+            Architecture.X64 => "amd64",
             Architecture.Arm64 => "arm64",
-            Architecture.X86   => "386",
-            _                  => "unknown"
+            Architecture.X86 => "386",
+            _ => "unknown"
         };
 }
 

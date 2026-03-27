@@ -29,8 +29,12 @@ public static class GenericMethods
     public static IEnumerable<T> Where<T>(IEnumerable<T> source, Func<T, bool> predicate)
     {
         foreach (var item in source)
+        {
             if (predicate(item))
+            {
                 yield return item;
+            }
+        }
     }
 }
 
@@ -46,7 +50,10 @@ public class GenericStack<T>
     public T Pop()
     {
         if (_items.Count == 0)
+        {
             throw new InvalidOperationException("Stack is empty.");
+        }
+
         var top = _items[^1];
         _items.RemoveAt(_items.Count - 1);
         return top;

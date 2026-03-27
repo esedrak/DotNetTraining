@@ -32,7 +32,9 @@ var app = builder.Build();
 
 // ── Middleware pipeline ───────────────────────────────────────────────────────
 if (app.Environment.IsDevelopment())
+{
     app.MapOpenApi();
+}
 
 // Correlation ID propagation — must be first so all subsequent middleware can use it
 app.UseMiddleware<TracingMiddleware>();

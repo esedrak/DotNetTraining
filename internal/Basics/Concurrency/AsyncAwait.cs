@@ -49,13 +49,18 @@ public static class ChannelExamples
         _ = Task.Run(async () =>
         {
             for (int i = 0; i < count; i++)
+            {
                 await channel.Writer.WriteAsync(i);
+            }
+
             channel.Writer.Complete();
         });
 
         // Consumer — equivalent to `for v := range ch`
         await foreach (var item in channel.Reader.ReadAllAsync())
+        {
             results.Add(item);
+        }
 
         return results;
     }
@@ -82,7 +87,9 @@ public class SafeCounter
     public void Increment()
     {
         lock (_lock)
+        {
             _count++;
+        }
     }
 
     public int Value
@@ -90,7 +97,9 @@ public class SafeCounter
         get
         {
             lock (_lock)
+            {
                 return _count;
+            }
         }
     }
 }

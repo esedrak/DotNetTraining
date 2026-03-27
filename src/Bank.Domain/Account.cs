@@ -37,7 +37,10 @@ public class Account
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount, nameof(amount));
         if (amount > Balance)
+        {
             throw new InsufficientFundsException(Id, amount, Balance);
+        }
+
         Balance -= amount;
         UpdatedAt = DateTime.UtcNow;
     }

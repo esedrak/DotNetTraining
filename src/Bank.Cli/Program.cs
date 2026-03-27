@@ -29,7 +29,9 @@ listCmd.SetAction(async _ =>
 {
     var accounts = await httpClient.GetFromJsonAsync<List<JsonElement>>("/v1/accounts", jsonOptions);
     foreach (var a in accounts ?? [])
+    {
         Console.WriteLine(a.GetRawText());
+    }
 });
 accountCmd.Add(listCmd);
 
@@ -75,7 +77,9 @@ listTxCmd.SetAction(async _ =>
 {
     var txs = await httpClient.GetFromJsonAsync<List<JsonElement>>("/v1/transfers", jsonOptions);
     foreach (var t in txs ?? [])
+    {
         Console.WriteLine(t.GetRawText());
+    }
 });
 transferCmd.Add(listTxCmd);
 

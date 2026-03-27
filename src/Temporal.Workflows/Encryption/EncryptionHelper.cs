@@ -18,7 +18,9 @@ public static class EncryptionHelper
     public static byte[] Encrypt(byte[] data, byte[] key)
     {
         if (key.Length != KeySize)
+        {
             throw new ArgumentException($"Key must be {KeySize} bytes (256 bits).", nameof(key));
+        }
 
         using var aes = Aes.Create();
         aes.Key = key;
@@ -40,9 +42,14 @@ public static class EncryptionHelper
     public static byte[] Decrypt(byte[] encryptedData, byte[] key)
     {
         if (key.Length != KeySize)
+        {
             throw new ArgumentException($"Key must be {KeySize} bytes (256 bits).", nameof(key));
+        }
+
         if (encryptedData.Length < IvSize)
+        {
             throw new ArgumentException("Data is too short to contain an IV.", nameof(encryptedData));
+        }
 
         using var aes = Aes.Create();
         aes.Key = key;

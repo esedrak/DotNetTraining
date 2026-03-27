@@ -25,7 +25,10 @@ public class Transfer
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(amount, nameof(amount));
         if (fromAccountId == toAccountId)
+        {
             throw new ArgumentException("Cannot transfer to the same account.");
+        }
+
         FromAccountId = fromAccountId;
         ToAccountId = toAccountId;
         Amount = amount;

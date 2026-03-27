@@ -37,9 +37,15 @@ public static class TypeCheckingExamples
     public static string Describe(IAnimal animal)
     {
         if (animal is Dog dog)
+        {
             return $"Dog, breed: {dog.Breed}";
+        }
+
         if (animal is Cat)
+        {
             return "Cat";
+        }
+
         return "Unknown animal";
     }
 
@@ -50,11 +56,11 @@ public static class TypeCheckingExamples
     public static string WhatIsIt(object value) => value switch
     {
         string s => $"string: {s}",
-        int i    => $"int: {i}",
-        bool b   => $"bool: {b}",
-        Dog dog  => $"Dog breed: {dog.Breed}",
-        null     => "null",
-        _        => $"unknown: {value.GetType().Name}"
+        int i => $"int: {i}",
+        bool b => $"bool: {b}",
+        Dog dog => $"Dog breed: {dog.Breed}",
+        null => "null",
+        _ => $"unknown: {value.GetType().Name}"
     };
 }
 

@@ -69,7 +69,10 @@ public class BankService(IBankRepository repository, ILogger<BankService> logger
     {
         var transfer = await repository.GetTransferAsync(id, ct);
         if (transfer is null)
+        {
             throw new KeyNotFoundException($"Transfer '{id}' not found.");
+        }
+
         return transfer;
     }
 

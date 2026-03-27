@@ -37,7 +37,10 @@ public static class HttpClientExtensions
     {
         var response = await client.GetAsync(requestUri, ct);
         if (!response.IsSuccessStatusCode)
+        {
             return (false, default);
+        }
+
         var value = await response.Content.ReadFromJsonAsync<T>(DefaultOptions, ct);
         return (true, value);
     }

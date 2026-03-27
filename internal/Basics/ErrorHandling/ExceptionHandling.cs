@@ -34,7 +34,10 @@ public class BankService
     public string GetAccount(int id)
     {
         if (!_accounts.TryGetValue(id, out var name))
+        {
             throw new NotFoundException("Account", id);
+        }
+
         return name;
     }
 
@@ -113,9 +116,15 @@ public static class ResultExamples
     public static Result<int> ParsePositive(string input)
     {
         if (!int.TryParse(input, out int value))
+        {
             return Result<int>.Fail($"'{input}' is not a valid integer.");
+        }
+
         if (value <= 0)
+        {
             return Result<int>.Fail($"Expected positive integer, got {value}.");
+        }
+
         return Result<int>.Ok(value);
     }
 }

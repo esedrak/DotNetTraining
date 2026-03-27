@@ -67,7 +67,9 @@ public static class NullableExamples
         foreach (var item in source)
         {
             if (predicate(item))
+            {
                 return item;
+            }
         }
         return null; // "no value found"
     }
@@ -99,7 +101,10 @@ public static class SpanExamples
     {
         int total = 0;
         foreach (var v in values)
+        {
             total += v;
+        }
+
         return total;
     }
 }

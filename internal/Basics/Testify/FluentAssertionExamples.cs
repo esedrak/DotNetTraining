@@ -9,7 +9,8 @@ public record Product(int Id, string Name, decimal Price);
 /// exception type and message.
 /// </summary>
 public class ProductNotFoundException(int id)
-    : Exception($"Product {id} was not found.") { }
+    : Exception($"Product {id} was not found.")
+{ }
 
 /// <summary>
 /// Simple service whose methods are exercised in the FluentAssertions test
@@ -36,7 +37,11 @@ public class ProductCatalog
 
     public bool Add(Product product)
     {
-        if (_products.ContainsKey(product.Id)) return false;
+        if (_products.ContainsKey(product.Id))
+        {
+            return false;
+        }
+
         _products[product.Id] = product;
         return true;
     }

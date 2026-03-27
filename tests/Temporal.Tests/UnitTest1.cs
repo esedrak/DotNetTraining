@@ -1,4 +1,4 @@
-﻿namespace Temporal.Tests;
+namespace Temporal.Tests;
 
 public class UnitTest1
 {

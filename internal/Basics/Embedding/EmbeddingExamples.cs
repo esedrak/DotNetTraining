@@ -73,7 +73,11 @@ public class LoggingDataStore<T>(
     {
         logger.LogInformation("Getting {Type} {Id}", typeof(T).Name, id);
         var result = await inner.GetAsync(id, ct);
-        if (result is null) logger.LogWarning("{Type} {Id} not found", typeof(T).Name, id);
+        if (result is null)
+        {
+            logger.LogWarning("{Type} {Id} not found", typeof(T).Name, id);
+        }
+
         return result;
     }
 
@@ -105,7 +109,11 @@ public static class EmbeddedResources
     {
         var assembly = Assembly.GetExecutingAssembly();
         using var stream = assembly.GetManifestResourceStream(resourceName);
-        if (stream is null) return null;
+        if (stream is null)
+        {
+            return null;
+        }
+
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
     }

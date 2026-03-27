@@ -1,5 +1,5 @@
-using BenchmarkDotNet.Attributes;
 using System.Text;
+using BenchmarkDotNet.Attributes;
 
 namespace DotNetTraining.Basics.Benchmark;
 
@@ -20,7 +20,10 @@ public class StringConcatBenchmarks
     {
         var result = "";
         for (int i = 0; i < N; i++)
+        {
             result += i.ToString();
+        }
+
         return result;
     }
 
@@ -29,7 +32,10 @@ public class StringConcatBenchmarks
     {
         var sb = new StringBuilder(N * 4);
         for (int i = 0; i < N; i++)
+        {
             sb.Append(i);
+        }
+
         return sb.ToString();
     }
 
