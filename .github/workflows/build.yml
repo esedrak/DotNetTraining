@@ -19,16 +19,16 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore DotNetTraining.sln
+        run: dotnet restore DotNetTraining.slnx
 
       - name: Build
-        run: dotnet build DotNetTraining.sln --no-restore --configuration Release
+        run: dotnet build DotNetTraining.slnx --no-restore --configuration Release
 
       - name: Check formatting
-        run: dotnet format DotNetTraining.sln --verify-no-changes
+        run: dotnet format DotNetTraining.slnx --verify-no-changes
 
       - name: Test
-        run: dotnet test DotNetTraining.sln --no-build --configuration Release --logger "trx;LogFileName=results.trx" --results-directory ./TestResults
+        run: dotnet test DotNetTraining.slnx --no-build --configuration Release --logger "trx;LogFileName=results.trx" --results-directory ./TestResults
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
