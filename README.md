@@ -1,6 +1,6 @@
 # DotNetTraining — .NET 10 Workshop
 
-A hands-on workshop for learning **C# 14 / .NET 10 / ASP.NET Core 10** — the .NET equivalent of the [GoTraining](../GoTraining) workshop.
+A hands-on workshop for learning **C# 14 / .NET 10 / ASP.NET Core 10**
 
 ---
 
@@ -9,7 +9,7 @@ A hands-on workshop for learning **C# 14 / .NET 10 / ASP.NET Core 10** — the .
 | Tool | Version | Install |
 |------|---------|---------|
 | .NET SDK | 10.0+ | [dotnet.microsoft.com](https://dotnet.microsoft.com/download) |
-| Docker Desktop | Latest | [docker.com](https://www.docker.com/products/docker-desktop/) |
+| Docker Desktop or colima | Latest | [docker.com](https://www.docker.com/products/docker-desktop/) / [colima.com](https://github.com/abiosoft/colima) |
 | IDE | Any | VS Code + C# DevKit, JetBrains Rider, or Visual Studio |
 
 ```bash
@@ -24,7 +24,7 @@ docker --version
 
 ```bash
 git clone <repo-url>
-cd CSharpTraining        # (will be renamed DotNetTraining)
+cd DotNetTraining
 
 # Restore NuGet packages
 dotnet restore
@@ -37,6 +37,12 @@ dotnet test
 
 # Start infrastructure (Postgres, Temporal, WireMock, Jaeger)
 make infra-up
+
+# Create EF Core migrations (first time only - if not already created)
+dotnet ef migrations add InitialCreate --project src/Bank.Repository
+
+# Apply migrations to create database tables
+make db-migrate
 
 # Run the Bank API
 make run-bank-api
