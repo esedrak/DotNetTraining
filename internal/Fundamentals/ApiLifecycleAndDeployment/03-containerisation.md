@@ -162,3 +162,9 @@ jobs:
 - [.NET Docker Hub images](https://hub.docker.com/_/microsoft-dotnet)
 - [Chiseled Ubuntu containers](https://devblogs.microsoft.com/dotnet/dotnet-6-is-now-in-ubuntu-2204/)
 - [Multi-stage Docker builds](https://docs.docker.com/build/building/multi-stage/)
+
+## Your Next Step
+
+Containerisation makes our API portable, but where should it live?
+
+Explore the modern cloud infrastructure that powers professional APIs in: **[Cloud Deployment](04-cloud-deployment.md)**.

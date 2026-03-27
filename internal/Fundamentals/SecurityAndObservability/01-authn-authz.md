@@ -200,3 +200,9 @@ if (await _cache.GetStringAsync($"revoked:{jti}") is not null)
 - [JWT Bearer authentication in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/jwt-authn)
 - [Authorization in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/authorization/introduction)
 - [Resource-based authorization](https://learn.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased)
+
+## Your Next Step
+
+Understanding identity and permissions is critical, but how do we manage those permissions at scale without cluttering our application code with complex `if/else` logic?
+
+Explore how to externalise your authorisation rules in: **[Policy as Code](02-policy-as-code.md)**.

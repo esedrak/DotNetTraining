@@ -85,3 +85,8 @@ else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 
 - [Preprocessor directives (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives)
 - [RuntimeInformation](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.runtimeinformation)
+
+## Your Next Step
+You've completed the C# Language Basics module! You now have a solid foundation in the core building blocks of .NET.
+
+Head back to the **[Module 2 Overview](../README.md)** to review all topics, or dive into the hands-on exercises in the **[Challenges](../../Challenges/README.md)**.

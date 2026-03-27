@@ -136,3 +136,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Concurrency"
 - [Asynchronous programming (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/)
 - [System.Threading.Channels](https://learn.microsoft.com/en-us/dotnet/core/extensions/channels)
 - [Task Parallel Library](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl)
+
+## Your Next Step
+Now that you're running multiple tasks concurrently, you need a way to manage their lifecycles, cancellations, and timeouts.
+Explore **[Context & CancellationToken](../Context/README.md)** to learn how to propagate deadlines and signals across your application.

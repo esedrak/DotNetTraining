@@ -100,3 +100,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Casting"
 - [Pattern matching (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching)
 - [Type-testing operators](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/type-testing-and-cast)
 - [Checked and unchecked](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/checked-and-unchecked)
+
+## Your Next Step
+Now that you understand how to work with interfaces and dynamic types, you can explore how C# uses composition and embedded resources.
+Explore **[Embedding](../Embedding/README.md)** to see how to compose types and bundle files into your assemblies.

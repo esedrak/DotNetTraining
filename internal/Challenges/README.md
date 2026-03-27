@@ -1,62 +1,51 @@
-# 🎯 Challenges
+# Challenges
 
-Practice exercises to reinforce the workshop concepts.
+This directory contains all student exercises for the .NET Training workshop.
 
----
-
-## Basics/FixMe — Debug the Bugs
-
-Intentionally buggy C# code. Your job: make the tests pass.
-
-```bash
-dotnet test tests/Basics.Tests --filter "FullyQualifiedName~FixMe"
+```
+Challenges/
+├── Basics/       # Core C# language fundamentals
+├── Bank/         # .NET Bank HTTP & Data layer quests
+└── Temporal/     # Durable Workflow & Agentic .NET quest
 ```
 
-Bugs to find and fix:
-- Race conditions with shared mutable state
-- Deadlock from blocking async code synchronously
-- Null reference exceptions
-- Off-by-one errors
-- Improper resource disposal
+## Basics/
+
+The **[Day 1 Challenges: Detective Briefs](Basics/README.md)** are short exercises covering core C# building blocks, interfaces, concurrency, and testing.
+
+Each challenge is a short mystery. You will encounter different types of quests:
+- **FixMe**: Buggy code is provided. Your task is to identify the problem and fix it.
+- **ImplMe**: You'll find `throw new NotImplementedException()` stubs. Your task is to implement the method to make the tests pass.
+
+Run tests with: `dotnet test tests/Basics.Tests`
+
+## Bank/
+
+The **[.NET Bank Transfer Quest](Bank/README.md)** is your introduction to building production API handlers.
+
+You'll implement the `POST /v1/transfers` API endpoint in a pre-scaffolded service, focusing on:
+- Idiomatic HTTP handler patterns using ASP.NET Core.
+- Entity Framework Core for data persistence.
+- JWT authentication and scope-based authorisation.
+- Table-driven unit testing for service and controller layers.
+
+## Temporal/
+
+The **[Durable Transfer Quest](Temporal/README.md)** is the final, high-stakes challenge!
+
+You will transform the bank transfer into a robust **Distributed Transaction** using Temporal. This module focuses on:
+- **Agentic Engineering:** Using specialized AI tools to build complex logic.
+- **Workflow Orchestration:** Implementing the Compensation Pattern and Human-in-the-loop approvals.
+- **Durable Reliability:** Ensuring idempotency and surviving worker restarts.
+- **Full-Lifecycle Testing:** Unit, Integration, and the "Gold Standard" Replay tests.
+
+Evaluate your work using the **[Competition Grading Rubric](Temporal/GRADING_PROMPT.md)**.
+
+## Your Exploration Journey
+
+Ready to put your skills to the test? We've prepared a series of challenges that increase in complexity as you progress through the training.
+
+Start with the basics: **[Day 1 Challenges: Detective Briefs](Basics/README.md)**.
 
 ---
-
-## Basics/ImplMe — Implement the Stubs
-
-Method stubs with `throw new NotImplementedException()`. Your job: implement them.
-
-```bash
-dotnet test tests/Basics.Tests --filter "FullyQualifiedName~ImplMe"
-```
-
-Things to implement:
-- Generic collection methods
-- Async pipeline
-- Custom middleware
-
----
-
-## Bank/Transfer Quest
-
-The main challenge: implement `POST /v1/transfers` end-to-end.
-
-The transfer endpoint is partially stubbed. Complete the implementation:
-
-1. Add `Transfer` entity validation to `Bank.Domain`
-2. Add `CreateTransferAsync` to `IBankRepository` and `PostgresBankRepository`
-3. Add `CreateTransferAsync` to `IBankService` and `BankService`
-4. Wire up `POST /v1/transfers` in `TransferController`
-5. Write unit tests for the service layer
-6. Write an integration test for the endpoint
-
-```bash
-dotnet test tests/Bank.Tests --filter "FullyQualifiedName~Transfer"
-```
-
----
-
-## Tips
-
-- Start with `FixMe` to warm up debugging skills
-- `ImplMe` covers generics, async, and middleware
-- The Bank Transfer Quest is the capstone — it touches all layers
+[← Back to Main README](../../README.md)

@@ -115,3 +115,9 @@ The Bank API uses REST (ASP.NET Core controllers) because:
 - [gRPC in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/grpc/)
 - [Minimal APIs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis)
 - [Protobuf .NET](https://protobuf.dev/getting-started/dotnetguide/)
+
+## Your Next Step
+
+Choosing between REST and gRPC is just the first step. To build truly reliable APIs, we must ensure that our operations are safe to repeat.
+
+Learn how to handle duplicate requests gracefully in: **[Idempotency](02-idempotency.md)**.

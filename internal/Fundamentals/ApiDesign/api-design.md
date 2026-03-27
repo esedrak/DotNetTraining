@@ -166,3 +166,9 @@ In .NET:
 - **Monitor**: Serilog + OpenTelemetry + Prometheus (`prometheus-net.AspNetCore`)
 - **Version**: URL path versioning (`/v1/`, `/v2/`) via `Asp.Versioning.Http`
 - **Deprecate**: `Deprecation` + `Sunset` response headers via middleware
+
+## Your Next Step
+
+API design principles are the foundation, but what happens when they are ignored?
+
+Explore the real-world consequences of poor design in: **[Notable API Incidents](notable-api-incidents.md)**.

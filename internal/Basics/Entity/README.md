@@ -116,3 +116,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Entity"
 - [Records (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record)
 - [Choosing between class and struct](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct)
 - [System.Text.Json attributes](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/required-properties)
+
+## Your Next Step
+Now that you're defining your own data structures, it's time to add behaviour to them using methods.
+Explore **[Receivers & Extension Methods](../Receivers/README.md)** to learn how to define instance methods and extend existing types.

@@ -175,3 +175,9 @@ The Bank API uses **code-first with Swashbuckle** because:
 - [NSwag](https://github.com/RicoSuter/NSwag)
 - [Kiota (Microsoft's OpenAPI client generator)](https://learn.microsoft.com/en-us/openapi/kiota/)
 - [Schemathesis (contract testing)](https://schemathesis.io/)
+
+## Your Next Step
+
+Designing and building APIs is one thing, but how do we ensure they are secure and that we know what's happening inside them?
+
+Dive into the world of API security in: **[AuthN vs. AuthZ](../SecurityAndObservability/01-authn-authz.md)**.

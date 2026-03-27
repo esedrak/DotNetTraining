@@ -10,28 +10,39 @@ This module covers 20 core C# / .NET concepts, each mapping to an equivalent fro
 
 ## Topics
 
-| # | Folder | Go Equivalent | Key C# Concepts |
-|---|--------|---------------|-----------------|
-| 1 | [Pointers](./Pointers/) | `*T`, `&x`, `*p` | `ref`/`out`/`in`, value vs reference types, `Span<T>` |
-| 2 | [Casting](./Casting/) | `x.(T)`, type switch | `is`, `as`, switch expression, pattern matching |
-| 3 | [Parameters](./Parameters/) | `...T`, `*T` | `params`, `ref`/`out`/`in`, optional params, named args |
-| 4 | [Entity](./Entity/) | `type X struct {}` | `class`, `record`, `struct`, `record struct`, `init`/`required` |
-| 5 | [Layout](./Layout/) | `cmd/`, `internal/`, `pkg/` | `.sln`, `.csproj`, namespaces, `internal` modifier |
-| 6 | [Embedding](./Embedding/) | `//go:embed`, struct embedding | `<EmbeddedResource>`, inheritance, composition |
-| 7 | [Receivers](./Receivers/) | Value/pointer receivers | Instance methods, extension methods, C# 14 `extension` blocks |
-| 8 | [Init](./Init/) | `func init()` | Static constructors, `[ModuleInitializer]`, `Lazy<T>` |
-| 9 | [ErrorHandling](./ErrorHandling/) | `error`, `errors.Is/As` | Exceptions, `catch when`, `Result<T>` pattern |
-| 10 | [Interface](./Interface/) | Implicit interfaces | Explicit `: IInterface`, DI container, default methods |
-| 11 | [Concurrency](./Concurrency/) | goroutines, channels, `sync.*` | `async/await`, `Task`, `Channel<T>`, `lock`, `Interlocked` |
-| 12 | [Context](./Context/) | `context.Context` | `CancellationToken`, `CancellationTokenSource`, `AsyncLocal<T>` |
-| 13 | [Testing](./Testing/) | `func TestXxx(t *testing.T)` | `[Fact]`, `[Theory]`, `[InlineData]`, `IClassFixture<T>` |
-| 14 | [Testify](./Testify/) | `testify/assert` | FluentAssertions — `.Should().Be()`, `.Should().Throw<T>()` |
-| 15 | [Benchmark](./Benchmark/) | `testing.B` | BenchmarkDotNet, `[Benchmark]`, `[MemoryDiagnoser]` |
-| 16 | [Http](./Http/) | `net/http` server + client | Minimal APIs, `HttpClient`, `IHttpClientFactory` |
-| 17 | [HttpTest](./HttpTest/) | `httptest.NewRecorder()` | `WebApplicationFactory<T>`, integration tests |
-| 18 | [Generics](./Generics/) | `func F[T any]`, constraints | `void F<T>`, `where T : constraint`, `default(T)` |
-| 19 | [Mocking](./Mocking/) | Mockery | Moq — `Mock<T>`, `Setup`, `Verify`, argument matchers |
-| 20 | [BuildTags](./BuildTags/) | `//go:build linux` | `#if DEBUG`, `<DefineConstants>`, `RuntimeInformation` |
+### The Basics & The Mental Shift
+- **[Pointers](./Pointers/)** — `ref`/`out`/`in`, value vs reference types, `Span<T>`
+- **[Parameters](./Parameters/)** — `params`, `ref`/`out`/`in`, optional params, named args
+- **[Error Handling](./ErrorHandling/)** — Exceptions, `catch when`, `Result<T>` pattern
+
+### Defining Data & Behaviour
+- **[Entities](./Entity/)** — `class`, `record`, `struct`, `record struct`, `init`/`required`
+- **[Receivers](./Receivers/)** — Instance methods, extension methods, C# 14 `extension` blocks
+- **[Interfaces](./Interface/)** — Explicit `: IInterface`, DI container, default methods
+- **[Type Assertions & Casting](./Casting/)** — `is`, `as`, switch expression, pattern matching
+- **[Embedding](./Embedding/)** — `<EmbeddedResource>`, inheritance, composition
+
+### Code Organisation
+- **[Package Layout](./Layout/)** — `.sln`, `.csproj`, namespaces, `internal` modifier
+- **[Init](./Init/)** — Static constructors, `[ModuleInitializer]`, `Lazy<T>`
+
+### Testing
+- **[Testing](./Testing/)** — `[Fact]`, `[Theory]`, `[InlineData]`, `IClassFixture<T>`
+- **[Testify](./Testify/)** — FluentAssertions — `.Should().Be()`, `.Should().Throw<T>()`
+- **[Mocking](./Mocking/)** — Moq — `Mock<T>`, `Setup`, `Verify`, argument matchers
+
+### HTTP Services
+- **[HTTP Client & Server](./Http/)** — Minimal APIs, `HttpClient`, `IHttpClientFactory`
+- **[HTTP Testing](./HttpTest/)** — `WebApplicationFactory<T>`, integration tests
+- **[Benchmark](./Benchmark/)** — BenchmarkDotNet, `[Benchmark]`, `[MemoryDiagnoser]`
+
+### Concurrency & Context
+- **[Concurrency](./Concurrency/)** — `async/await`, `Task`, `Channel<T>`, `lock`, `Interlocked`
+- **[Context](./Context/)** — `CancellationToken`, `CancellationTokenSource`, `AsyncLocal<T>`
+
+### Advanced Features
+- **[Generics](./Generics/)** — `void F<T>`, `where T : constraint`, `default(T)`
+- **[Build Tags](./BuildTags/)** — `#if DEBUG`, `<DefineConstants>`, `RuntimeInformation`
 
 ---
 
@@ -49,8 +60,11 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Concurrency"
 dotnet test tests/Basics.Tests --logger "console;verbosity=detailed"
 ```
 
+## Your Exploration Journey
+
+Ready to master the fundamentals of C#? We've designed a guided path to take you from the basic types to advanced compilation techniques.
+
+Start your journey with the building blocks: **[Pointers](./Pointers/)**.
+
 ---
-
-## Template
-
-See [TEMPLATE.md](../../GoTraining/internal/basics/TEMPLATE.md) in the original GoTraining repo for the documentation structure used here.
+[← Back to Main README](../../README.md)

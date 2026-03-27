@@ -85,3 +85,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Init"
 
 - [Static constructors (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors)
 - [Module initializers](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/module-initializers)
+
+## Your Next Step
+Now that your application is starting up correctly, you need a robust way to verify it works through automated testing.
+Explore **[Testing](../Testing/README.md)** to learn xUnit's idiomatic approach to unit and table-driven tests.

@@ -161,3 +161,9 @@ public class CreateTransferRequest
 
 - [Asp.Versioning.Http NuGet package](https://github.com/dotnet/aspnet-api-versioning)
 - [API versioning in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/web-api/advanced/conventions)
+
+## Your Next Step
+
+Managing versions is just half the battle. When it's time to retire an old API, how do we do it without causing a PR disaster?
+
+Learn the secrets of elegant API retirements in: **[Graceful Sunsetting](02-graceful-sunsetting.md)**.

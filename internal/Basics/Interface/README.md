@@ -115,3 +115,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Interface"
 
 - [Interfaces (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces)
 - [Dependency injection in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)
+
+## Your Next Step
+Now that you understand how to define and consume interfaces, learn how to safely convert between types and verify interface values at runtime.
+Explore **[Type Assertions & Casting](../Casting/README.md)** to master how C# handles dynamic type checks and conversions.

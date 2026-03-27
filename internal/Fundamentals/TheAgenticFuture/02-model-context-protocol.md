@@ -213,3 +213,9 @@ public class BankMcpTools(IBankService svc)
 - [Model Context Protocol Specification](https://spec.modelcontextprotocol.io/)
 - [ModelContextProtocol.NET](https://github.com/modelcontextprotocol/csharp-sdk)
 - [MCP server examples](https://github.com/modelcontextprotocol/servers)
+
+## Your Next Step
+
+MCP provides the protocol, but how does an agent know which tool to use in the first place?
+
+Learn how agents find the right capabilities in: **[Tool Discovery](03-tool-discovery.md)**.

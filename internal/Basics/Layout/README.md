@@ -87,3 +87,7 @@ flowchart TD
 - [.NET project SDK](https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview)
 - [Solution files](https://learn.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio)
 - [Clean Architecture in .NET](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures)
+
+## Your Next Step
+After organising your solution, you'll want to learn how to run code at startup and control initialisation order.
+Explore **[Init & Static Constructors](../Init/README.md)** to understand how C# handles package-level initialisation.

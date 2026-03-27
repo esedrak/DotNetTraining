@@ -101,3 +101,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Receivers"
 
 - [Extension methods (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods)
 - [C# 14 extension members (preview)](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14)
+
+## Your Next Step
+With methods providing behaviour to your types, the next step is to define contracts that decouple components and enable testability.
+Explore **[Interfaces](../Interface/README.md)** to master the power of explicit interface implementation and dependency injection.

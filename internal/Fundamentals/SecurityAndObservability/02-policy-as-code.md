@@ -167,3 +167,9 @@ Are decisions purely role-based? (admin, user, manager)
 - [Open Policy Agent](https://www.openpolicyagent.org/)
 - [Resource-based authorization in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased)
 - [OPA .NET integration](https://www.openpolicyagent.org/docs/latest/integration/)
+
+## Your Next Step
+
+Secure policies are the invisible shield of your API, but when things go wrong, we need to see exactly what happened.
+
+Learn how to write logs that machines can actually read in: **[Structured Logging with ILogger](03-structured-logging.md)**.

@@ -100,3 +100,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Http"
 - [HttpClient guidelines](https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines)
 - [Minimal APIs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis)
 - [IHttpClientFactory](https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory)
+
+## Your Next Step
+With your HTTP services built, you need a way to test them efficiently without relying on an actual network.
+Explore **[HTTP Testing](../HttpTest/README.md)** to learn how to test handlers and clients in isolation using `WebApplicationFactory<T>`.

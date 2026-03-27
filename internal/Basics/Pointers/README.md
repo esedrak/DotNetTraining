@@ -140,3 +140,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Pointers"
 - [Reference types (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types)
 - [`ref`, `out`, `in` parameters](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters)
 - [`Span<T>` and `Memory<T>`](https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/memory-t-usage-guidelines)
+
+## Your Next Step
+After learning how to handle value and reference types with pointers, you'll often need to control how data flows into your methods.
+Explore **[Function Parameters](../Parameters/README.md)** to master how C# handles `params`, optional, and named arguments.

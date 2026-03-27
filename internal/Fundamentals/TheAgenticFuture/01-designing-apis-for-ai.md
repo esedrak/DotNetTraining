@@ -198,3 +198,9 @@ public class AgentMetadataFilter : IDocumentFilter
 - [OpenAPI Specification extensions](https://spec.openapis.org/oas/v3.1.0#specification-extensions)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 - [Anthropic Claude tool use docs](https://docs.anthropic.com/en/docs/build-with-claude/tool-use)
+
+## Your Next Step
+
+Designing APIs for AI is only half the battle. How do we standardize the communication between these models and our tools?
+
+Discover the standard for AI-tool interaction in: **[Model Context Protocol (MCP)](02-model-context-protocol.md)**.

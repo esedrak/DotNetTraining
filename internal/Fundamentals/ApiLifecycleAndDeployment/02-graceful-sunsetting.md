@@ -137,3 +137,9 @@ ORDER BY calls DESC;
 
 - [RFC 8594 — Sunset Header](https://www.rfc-editor.org/rfc/rfc8594)
 - [Asp.Versioning deprecation](https://github.com/dotnet/aspnet-api-versioning/wiki/Deprecating-an-API-Version)
+
+## Your Next Step
+
+We now know how to manage the API's lifecycle, but how do we package it to ensure it runs consistently across every environment?
+
+Step into the world of portable deployments in: **[Containerisation](03-containerisation.md)**.

@@ -171,3 +171,9 @@ This is non-negotiable. Network timeouts are guaranteed at scale. Without idempo
 
 - [Stripe idempotency guide](https://stripe.com/docs/idempotency)
 - [IDistributedCache in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed)
+
+## Your Next Step
+
+Idempotency ensures single operations are safe, but how do we scale these operations across thousands of servers?
+
+Learn the secrets of horizontal scalability in: **[Statelessness](03-statelessness.md)**.

@@ -195,3 +195,9 @@ All three incidents share the same root causes:
 8. **API8**: Security Misconfiguration
 9. **API9**: Improper Inventory Management
 10. **API10**: Unsafe Consumption of APIs
+
+## Your Next Step
+
+Now that we've seen what happens when API design principles are ignored, let's dive into the core technical patterns used to build robust services.
+
+Explore the foundations of modern API architecture in: **[REST vs. RPC](../ApiFundamentals/01-rest-vs-rpc.md)**.

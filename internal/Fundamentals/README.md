@@ -4,10 +4,17 @@ This module covers the foundational concepts for building production-ready APIs 
 
 ## Topics
 
-- **[API Fundamentals](ApiFundamentals/)** — REST vs gRPC, idempotency, statelessness, contract-first vs code-first design
-- **[Security & Observability](SecurityAndObservability/)** — AuthN/AuthZ, policy as code, structured logging with Serilog/ILogger, distributed tracing with OpenTelemetry
-- **[API Lifecycle & Deployment](ApiLifecycleAndDeployment/)** — versioning (v1/v2), graceful sunsetting, containerisation, cloud deployment
-- **[The Agentic Future](TheAgenticFuture/)** — designing APIs for AI consumption, Model Context Protocol (MCP), tool discovery
+- **[API Design](ApiDesign/api-design.md)** — The foundation: Design philosophies, what to do and not to do, and real-world examples of poor API design decisions.
+- **[API Fundamentals](ApiFundamentals/01-rest-vs-rpc.md)** — REST vs. gRPC, idempotency, statelessness, contract-first vs. code-first design.
+- **[Security & Observability](SecurityAndObservability/01-authn-authz.md)** — AuthN/AuthZ, policy as code, structured logging with Serilog/ILogger, and distributed tracing with OpenTelemetry.
+- **[API Lifecycle & Deployment](ApiLifecycleAndDeployment/01-versioning.md)** — Versioning strategies, graceful sunsetting, containerisation, and cloud deployment.
+- **[The Agentic Future](TheAgenticFuture/01-designing-apis-for-ai.md)** — Designing APIs for AI consumption, Model Context Protocol (MCP), and tool discovery.
+
+## Your Exploration Journey
+
+Ready to explore the principles of modern API design?
+
+Start your journey with: **[API Design Concepts](ApiDesign/api-design.md)**.
 
 ## Resources
 
@@ -17,5 +24,5 @@ This module covers the foundational concepts for building production-ready APIs 
 - [OpenTelemetry .NET](https://opentelemetry.io/docs/languages/dotnet/)
 - [Serilog docs](https://serilog.net/)
 
-## Bonus
-- **[API Design](ApiDesign/)** — What to do and not to do, with real-world examples of poor API design decisions
+---
+[← Back to Main README](../../README.md)

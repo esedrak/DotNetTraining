@@ -94,3 +94,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Mocking"
 
 - [Moq quickstart](https://github.com/devlooped/moq/wiki/Quickstart)
 - [Unit testing with mock objects](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mocks)
+
+## Your Next Step
+With your code fully testable, you're ready to expose it to the world through a production-ready HTTP API.
+Explore **[HTTP Client & Server](../Http/README.md)** to learn how to build and consume web services with ASP.NET Core.

@@ -90,3 +90,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Testify"
 ## 📚 Further Reading
 
 - [FluentAssertions docs](https://fluentassertions.com/introduction)
+
+## Your Next Step
+After writing expressive assertions, the next step is to isolate your dependencies so your tests remain fast and focused.
+Explore **[Mocking with Moq](../Mocking/README.md)** to learn how to generate type-safe mocks for your interfaces.

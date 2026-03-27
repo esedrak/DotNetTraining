@@ -114,3 +114,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Context"
 
 - [Cancellation in managed threads](https://learn.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads)
 - [Task cancellation](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-cancellation)
+
+## Your Next Step
+Now that you've mastered the core features of C#, it's time to explore how to write more reusable, type-agnostic code.
+Explore **[Generics](../Generics/README.md)** to see how to use type parameters to reduce code duplication.

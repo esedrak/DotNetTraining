@@ -80,3 +80,7 @@ dotnet test tests/Bank.Tests --filter "FullyQualifiedName~Integration"
 
 - [Integration tests in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests)
 - [WebApplicationFactory](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.testing.webapplicationfactory-1)
+
+## Your Next Step
+Now that your services are verified, it's time to measure and optimise their performance.
+Explore **[Benchmarking with BenchmarkDotNet](../Benchmark/README.md)** to learn how to identify and eliminate bottlenecks.

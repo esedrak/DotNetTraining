@@ -92,3 +92,7 @@ public class LoggingRepository(IBankRepository inner, ILogger<LoggingRepository>
 
 - [Embedded resources](https://learn.microsoft.com/en-us/dotnet/core/extensions/create-resource-files)
 - [Composition vs Inheritance](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/architectural-principles)
+
+## Your Next Step
+Now that you've mastered composition and embedded resources, it's time to learn how to organise your code into a clean and maintainable project structure.
+Explore **[Package Layout](../Layout/README.md)** to understand the idiomatic way to structure .NET solutions.

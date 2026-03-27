@@ -128,3 +128,7 @@ dotnet test tests/Basics.Tests --logger "console;verbosity=detailed"
 
 - [xUnit docs](https://xunit.net/docs/getting-started/netcore/cmdline)
 - [Unit testing best practices (.NET)](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices)
+
+## Your Next Step
+Now that you know the basics of testing, you can make your assertions more readable and expressive using FluentAssertions.
+Explore **[Testify (FluentAssertions)](../Testify/README.md)** to see how to write fluent, human-readable assertions.

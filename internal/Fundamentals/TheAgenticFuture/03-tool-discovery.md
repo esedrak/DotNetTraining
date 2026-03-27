@@ -222,3 +222,9 @@ Act        → tools/call transfer-funds { ... }
 - [MCP Tool Discovery spec](https://spec.modelcontextprotocol.io/specification/server/tools/)
 - [ModelContextProtocol.NET](https://github.com/modelcontextprotocol/csharp-sdk)
 - [Building MCP servers in .NET](https://devblogs.microsoft.com/dotnet/build-ai-apps-with-model-context-protocol-and-dotnet/)
+
+## Your Next Step
+
+We've explored the future of API engineering and how agents will interact with our services. Now, it's time to get our hands dirty with the language that makes it all possible.
+
+Dive into the core of .NET development in: **[Module 2: C# Language Basics](../../Basics/README.md)**.

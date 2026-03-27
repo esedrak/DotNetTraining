@@ -190,3 +190,9 @@ _logger.LogInformation("Transfer {TransferId} completed", id);
 - [Logging in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/logging)
 - [Seq (local structured log viewer)](https://datalust.co/seq)
 - [Elastic Stack (.NET integration)](https://www.elastic.co/guide/en/ecs-logging/dotnet/current/intro.html)
+
+## Your Next Step
+
+Structured logging gives us the "what" and "when," but in a distributed system, we also need the "how it all connects."
+
+Discover how to track requests across service boundaries in: **[Distributed Tracing](04-distributed-tracing.md)**.

@@ -156,3 +156,9 @@ public Task<IActionResult> Create(CreateAccountRequest req, CancellationToken ct
 - [JWT in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/jwt-authn)
 - [IDistributedCache](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed)
 - [Output Caching middleware](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output)
+
+## Your Next Step
+
+Statelessness allows us to scale our implementation, but how do we coordinate that implementation between different teams?
+
+Explore the different strategies for defining API contracts in: **[Contract-First vs. Code-First](04-contract-first-vs-code-first.md)**.

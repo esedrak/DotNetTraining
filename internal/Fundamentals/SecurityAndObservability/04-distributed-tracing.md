@@ -196,3 +196,9 @@ All three signals are correlated by `traceId`.
 - [Serilog + OTel](https://github.com/serilog-contrib/serilog-sinks-opentelemetry)
 - [prometheus-net](https://github.com/prometheus-net/prometheus-net)
 - [Jaeger for local dev](https://www.jaegertracing.io/docs/getting-started/)
+
+## Your Next Step
+
+We can now observe our API in production, but how do we manage its evolution over time without breaking our users?
+
+Learn the art of API evolution in: **[Versioning](../ApiLifecycleAndDeployment/01-versioning.md)**.

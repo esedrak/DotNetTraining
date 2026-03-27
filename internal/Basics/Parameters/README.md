@@ -95,3 +95,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Parameters"
 
 - [Method parameters (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters)
 - [Named and optional arguments](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/named-and-optional-arguments)
+
+## Your Next Step
+With a solid grasp of how data flows through methods, you're ready to start handling the inevitable errors that occur at runtime.
+Explore **[Error Handling](../ErrorHandling/README.md)** to learn C#'s idiomatic approach to exceptions and the `Result<T>` pattern.

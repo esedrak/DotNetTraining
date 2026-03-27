@@ -203,3 +203,9 @@ spec:
 - [ASP.NET Core health checks](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks)
 - [Graceful shutdown in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/generic-host#host-shutdown)
 - [.NET on AWS ECS](https://aws.amazon.com/getting-started/hands-on/deploy-dotnet-web-app-ecs-fargate/)
+
+## Your Next Step
+
+We've mastered the lifecycle of human-consumed APIs, but a new era is upon us. How do we design our APIs for the next generation of consumers: AI agents?
+
+Explore the future of API engineering in: **[Designing APIs for AI Consumption](../TheAgenticFuture/01-designing-apis-for-ai.md)**.

@@ -133,3 +133,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~ErrorHandling"
 
 - [Exception handling (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/exceptions/)
 - [Creating custom exceptions](https://learn.microsoft.com/en-us/dotnet/standard/exceptions/how-to-create-user-defined-exceptions)
+
+## Your Next Step
+Once you can handle errors effectively, you can start defining the data structures that model your domain.
+Explore **[Entities](../Entity/README.md)** to learn how `class`, `record`, and `struct` differ in C#.
