@@ -1,4 +1,4 @@
-namespace DotNetTraining.Basics.Testify;
+namespace DotNetTraining.Basics.FluentAssertions;
 
 // ── Types used by FluentAssertions examples ───────────────────────────────────
 

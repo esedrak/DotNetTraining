@@ -1,6 +1,6 @@
-# 📦 Parameters in C#
+# Parameters in C#
 
-C# has a richer parameter system than Go: optional defaults, named arguments, `params`, and `ref`/`out`/`in` modifiers. These replace Go's variadic `...T`, multiple return values, and pointer parameters.
+C# provides a rich parameter system including optional defaults, named arguments, `params` variadic parameters, and `ref`/`out`/`in` modifiers. These features give you fine-grained control over how data flows into and out of methods.
 
 ---
 
@@ -8,30 +8,17 @@ C# has a richer parameter system than Go: optional defaults, named arguments, `p
 
 | Concept | Description |
 | :--- | :--- |
-| **Value parameters** | Default — a copy is passed (same as Go) |
+| **Value parameters** | Default — a copy is passed to the method |
 | **`ref` parameter** | Pass by reference — callee can mutate the caller's variable |
 | **`out` parameter** | Output-only reference — callee *must* assign before returning |
 | **`in` parameter** | Read-only reference — no copy, no mutation |
-| **`params T[]`** | Variadic parameter — equivalent to Go's `...T` |
+| **`params T[]`** | Variadic parameter — accepts a variable number of arguments |
 | **Optional parameters** | Default values: `void F(int x = 0)` |
 | **Named arguments** | `F(y: 2, x: 1)` — call in any order |
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `func F(n int)` | `void F(int n)` |
-| `func F(p *int)` | `void F(ref int p)` |
-| `func F() (int, error)` | `(int result, string error)` tuple, or `out` param |
-| `func F(args ...int)` | `void F(params int[] args)` |
-| N/A | `void F(int x = 0)` — optional with default |
-| N/A | `F(y: 2, x: 1)` — named arguments |
-
----
-
-## 3. Examples
+## 2. Examples
 
 ### Optional parameters (default values)
 
@@ -49,10 +36,9 @@ await ListAccountsAsync(page: 2);
 await ListAccountsAsync(2, 50, token);
 ```
 
-### `params` — variadic arguments (like Go's `...T`)
+### `params` -- variadic arguments
 
 ```csharp
-// Go: func Sum(nums ...int) int
 public static int Sum(params int[] nums) => nums.Sum();
 public static int Sum(params ReadOnlySpan<int> nums) // .NET 9+ — avoids heap allocation
 {
@@ -95,6 +81,22 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Parameters"
 
 - [Method parameters (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters)
 - [Named and optional arguments](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/named-and-optional-arguments)
+
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `func F(n int)` | `void F(int n)` |
+| `func F(p *int)` | `void F(ref int p)` |
+| `func F() (int, error)` | `(int result, string error)` tuple, or `out` param |
+| `func F(args ...int)` | `void F(params int[] args)` |
+| N/A | `void F(int x = 0)` -- optional with default |
+| N/A | `F(y: 2, x: 1)` -- named arguments |
+
+</details>
 
 ## Your Next Step
 With a solid grasp of how data flows through methods, you're ready to start handling the inevitable errors that occur at runtime.

@@ -1,6 +1,6 @@
 # 📦 Embedded Resources & Composition in C#
 
-Go has `//go:embed` for embedding files at compile time and struct embedding for composition. C#'s equivalent for files is `<EmbeddedResource>` in the `.csproj`, and for composition it uses inheritance or explicit delegation.
+C# supports two complementary concepts covered here: **embedded resources** (compiling files into your assembly with `<EmbeddedResource>`) and **composition vs inheritance** (the two primary strategies for building type hierarchies and reusing behaviour).
 
 ---
 
@@ -8,25 +8,14 @@ Go has `//go:embed` for embedding files at compile time and struct embedding for
 
 | Concept | Description |
 | :--- | :--- |
-| **`<EmbeddedResource>`** | Compile a file into the assembly — equivalent to `//go:embed` |
+| **`<EmbeddedResource>`** | Compile a file into the assembly at build time |
 | **`GetManifestResourceStream()`** | Read an embedded file at runtime |
 | **Composition** | Delegate to contained types (prefer over inheritance) |
-| **Inheritance** | `class B : A` — B is an A (use sparingly) |
+| **Inheritance** | `class B : A` -- B is an A (use sparingly) |
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `//go:embed file.txt` | `<EmbeddedResource Include="file.txt" />` in `.csproj` |
-| `embed.FS` | `Assembly.GetManifestResourceStream()` |
-| Struct embedding `type B struct { A }` | Inheritance `class B : A` or composition field |
-| Promoted methods | Inherited/delegated methods |
-
----
-
-## 3. Embedding Files
+## 2. Embedding Files
 
 ### In `.csproj`
 
@@ -58,14 +47,14 @@ var content = Properties.Resources.seed_json;
 
 ---
 
-## 4. Composition vs Inheritance
+## 3. Composition vs Inheritance
 
 ```csharp
-// Inheritance (Go struct embedding equivalent for IS-A relationships)
+// Inheritance -- IS-A relationships
 public class Animal { public string Name { get; init; } = ""; }
 public class Dog : Animal { public void Bark() => Console.WriteLine("Woof!"); }
 
-// Composition (preferred for HAS-A — like wrapping an interface)
+// Composition (preferred for HAS-A -- wrap an interface and delegate)
 public class LoggingRepository(IBankRepository inner, ILogger<LoggingRepository> logger)
     : IBankRepository
 {
@@ -92,6 +81,18 @@ public class LoggingRepository(IBankRepository inner, ILogger<LoggingRepository>
 
 - [Embedded resources](https://learn.microsoft.com/en-us/dotnet/core/extensions/create-resource-files)
 - [Composition vs Inheritance](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/architectural-principles)
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `//go:embed file.txt` | `<EmbeddedResource Include="file.txt" />` in `.csproj` |
+| `embed.FS` | `Assembly.GetManifestResourceStream()` |
+| Struct embedding `type B struct { A }` | Inheritance `class B : A` or composition field |
+| Promoted methods | Inherited/delegated methods |
+
+</details>
 
 ## Your Next Step
 Now that you've mastered composition and embedded resources, it's time to learn how to organise your code into a clean and maintainable project structure.

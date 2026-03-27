@@ -47,7 +47,7 @@ public class NullBug
 {
     public string GetFirstName(List<string>? names)
     {
-        return names[0].ToUpper(); // BUG: throws if names is null or empty!
+        return names![0].ToUpper(); // BUG: throws if names is null or empty!
     }
 }
 
@@ -76,5 +76,98 @@ public class ResourceLeak
     {
         var client = new HttpClient(); // BUG: not disposed, socket leak!
         return await client.GetStringAsync(url);
+    }
+}
+
+// ── Challenge 6: Struct mutation (copy semantics) ────────────────────────────
+// BUG: Modifying a struct through a method operates on a copy, not the original.
+// The balance change is silently lost because structs have value semantics.
+// Fix: Use a class instead of a struct, or use `ref` to pass by reference.
+
+public struct AccountBalance
+{
+    public string Owner;
+    public decimal Balance;
+
+    public void Deposit(decimal amount)
+    {
+        Balance += amount; // This works on the struct itself...
+    }
+}
+
+public class StructMutationBug
+{
+    private readonly List<AccountBalance> _accounts = [];
+
+    public void AddAccount(string owner, decimal balance)
+        => _accounts.Add(new AccountBalance { Owner = owner, Balance = balance });
+
+    public void DepositToFirst(decimal amount)
+    {
+        if (_accounts.Count == 0) return;
+        var account = _accounts[0]; // BUG: this copies the struct!
+        account.Deposit(amount);    // Mutation is on the copy, not the list element
+        // The original _accounts[0] is unchanged!
+    }
+
+    public decimal GetFirstBalance()
+        => _accounts.Count > 0 ? _accounts[0].Balance : 0;
+}
+
+// ── Challenge 7: Disposable leak in a loop ───────────────────────────────────
+// BUG: Each iteration creates a new disposable resource that is never disposed.
+// In a real app with SqlConnection, this exhausts the connection pool.
+// Fix: Wrap each resource creation in a `using` statement.
+
+public class DisposableLeakBug
+{
+    public static readonly List<string> DisposalLog = [];
+
+    public class LeakyResource : IDisposable
+    {
+        public string Name { get; }
+        public bool IsDisposed { get; private set; }
+
+        public LeakyResource(string name) => Name = name;
+
+        public string Process() => $"Processed {Name}";
+
+        public void Dispose()
+        {
+            if (!IsDisposed)
+            {
+                IsDisposed = true;
+                DisposalLog.Add(Name);
+            }
+        }
+    }
+
+    public List<string> ProcessMany(string[] names)
+    {
+        var results = new List<string>();
+        foreach (var name in names)
+        {
+            var resource = new LeakyResource(name); // BUG: never disposed!
+            results.Add(resource.Process());
+        }
+        return results;
+    }
+}
+
+// ── Challenge 8: async void swallows exceptions ─────────────────────────────
+// BUG: async void methods fire-and-forget. Exceptions crash the process
+// or are silently lost (no Task to observe them).
+// Fix: Change to async Task so callers can await and observe exceptions.
+
+public class AsyncVoidBug
+{
+    public List<string> Log { get; } = [];
+
+    public async void ProcessItemAsync(string item) // BUG: async void!
+    {
+        await Task.Delay(1);
+        if (item == "bad")
+            throw new InvalidOperationException("Processing failed!"); // Unobservable!
+        Log.Add(item);
     }
 }

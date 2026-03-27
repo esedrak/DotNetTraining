@@ -1,6 +1,6 @@
-# 🏷️ Conditional Compilation in C#
+# Conditional Compilation in C#
 
-Go's `//go:build` tags have two equivalents in C#: **preprocessor directives** (`#if`) for compile-time conditions, and **`RuntimeInformation`** for runtime OS/platform detection.
+C# provides two mechanisms for conditional code: **preprocessor directives** (`#if` / `#endif`) for compile-time symbol-based inclusion, and **`RuntimeInformation`** for runtime OS/platform detection. Together, they let you tailor behavior per build configuration, target platform, or feature flag.
 
 ---
 
@@ -16,19 +16,7 @@ Go's `//go:build` tags have two equivalents in C#: **preprocessor directives** (
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `//go:build linux` | `#if LINUX` + `<DefineConstants>LINUX</DefineConstants>` |
-| `//go:build !windows` | `#if !WINDOWS` |
-| `//go:build debug` | `#if DEBUG` |
-| `runtime.GOOS == "linux"` | `RuntimeInformation.IsOSPlatform(OSPlatform.Linux)` |
-| Separate build tag files | All in one file with `#if` blocks, or partial classes |
-
----
-
-## 3. Examples
+## 2. Examples
 
 ### Preprocessor directives
 
@@ -73,7 +61,7 @@ else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 
 ---
 
-## ⚠️ Pitfalls & Best Practices
+## 3. Pitfalls & Best Practices
 
 1. Prefer **runtime checks** (`RuntimeInformation`) over compile-time `#if` for platform differences — easier to test.
 2. `#if DEBUG` code is excluded from Release builds — use `[Conditional("DEBUG")]` for helper methods.
@@ -81,10 +69,25 @@ else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 
 ---
 
-## 📚 Further Reading
+## 4. Further Reading
 
 - [Preprocessor directives (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives)
 - [RuntimeInformation](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.runtimeinformation)
+
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `//go:build linux` | `#if LINUX` + `<DefineConstants>LINUX</DefineConstants>` |
+| `//go:build !windows` | `#if !WINDOWS` |
+| `//go:build debug` | `#if DEBUG` |
+| `runtime.GOOS == "linux"` | `RuntimeInformation.IsOSPlatform(OSPlatform.Linux)` |
+| Separate build tag files | All in one file with `#if` blocks, or partial classes |
+
+</details>
 
 ## Your Next Step
 You've completed the C# Language Basics module! You now have a solid foundation in the core building blocks of .NET.

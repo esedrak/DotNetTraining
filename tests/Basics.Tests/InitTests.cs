@@ -1,4 +1,4 @@
-using DotNetTraining.Basics.Init;
+using DotNetTraining.Basics.Initialization;
 using FluentAssertions;
 
 namespace Basics.Tests;

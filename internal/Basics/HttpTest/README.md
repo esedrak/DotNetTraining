@@ -1,6 +1,6 @@
-# 🧪 HTTP Testing with WebApplicationFactory
+# HTTP Testing with WebApplicationFactory
 
-`WebApplicationFactory<T>` is the C# equivalent of Go's `httptest` package. It spins up an in-memory test server with the full ASP.NET Core middleware pipeline — no port binding required.
+`WebApplicationFactory<T>` spins up an in-memory test server with the full ASP.NET Core middleware pipeline -- no port binding required. It gives you a real `HttpClient` that exercises your entire request pipeline (routing, middleware, DI, serialization) in a fast, isolated test.
 
 ---
 
@@ -11,22 +11,11 @@
 | **`WebApplicationFactory<TEntryPoint>`** | Creates an in-memory test server for your ASP.NET Core app |
 | **`CreateClient()`** | Returns an `HttpClient` pre-configured to call the test server |
 | **`WithWebHostBuilder()`** | Override DI registrations for testing (swap real services for mocks) |
-| **`IClassFixture<T>`** | Share the factory across all tests in a class (like `TestMain`) |
+| **`IClassFixture<T>`** | Share the factory across all tests in a class for efficiency |
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `httptest.NewRecorder()` | `WebApplicationFactory.CreateClient()` |
-| `httptest.NewServer(handler)` | `WebApplicationFactory<TEntryPoint>` |
-| `ts.Client().Get(ts.URL + "/path")` | `client.GetAsync("/path")` |
-| Swap handler for tests | `WithWebHostBuilder(b => b.ConfigureServices(...))` |
-
----
-
-## 3. Example
+## 2. Example
 
 ```csharp
 public class BankApiTests(WebApplicationFactory<Program> factory)
@@ -59,7 +48,7 @@ private WebApplicationFactory<Program> CreateFactory()
 
 ---
 
-## ⚠️ Pitfalls & Best Practices
+## 3. Pitfalls & Best Practices
 
 1. Share the `WebApplicationFactory` via `IClassFixture<T>` — creating it per-test is expensive.
 2. Use `ConfigureTestServices` (not `ConfigureServices`) to override only for tests.
@@ -68,7 +57,7 @@ private WebApplicationFactory<Program> CreateFactory()
 
 ---
 
-## 🏃 Running the Examples
+## 4. Running the Examples
 
 ```bash
 dotnet test tests/Bank.Tests --filter "FullyQualifiedName~Integration"
@@ -76,10 +65,24 @@ dotnet test tests/Bank.Tests --filter "FullyQualifiedName~Integration"
 
 ---
 
-## 📚 Further Reading
+## 5. Further Reading
 
 - [Integration tests in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests)
 - [WebApplicationFactory](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.testing.webapplicationfactory-1)
+
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `httptest.NewRecorder()` | `WebApplicationFactory.CreateClient()` |
+| `httptest.NewServer(handler)` | `WebApplicationFactory<TEntryPoint>` |
+| `ts.Client().Get(ts.URL + "/path")` | `client.GetAsync("/path")` |
+| Swap handler for tests | `WithWebHostBuilder(b => b.ConfigureServices(...))` |
+
+</details>
 
 ## Your Next Step
 Now that your services are verified, it's time to measure and optimise their performance.

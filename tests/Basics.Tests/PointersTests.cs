@@ -1,4 +1,4 @@
-using DotNetTraining.Basics.Pointers;
+using DotNetTraining.Basics.ValueAndReferenceTypes;
 using FluentAssertions;
 
 namespace Basics.Tests;

@@ -1,17 +1,10 @@
-using DotNetTraining.Basics.BuildTags;
+using DotNetTraining.Basics.ConditionalCompilation;
 using FluentAssertions;
 
 namespace Basics.Tests;
 
 /// <summary>
-/// Demonstrates C# conditional compilation — equivalent of Go's build tags.
-///
-/// | Go                          | C#                                          |
-/// |-----------------------------|---------------------------------------------|
-/// | //go:build linux            | #if LINUX (set via DefineConstants in .csproj) |
-/// | //go:build !debug           | #if !DEBUG                                  |
-/// | runtime.GOOS                | RuntimeInformation.IsOSPlatform()           |
-/// | runtime.GOARCH              | RuntimeInformation.ProcessArchitecture      |
+/// Tests for C# conditional compilation: preprocessor directives and runtime platform detection.
 /// </summary>
 public class BuildTagsTests
 {

@@ -1,19 +1,16 @@
 using System.Runtime.InteropServices;
 
-namespace DotNetTraining.Basics.BuildTags;
+namespace DotNetTraining.Basics.ConditionalCompilation;
 
-// ── #if directives — equivalent to Go build tags ─────────────────────────────
+// ── #if directives — conditional compilation ─────────────────────────────────
 //
-// Go:   //go:build linux
-// C#:   #if LINUX  (define via <DefineConstants> in .csproj, or -p:DefineConstants=LINUX)
-//
-// Unlike Go's file-level build tags, C# directives are inline within a file.
+// Define symbols via <DefineConstants> in .csproj, or -p:DefineConstants=LINUX
+// C# preprocessor directives are inline within a file.
 
 public static class ConditionalCompilation
 {
     /// <summary>
     /// Returns a platform greeting compiled only for specific targets.
-    /// Go equivalent: separate files with //go:build constraints.
     /// </summary>
     public static string PlatformGreeting()
     {
@@ -43,7 +40,6 @@ public static class ConditionalCompilation
 
     /// <summary>
     /// Runtime OS check — no recompilation needed.
-    /// Go equivalent: <c>runtime.GOOS</c>.
     /// </summary>
     public static string RuntimeOsPlatform()
     {
@@ -66,7 +62,7 @@ public static class ConditionalCompilation
     }
 
     /// <summary>
-    /// Runtime architecture — Go equivalent: <c>runtime.GOARCH</c>.
+    /// Runtime architecture detection.
     /// </summary>
     public static string RuntimeArchitecture()
         => RuntimeInformation.ProcessArchitecture switch

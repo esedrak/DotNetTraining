@@ -1,14 +1,12 @@
 using System.Reflection;
 using System.Text.Json;
 
-namespace DotNetTraining.Basics.Embedding;
+namespace DotNetTraining.Basics.CompositionAndInheritance;
 
-// ── Inheritance — C#'s equivalent of Go struct embedding for IS-A ─────────────
+// ── Inheritance — IS-A relationships ──────────────────────────────────────────
 
 /// <summary>
 /// Base entity with common fields. Inheritance gives derived types all base members.
-/// Equivalent to Go: type TimestampedEntity struct { CreatedAt, UpdatedAt time.Time }
-/// type Account struct { TimestampedEntity; ... }
 /// </summary>
 public abstract class TimestampedEntity
 {
@@ -60,9 +58,7 @@ public class InMemoryDataStore<T> : IDataStore<T>
 }
 
 /// <summary>
-/// Decorator: wraps IDataStore<T> and adds logging.
-/// Go equivalent: type LoggingRepo struct { inner Repository; logger *slog.Logger }
-/// C# uses composition (field) rather than struct embedding.
+/// Decorator: wraps IDataStore&lt;T&gt; and adds logging via composition.
 /// </summary>
 public class LoggingDataStore<T>(
     IDataStore<T> inner,
@@ -88,7 +84,7 @@ public class LoggingDataStore<T>(
     }
 }
 
-// ── Embedded resources — C# equivalent of Go's //go:embed ────────────────────
+// ── Embedded resources — compile-time file embedding ─────────────────────────
 
 /// <summary>
 /// Demonstrates reading files embedded in the assembly at compile time.
@@ -103,7 +99,6 @@ public static class EmbeddedResources
 {
     /// <summary>
     /// Read an embedded file by its manifest resource name.
-    /// Equivalent to Go: //go:embed data.json; var data []byte
     /// </summary>
     public static string? ReadEmbeddedText(string resourceName)
     {
@@ -130,10 +125,9 @@ public static class EmbeddedResources
 
 /// <summary>
 /// Composing multiple interfaces is the idiomatic .NET pattern.
-/// More explicit than Go's implicit embedding, but equally flexible.
 /// </summary>
 public interface IReadable<T> { Task<T?> ReadAsync(Guid id, CancellationToken ct = default); }
 public interface IWritable<T> { Task WriteAsync(T item, CancellationToken ct = default); }
 
-// Composed interface — equivalent to embedding io.Reader + io.Writer in Go
+// Composed interface — combines IReadable + IWritable
 public interface IReadWritable<T> : IReadable<T>, IWritable<T> { }

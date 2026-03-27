@@ -1,6 +1,6 @@
-# 🧪 Testing in C# with xUnit
+# Testing in C# with xUnit
 
-xUnit is the standard test framework for .NET. Its patterns map closely to Go's `testing` package: `[Fact]` ≈ `func TestXxx`, `[Theory]` ≈ table-driven tests.
+xUnit is the standard test framework for .NET. It provides attribute-driven test discovery, built-in parameterized tests, and first-class async support. Tests are regular methods decorated with `[Fact]` (single case) or `[Theory]` (data-driven), and xUnit runs them in parallel by default for fast feedback.
 
 ---
 
@@ -8,30 +8,16 @@ xUnit is the standard test framework for .NET. Its patterns map closely to Go's 
 
 | Concept | Description |
 | :--- | :--- |
-| **`[Fact]`** | Single test case (like `func TestXxx(t *testing.T)`) |
-| **`[Theory]`** | Parameterized test — runs once per data set |
-| **`[InlineData]`** | Inline data for `[Theory]` (like table-driven test rows) |
-| **`[MemberData]`** | Data from a static property — for complex objects |
-| **`IClassFixture<T>`** | Shared setup/teardown across tests in a class |
-| **`IAsyncLifetime`** | Async setup/teardown (like `TestMain` in Go) |
+| **`[Fact]`** | A single test case with no parameters |
+| **`[Theory]`** | Parameterized test -- runs once per data set |
+| **`[InlineData]`** | Inline data for `[Theory]` -- each attribute becomes a test run |
+| **`[MemberData]`** | Data from a static property -- for complex objects that cannot be expressed as attributes |
+| **`IClassFixture<T>`** | Shared setup/teardown across all tests in a class |
+| **`IAsyncLifetime`** | Async setup and teardown lifecycle hooks |
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `func TestXxx(t *testing.T)` | `[Fact] public void TestXxx()` |
-| `t.Error("msg")` / `t.Fatal("msg")` | `Assert.True(condition)` / `Assert.Equal(expected, actual)` |
-| Table-driven `tests := []struct{...}` | `[Theory] [InlineData(...)]` |
-| `t.Run("name", func(t))` | `[Theory]` runs automatically per data set |
-| `t.Parallel()` | xUnit runs tests in parallel by default |
-| `TestMain(m *testing.M)` | `IAsyncLifetime` or `IClassFixture<T>` |
-| `t.Context()` | Pass `CancellationToken` via fixture |
-
----
-
-## 3. Examples
+## 2. Examples
 
 ### Fact — single test case
 
@@ -45,7 +31,7 @@ public void Deposit_IncreasesBalance()
 }
 ```
 
-### Theory — table-driven tests (replaces Go's `for _, tt := range tests`)
+### Theory -- parameterized (data-driven) tests
 
 ```csharp
 [Theory]
@@ -100,7 +86,7 @@ public class BankRepositoryTests(DatabaseFixture db) : IClassFixture<DatabaseFix
 
 ---
 
-## ⚠️ Pitfalls & Best Practices
+## Pitfalls & Best Practices
 
 1. Name tests: `MethodName_StateUnderTest_ExpectedBehavior` (clear failures).
 2. One logical assertion per test — easier to diagnose failures.
@@ -109,7 +95,7 @@ public class BankRepositoryTests(DatabaseFixture db) : IClassFixture<DatabaseFix
 
 ---
 
-## 🏃 Running the Examples
+## Running the Examples
 
 ```bash
 # All tests
@@ -124,11 +110,28 @@ dotnet test tests/Basics.Tests --logger "console;verbosity=detailed"
 
 ---
 
-## 📚 Further Reading
+## Further Reading
 
 - [xUnit docs](https://xunit.net/docs/getting-started/netcore/cmdline)
 - [Unit testing best practices (.NET)](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices)
 
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+| :--- | :--- |
+| `func TestXxx(t *testing.T)` | `[Fact] public void TestXxx()` |
+| `t.Error("msg")` / `t.Fatal("msg")` | `Assert.True(condition)` / `Assert.Equal(expected, actual)` |
+| Table-driven `tests := []struct{...}` | `[Theory] [InlineData(...)]` |
+| `t.Run("name", func(t))` | `[Theory]` runs automatically per data set |
+| `t.Parallel()` | xUnit runs tests in parallel by default |
+| `TestMain(m *testing.M)` | `IAsyncLifetime` or `IClassFixture<T>` |
+| `t.Context()` | Pass `CancellationToken` via fixture |
+
+</details>
+
 ## Your Next Step
 Now that you know the basics of testing, you can make your assertions more readable and expressive using FluentAssertions.
-Explore **[Testify (FluentAssertions)](../Testify/README.md)** to see how to write fluent, human-readable assertions.
+Explore **[FluentAssertions](../FluentAssertions/README.md)** to see how to write fluent, human-readable assertions.

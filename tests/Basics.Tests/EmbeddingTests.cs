@@ -1,16 +1,11 @@
-using DotNetTraining.Basics.Embedding;
+using DotNetTraining.Basics.CompositionAndInheritance;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Basics.Tests;
 
 /// <summary>
-/// Tests for the Embedding module — composition, decorators, embedded resources.
-///
-/// Go equivalent:
-///   - Struct embedding  → C# inheritance + composition
-///   - Interface composition → same in C#
-///   - go:embed          → Assembly.GetManifestResourceStream()
+/// Tests for composition and inheritance — base classes, decorators, embedded resources.
 /// </summary>
 public class EmbeddingTests
 {

@@ -1,6 +1,6 @@
-# 🌐 HTTP in C# — HttpClient & Minimal APIs
+# HTTP in C# — HttpClient & Minimal APIs
 
-C# uses `HttpClient` (with `IHttpClientFactory`) for HTTP clients and **ASP.NET Core** (minimal APIs or controllers) for servers. This replaces Go's `net/http` package.
+ASP.NET Core Minimal APIs provide a lightweight, high-performance way to build HTTP servers with concise route handlers like `app.MapGet(...)`. On the client side, `HttpClient` (managed through `IHttpClientFactory`) handles outbound HTTP requests with built-in connection pooling and lifetime management.
 
 ---
 
@@ -11,27 +11,12 @@ C# uses `HttpClient` (with `IHttpClientFactory`) for HTTP clients and **ASP.NET 
 | **`HttpClient`** | HTTP client; always use via `IHttpClientFactory` in production |
 | **`IHttpClientFactory`** | Manages `HttpClient` lifetime — prevents socket exhaustion |
 | **Minimal APIs** | `app.MapGet(...)`, `app.MapPost(...)` — concise route handlers |
-| **`System.Text.Json`** | Built-in JSON serialization (replaces `encoding/json`) |
+| **`System.Text.Json`** | Built-in JSON serialization and deserialization |
 | **`HttpResponseMessage`** | Represents an HTTP response |
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `http.HandleFunc(path, handler)` | `app.MapGet(path, handler)` |
-| `http.ListenAndServe(addr, nil)` | `app.Run()` |
-| `http.NewRequest(...)` | `new HttpRequestMessage(...)` |
-| `http.DefaultClient.Do(req)` | `httpClient.SendAsync(req)` |
-| `json.NewDecoder(r.Body).Decode(&v)` | `await req.ReadFromJsonAsync<T>()` |
-| `json.NewEncoder(w).Encode(v)` | `Results.Ok(v)` / `TypedResults.Ok(v)` |
-| `w.WriteHeader(status)` | Return `Results.StatusCode(n)` |
-| `r.Header.Get("key")` | `req.Headers["key"]` |
-
----
-
-## 3. Examples
+## 2. Examples
 
 ### Minimal API (server)
 
@@ -78,7 +63,7 @@ builder.Services.AddHttpClient<BankApiClient>(c =>
 
 ---
 
-## ⚠️ Pitfalls & Best Practices
+## 3. Pitfalls & Best Practices
 
 1. Never `new HttpClient()` directly in production — use `IHttpClientFactory` to avoid socket exhaustion.
 2. Always call `response.EnsureSuccessStatusCode()` or check `response.IsSuccessStatusCode` — don't assume success.
@@ -87,7 +72,7 @@ builder.Services.AddHttpClient<BankApiClient>(c =>
 
 ---
 
-## 🏃 Running the Examples
+## 4. Running the Examples
 
 ```bash
 dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Http"
@@ -95,11 +80,29 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Http"
 
 ---
 
-## 📚 Further Reading
+## 5. Further Reading
 
 - [HttpClient guidelines](https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines)
 - [Minimal APIs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis)
 - [IHttpClientFactory](https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory)
+
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `http.HandleFunc(path, handler)` | `app.MapGet(path, handler)` |
+| `http.ListenAndServe(addr, nil)` | `app.Run()` |
+| `http.NewRequest(...)` | `new HttpRequestMessage(...)` |
+| `http.DefaultClient.Do(req)` | `httpClient.SendAsync(req)` |
+| `json.NewDecoder(r.Body).Decode(&v)` | `await req.ReadFromJsonAsync<T>()` |
+| `json.NewEncoder(w).Encode(v)` | `Results.Ok(v)` / `TypedResults.Ok(v)` |
+| `w.WriteHeader(status)` | Return `Results.StatusCode(n)` |
+| `r.Header.Get("key")` | `req.Headers["key"]` |
+
+</details>
 
 ## Your Next Step
 With your HTTP services built, you need a way to test them efficiently without relying on an actual network.

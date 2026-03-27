@@ -1,6 +1,6 @@
-# 🧬 Generics in C#
+# Generics in C#
 
-C# generics are **reified** at runtime — the CLR retains full type information, unlike Go's compile-time monomorphization. The syntax is similar (`<T>`), but C# offers richer constraints and runtime reflection.
+C# generics let you write type-safe, reusable code that works across multiple types without sacrificing performance or type information. They are **reified** at runtime -- the CLR retains full type information, enabling reflection, richer constraints, and covariance/contravariance on interfaces.
 
 ---
 
@@ -16,19 +16,7 @@ C# generics are **reified** at runtime — the CLR retains full type information
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `func F[T any](x T)` | `void F<T>(T x)` |
-| `[T comparable]` | `where T : IEquatable<T>` |
-| `[T any]` | `<T>` (unconstrained) |
-| `var zero T` | `default(T)` or `default` |
-| No runtime type info | `typeof(T)`, reflection available at runtime |
-
----
-
-## 3. Common Constraints
+## 2. Common Constraints
 
 | Constraint | Meaning |
 | :--- | :--- |
@@ -42,12 +30,11 @@ C# generics are **reified** at runtime — the CLR retains full type information
 
 ---
 
-## 4. Examples
+## 3. Examples
 
 ### Generic method
 
 ```csharp
-// Go: func Min[T constraints.Ordered](a, b T) T
 public static T Min<T>(T a, T b) where T : IComparable<T>
     => a.CompareTo(b) <= 0 ? a : b;
 
@@ -71,13 +58,12 @@ public class Stack<T>
 ### Default value
 
 ```csharp
-// Go: var zero T
-T GetDefault<T>() => default!;  // 0, false, null depending on T
+T GetDefault<T>() => default!;  // Returns 0, false, or null depending on T
 ```
 
 ---
 
-## ⚠️ Pitfalls & Best Practices
+## Pitfalls & Best Practices
 
 1. Prefer interface constraints over class constraints — more flexible.
 2. Use `where T : notnull` with nullable-enabled code to prevent accidental nulls.
@@ -85,7 +71,7 @@ T GetDefault<T>() => default!;  // 0, false, null depending on T
 
 ---
 
-## 🏃 Running the Examples
+## Running the Examples
 
 ```bash
 dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Generics"
@@ -93,11 +79,26 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Generics"
 
 ---
 
-## 📚 Further Reading
+## Further Reading
 
 - [Generic classes and methods](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/generics)
 - [Constraints on type parameters](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/generics/constraints-on-type-parameters)
 
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+| :--- | :--- |
+| `func F[T any](x T)` | `void F<T>(T x)` |
+| `[T comparable]` | `where T : IEquatable<T>` |
+| `[T any]` | `<T>` (unconstrained) |
+| `var zero T` | `default(T)` or `default` |
+| No runtime type info | `typeof(T)`, reflection available at runtime |
+
+</details>
+
 ## Your Next Step
 Finally, you'll want to learn how to control which parts of your code are compiled based on the environment or specific build needs.
-Explore **[Build Tags & Conditional Compilation](../BuildTags/README.md)** to master `#if DEBUG`, `DefineConstants`, and `RuntimeInformation`.
+Explore **[Conditional Compilation](../ConditionalCompilation/README.md)** to master `#if DEBUG`, `DefineConstants`, and `RuntimeInformation`.

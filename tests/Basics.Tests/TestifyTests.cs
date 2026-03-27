@@ -1,20 +1,10 @@
-using DotNetTraining.Basics.Testify;
+using DotNetTraining.Basics.FluentAssertions;
 using FluentAssertions;
 
 namespace Basics.Tests;
 
 /// <summary>
-/// Demonstrates FluentAssertions — the C# equivalent of Go's testify library.
-///
-/// | testify                             | FluentAssertions                          |
-/// |-------------------------------------|-------------------------------------------|
-/// | assert.Equal(t, expected, actual)   | actual.Should().Be(expected)              |
-/// | assert.True(t, cond)                | cond.Should().BeTrue()                    |
-/// | assert.Contains(t, list, elem)      | list.Should().Contain(elem)               |
-/// | assert.Error(t, err)                | act.Should().Throw&lt;Exception&gt;()         |
-/// | assert.NoError(t, err)              | act.Should().NotThrow()                   |
-/// | assert.ErrorIs(t, err, target)      | act.Should().Throw&lt;T&gt;()                 |
-/// | require.NoError(t, err) — halts     | no direct equivalent; use act.Should().NotThrow() |
+/// Demonstrates FluentAssertions — expressive, readable test assertions for C#.
 /// </summary>
 public class TestifyTests
 {

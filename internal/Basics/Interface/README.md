@@ -1,6 +1,6 @@
-# 🔌 Interfaces in C#
+# Interfaces in C#
 
-C# interfaces are **explicitly declared** and **explicitly implemented**, unlike Go's implicit structural typing. The key mindset shift: in C#, you declare conformance with `: IMyInterface`, while in Go, a type satisfies an interface automatically.
+C# interfaces define contracts that types explicitly implement by declaring `: IMyInterface`. They are the foundation of dependency injection (DI), testability, and the SOLID principles in .NET applications.
 
 ---
 
@@ -17,20 +17,7 @@ C# interfaces are **explicitly declared** and **explicitly implemented**, unlike
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| Implicit satisfaction | `: IInterface` declaration required |
-| Consumer-side definition | Same pattern works (define interface near consumer) |
-| Interface composition | Interface inheritance: `interface IA : IB, IC` |
-| Empty interface `any` | `object` or `T` (generic) |
-| N/A | Default interface methods |
-| N/A | DI container registration |
-
----
-
-## 3. Implementation Examples
+## 2. Implementation Examples
 
 ### Define and implement an interface
 
@@ -86,7 +73,7 @@ public interface IWriteRepository<T> : IReadRepository<T>
 
 ---
 
-## 4. Common Patterns
+## 3. Common Patterns
 
 - **Repository pattern**: `IRepository<T>` with EF Core implementation → easy to mock in tests
 - **Strategy pattern**: Swap implementations at runtime via DI
@@ -115,6 +102,22 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Interface"
 
 - [Interfaces (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces)
 - [Dependency injection in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)
+
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| Implicit satisfaction | `: IInterface` declaration required |
+| Consumer-side definition | Same pattern works (define interface near consumer) |
+| Interface composition | Interface inheritance: `interface IA : IB, IC` |
+| Empty interface `any` | `object` or `T` (generic) |
+| N/A | Default interface methods |
+| N/A | DI container registration |
+
+</details>
 
 ## Your Next Step
 Now that you understand how to define and consume interfaces, learn how to safely convert between types and verify interface values at runtime.

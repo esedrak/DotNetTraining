@@ -1,18 +1,18 @@
-# 📊 Benchmarking with BenchmarkDotNet
+# Benchmarking with BenchmarkDotNet
 
-**BenchmarkDotNet** is the .NET equivalent of Go's `testing.B` benchmarks. It handles warmup, statistical analysis, and memory profiling automatically.
+**BenchmarkDotNet** is the standard .NET micro-benchmarking library. It handles warmup iterations, statistical analysis (mean, standard deviation, confidence intervals), and memory allocation profiling automatically -- giving you reliable, reproducible results.
 
 ---
 
-## 1. Go → C# Mapping
+## 1. Core Concepts
 
-| Go | C# |
+| Concept | Description |
 | :--- | :--- |
-| `func BenchmarkXxx(b *testing.B)` | `[Benchmark]` method on a class |
-| `for i := 0; i < b.N; i++` | Handled automatically by BenchmarkDotNet |
-| `b.ReportAllocs()` | `[MemoryDiagnoser]` attribute on class |
-| `benchstat` | Built-in statistical output (mean, stddev, etc.) |
-| `b.SetBytes(n)` | `[Benchmark(OperationsPerInvoke = n)]` |
+| **`[Benchmark]`** | Marks a method as a benchmark target |
+| **`[MemoryDiagnoser]`** | Tracks GC allocations and memory per operation |
+| **`[SimpleJob]`** | Configures the benchmark runtime and iteration settings |
+| **`[Baseline = true]`** | Marks a benchmark as the baseline for relative comparison |
+| **`BenchmarkRunner.Run<T>()`** | Executes all benchmarks in the given class |
 
 ---
 
@@ -26,6 +26,11 @@
 ---
 
 ## 3. Example
+
+```csharp
+// Run benchmarks from your Main method or a dedicated project
+BenchmarkRunner.Run<StringConcatBenchmarks>();
+```
 
 ```csharp
 [MemoryDiagnoser]
@@ -72,7 +77,7 @@ dotnet run --project tests/Basics.Tests -c Release -- --filter "*StringConcat*"
 
 ---
 
-## ⚠️ Pitfalls & Best Practices
+## 4. Pitfalls & Best Practices
 
 1. Always run in **Release** mode (`-c Release`) — Debug builds give misleading results.
 2. Use `[MemoryDiagnoser]` to spot hidden allocations.
@@ -81,7 +86,7 @@ dotnet run --project tests/Basics.Tests -c Release -- --filter "*StringConcat*"
 
 ---
 
-## 🏃 Running the Examples
+## 5. Running the Examples
 
 ```bash
 dotnet run --project tests/Basics.Tests -c Release -- --filter "*Benchmark*"
@@ -89,10 +94,25 @@ dotnet run --project tests/Basics.Tests -c Release -- --filter "*Benchmark*"
 
 ---
 
-## 📚 Further Reading
+## 6. Further Reading
 
 - [BenchmarkDotNet docs](https://benchmarkdotnet.org/articles/overview.html)
 - [Diagnosers](https://benchmarkdotnet.org/articles/configs/diagnosers.html)
+
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `func BenchmarkXxx(b *testing.B)` | `[Benchmark]` method on a class |
+| `for i := 0; i < b.N; i++` | Handled automatically by BenchmarkDotNet |
+| `b.ReportAllocs()` | `[MemoryDiagnoser]` attribute on class |
+| `benchstat` | Built-in statistical output (mean, stddev, etc.) |
+| `b.SetBytes(n)` | `[Benchmark(OperationsPerInvoke = n)]` |
+
+</details>
 
 ## Your Next Step
 With your code measured and optimised, you're ready to leverage .NET's powerful async/await model for concurrent operations.

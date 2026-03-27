@@ -1,20 +1,20 @@
-# 🎭 Mocking with Moq in C#
+# Mocking with Moq in C#
 
-**Moq** is the C# equivalent of Go's Mockery. It uses reflection to generate mocks at runtime — no code generation step needed. The API is type-safe and lambda-based.
+**Moq** is the most widely used mocking library in .NET. It generates mock implementations of interfaces at runtime using reflection -- no separate code generation step needed. The API is type-safe and lambda-based, giving you compile-time checking of your mock setups.
 
 ---
 
-## 1. Go → C# Mapping
+## 1. Core Concepts
 
-| Go (Mockery) | C# (Moq) |
+| Concept | Description |
 | :--- | :--- |
-| Generated mock struct | `new Mock<IInterface>()` |
-| `mock.On("Method").Return(val)` | `mock.Setup(x => x.Method()).Returns(val)` |
-| `mock.On("Method").Return(nil, err)` | `mock.Setup(x => x.Method()).ThrowsAsync(ex)` |
-| `mock.AssertCalled(t, "Method")` | `mock.Verify(x => x.Method(), Times.Once())` |
-| `mock.AssertNotCalled(t, "Method")` | `mock.Verify(x => x.Method(), Times.Never())` |
-| `mock.AssertExpectations(t)` | `mock.VerifyAll()` |
-| Argument matchers | `It.IsAny<T>()`, `It.Is<T>(pred)` |
+| `new Mock<IInterface>()` | Create a mock for any interface |
+| `.Setup(x => x.Method()).Returns(val)` | Configure what a method returns when called |
+| `.Setup(x => x.Method()).ThrowsAsync(ex)` | Configure a method to throw an exception |
+| `.Verify(x => x.Method(), Times.Once())` | Assert a method was called exactly once |
+| `.Verify(x => x.Method(), Times.Never())` | Assert a method was never called |
+| `.VerifyAll()` | Assert all setups were invoked |
+| `It.IsAny<T>()`, `It.Is<T>(pred)` | Argument matchers for flexible setup/verification |
 
 ---
 
@@ -73,7 +73,7 @@ var strict = new Mock<IRepo>(MockBehavior.Strict);
 
 ---
 
-## ⚠️ Pitfalls & Best Practices
+## Pitfalls & Best Practices
 
 1. Only mock things you own — don't mock third-party types you can't control.
 2. Use `It.IsAny<T>()` for `CancellationToken` parameters — you rarely care about the specific token in unit tests.
@@ -82,7 +82,7 @@ var strict = new Mock<IRepo>(MockBehavior.Strict);
 
 ---
 
-## 🏃 Running the Examples
+## Running the Examples
 
 ```bash
 dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Mocking"
@@ -90,10 +90,27 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Mocking"
 
 ---
 
-## 📚 Further Reading
+## Further Reading
 
 - [Moq quickstart](https://github.com/devlooped/moq/wiki/Quickstart)
 - [Unit testing with mock objects](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mocks)
+
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go (Mockery) | C# (Moq) |
+| :--- | :--- |
+| Generated mock struct | `new Mock<IInterface>()` |
+| `mock.On("Method").Return(val)` | `mock.Setup(x => x.Method()).Returns(val)` |
+| `mock.On("Method").Return(nil, err)` | `mock.Setup(x => x.Method()).ThrowsAsync(ex)` |
+| `mock.AssertCalled(t, "Method")` | `mock.Verify(x => x.Method(), Times.Once())` |
+| `mock.AssertNotCalled(t, "Method")` | `mock.Verify(x => x.Method(), Times.Never())` |
+| `mock.AssertExpectations(t)` | `mock.VerifyAll()` |
+| Argument matchers | `It.IsAny<T>()`, `It.Is<T>(pred)` |
+
+</details>
 
 ## Your Next Step
 With your code fully testable, you're ready to expose it to the world through a production-ready HTTP API.

@@ -1,6 +1,6 @@
-# 🔄 Type Conversion & Pattern Matching in C#
+# Type Conversion & Pattern Matching in C#
 
-C# has two mechanisms for working with types at runtime: **type conversion** (between compatible concrete types) and **pattern matching** (testing and extracting values from interfaces or `object`). These replace Go's type assertions and type switches.
+C# provides two powerful mechanisms for working with types at runtime: **type conversion** (between compatible concrete types) and **pattern matching** (testing and extracting values from interfaces or `object`). Pattern matching in particular is a cornerstone of modern C# -- it makes type-safe branching concise and expressive.
 
 ---
 
@@ -9,26 +9,14 @@ C# has two mechanisms for working with types at runtime: **type conversion** (be
 | Concept | Description |
 | :--- | :--- |
 | **Explicit cast `(T)x`** | Convert between compatible types; throws `InvalidCastException` on failure |
-| **`as` operator** | Safe cast — returns `null` on failure instead of throwing |
+| **`as` operator** | Safe cast -- returns `null` on failure instead of throwing |
 | **`is` pattern** | Test type and bind in one expression: `if (x is Dog dog)` |
-| **`switch` expression** | Full type-switch with patterns (replaces Go's `switch v := i.(type)`) |
+| **`switch` expression** | Exhaustive type-switch with patterns for clean branching |
 | **`checked`** | Throw `OverflowException` on numeric overflow |
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `x.(T)` (unsafe assertion) | `(T)x` — throws on failure |
-| `v, ok := x.(T)` (safe) | `x as T` + null check, or `x is T v` |
-| `switch v := i.(type)` | `switch (x) { case T t: ... }` or switch expression |
-| `interface{}` / `any` | `object` |
-| Numeric cast `int(f)` | `(int)f` |
-
----
-
-## 3. Implementation Examples
+## 2. Implementation Examples
 
 ### Safe pattern matching (preferred)
 
@@ -49,7 +37,6 @@ string result = shape switch
 ### `as` operator (returns null on failure)
 
 ```csharp
-// Go equivalent: d, ok := animal.(Dog)
 var dog = animal as Dog;
 if (dog != null)
     Console.WriteLine(dog.Breed);
@@ -68,7 +55,7 @@ byte safe = checked((byte)256); // throws!
 
 ---
 
-## 4. Common Patterns
+## 3. Common Patterns
 
 - Prefer **`is` + pattern variable** over `as` + null check — it's more expressive
 - Use **switch expressions** for exhaustive type dispatching
@@ -101,6 +88,21 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Casting"
 - [Type-testing operators](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/type-testing-and-cast)
 - [Checked and unchecked](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/checked-and-unchecked)
 
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `x.(T)` (unsafe assertion) | `(T)x` -- throws on failure |
+| `v, ok := x.(T)` (safe) | `x as T` + null check, or `x is T v` |
+| `switch v := i.(type)` | `switch (x) { case T t: ... }` or switch expression |
+| `interface{}` / `any` | `object` |
+| Numeric cast `int(f)` | `(int)f` |
+
+</details>
+
 ## Your Next Step
 Now that you understand how to work with interfaces and dynamic types, you can explore how C# uses composition and embedded resources.
-Explore **[Embedding](../Embedding/README.md)** to see how to compose types and bundle files into your assemblies.
+Explore **[Composition & Inheritance](../CompositionAndInheritance/README.md)** to see how to compose types and bundle files into your assemblies.

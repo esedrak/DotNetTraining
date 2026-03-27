@@ -74,9 +74,88 @@ public static class AsyncPipeline
 /// </summary>
 public class CorrelationIdMiddleware(RequestDelegate next)
 {
+    private readonly RequestDelegate _next = next;
     public const string HeaderName = "X-Correlation-ID";
 
     public async Task InvokeAsync(HttpContext context)
+    {
+        throw new NotImplementedException("Implement me!");
+    }
+}
+
+// ── Challenge 4: LINQ banking queries ────────────────────────────────────────
+
+public record BankTransaction(string Owner, decimal Amount, string Category);
+
+public static class LinqChallenge
+{
+    /// <summary>
+    /// Return all transactions where the amount is negative (withdrawals).
+    /// Use LINQ Where.
+    /// </summary>
+    public static IEnumerable<BankTransaction> GetWithdrawals(IEnumerable<BankTransaction> transactions)
+    {
+        throw new NotImplementedException("Implement me!");
+    }
+
+    /// <summary>
+    /// Calculate the total balance (sum of all amounts) grouped by owner.
+    /// Return a dictionary of Owner → TotalBalance.
+    /// Use LINQ GroupBy + ToDictionary.
+    /// </summary>
+    public static Dictionary<string, decimal> TotalByOwner(IEnumerable<BankTransaction> transactions)
+    {
+        throw new NotImplementedException("Implement me!");
+    }
+
+    /// <summary>
+    /// Find the single largest transaction by absolute amount.
+    /// Return null if the collection is empty.
+    /// Use LINQ MaxBy or OrderByDescending.
+    /// </summary>
+    public static BankTransaction? LargestByAbsoluteAmount(IEnumerable<BankTransaction> transactions)
+    {
+        throw new NotImplementedException("Implement me!");
+    }
+}
+
+// ── Challenge 5: Result<T> pattern (structured error handling) ───────────────
+
+/// <summary>
+/// A Result type that wraps either a success value or an error message.
+/// This is an alternative to exceptions for expected failure cases.
+/// </summary>
+public readonly record struct Result<T>
+{
+    public T? Value { get; }
+    public string? Error { get; }
+    public bool IsSuccess { get; }
+
+    private Result(T value) { Value = value; IsSuccess = true; Error = null; }
+    private Result(string error) { Value = default; IsSuccess = false; Error = error; }
+
+    public static Result<T> Success(T value) => new(value);
+    public static Result<T> Failure(string error) => new(error);
+}
+
+public static class ResultExtensions
+{
+    /// <summary>
+    /// Execute <paramref name="operation"/> and wrap the outcome in a Result.
+    /// If the operation succeeds, return Result.Success with the value.
+    /// If it throws, return Result.Failure with the exception message.
+    /// </summary>
+    public static Result<T> TryCatch<T>(Func<T> operation)
+    {
+        throw new NotImplementedException("Implement me!");
+    }
+
+    /// <summary>
+    /// If the result is success, apply <paramref name="mapper"/> to transform the value.
+    /// If the result is failure, propagate the error unchanged.
+    /// This is the "map" operation (functor) for Result.
+    /// </summary>
+    public static Result<TOut> Map<TIn, TOut>(Result<TIn> result, Func<TIn, TOut> mapper)
     {
         throw new NotImplementedException("Implement me!");
     }

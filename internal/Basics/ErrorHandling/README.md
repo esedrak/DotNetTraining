@@ -1,6 +1,6 @@
 # ⚠️ Error Handling in C#
 
-C# uses **exceptions** for error propagation and the **Result pattern** as an alternative for expected failures. This differs from Go's explicit multi-return `(T, error)` style.
+C# uses **exceptions** for error propagation -- a structured mechanism with `try`/`catch`/`finally`, custom exception types, and powerful filter expressions (`catch when`). For expected failures where throwing is too heavy, the **Result pattern** provides a lightweight alternative.
 
 ---
 
@@ -10,28 +10,14 @@ C# uses **exceptions** for error propagation and the **Result pattern** as an al
 | :--- | :--- |
 | **`Exception`** | Base class for all errors; thrown with `throw`, caught with `try/catch` |
 | **Custom exceptions** | Derive from `Exception` (or domain-specific base) |
-| **Inner exception** | Chain exceptions with `new MyException("msg", innerEx)` (like `fmt.Errorf("%w", err)`) |
+| **Inner exception** | Chain exceptions with `new MyException("msg", innerEx)` to preserve causal context |
 | **`catch (T ex) when ()`** | Filter expression — catch only when a condition is true |
 | **`finally`** | Always-runs cleanup block (prefer `using` for `IDisposable`) |
 | **Result pattern** | Return `Result<T>` instead of throwing for *expected* failures |
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `errors.New("msg")` | `new Exception("msg")` or custom exception |
-| `fmt.Errorf("ctx: %w", err)` | `new MyException("ctx", innerException)` |
-| `errors.Is(err, ErrNotFound)` | `catch (NotFoundException)` |
-| `errors.As(err, &target)` | `catch (MyException ex)` — pattern matching |
-| `(T, error)` return | `Result<T>` pattern (or just throw for exceptional cases) |
-| Sentinel errors | Custom exception types |
-| `panic` / `recover` | `throw` / `try-catch` |
-
----
-
-## 3. Implementation Examples
+## 2. Implementation Examples
 
 ### Custom exceptions
 
@@ -46,7 +32,7 @@ public class AccountNotFoundException : Exception
         AccountId = accountId;
     }
 
-    // Chaining (equivalent to fmt.Errorf("%w", err))
+    // Chaining -- preserves the original exception as context
     public AccountNotFoundException(Guid accountId, Exception inner)
         : base($"Account {accountId} not found.", inner)
     {
@@ -55,7 +41,7 @@ public class AccountNotFoundException : Exception
 }
 ```
 
-### Catching specific types (errors.Is equivalent)
+### Catching specific exception types
 
 ```csharp
 try
@@ -64,7 +50,7 @@ try
 }
 catch (AccountNotFoundException ex)
 {
-    // Matches exactly this type — like errors.Is(err, ErrNotFound)
+    // Matches exactly this type (and derived types)
     return NotFound(ex.Message);
 }
 catch (Exception ex) when (ex is not OperationCanceledException)
@@ -99,7 +85,7 @@ if (!result.IsSuccess)
 
 ---
 
-## 4. When to use Exceptions vs Result
+## 3. When to use Exceptions vs Result
 
 | Use exceptions when... | Use Result<T> when... |
 | :--- | :--- |
@@ -133,6 +119,21 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~ErrorHandling"
 
 - [Exception handling (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/exceptions/)
 - [Creating custom exceptions](https://learn.microsoft.com/en-us/dotnet/standard/exceptions/how-to-create-user-defined-exceptions)
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `errors.New("msg")` | `new Exception("msg")` or custom exception |
+| `fmt.Errorf("ctx: %w", err)` | `new MyException("ctx", innerException)` |
+| `errors.Is(err, ErrNotFound)` | `catch (NotFoundException)` |
+| `errors.As(err, &target)` | `catch (MyException ex)` -- pattern matching |
+| `(T, error)` return | `Result<T>` pattern (or just throw for exceptional cases) |
+| Sentinel errors | Custom exception types |
+| `panic` / `recover` | `throw` / `try-catch` |
+
+</details>
 
 ## Your Next Step
 Once you can handle errors effectively, you can start defining the data structures that model your domain.

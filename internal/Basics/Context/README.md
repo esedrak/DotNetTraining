@@ -1,6 +1,6 @@
 # 🚦 CancellationToken in C#
 
-`CancellationToken` is C#'s equivalent of Go's `context.Context`. It propagates cancellation signals through call chains, enabling cooperative cancellation of async operations.
+`CancellationToken` is the standard mechanism for **cooperative cancellation** in C#. It propagates cancellation signals through async call chains, letting you cleanly abort long-running operations, enforce timeouts, and compose multiple cancellation sources.
 
 ---
 
@@ -10,45 +10,25 @@
 | :--- | :--- |
 | **`CancellationToken`** | Passed to methods; checked to determine if cancellation was requested |
 | **`CancellationTokenSource`** | Creates and controls a `CancellationToken`; call `.Cancel()` to signal |
-| **`CancellationToken.None`** | Never-cancelled token (like `context.Background()`) |
+| **`CancellationToken.None`** | A token that is never cancelled; useful as a default |
 | **Linked tokens** | Combine multiple sources with `CancellationTokenSource.CreateLinkedTokenSource()` |
-| **Timeout** | `new CancellationTokenSource(TimeSpan)` (like `context.WithTimeout`) |
+| **Timeout** | `new CancellationTokenSource(TimeSpan)` automatically cancels after the given duration |
 | **`OperationCanceledException`** | Thrown when an awaited operation is cancelled |
-| **`AsyncLocal<T>`** | Ambient values scoped to an async flow (like `context.WithValue`) |
+| **`AsyncLocal<T>`** | Ambient values scoped to an async flow |
 
 ---
 
-## 2. Go → C# Mapping
+## 2. Convention
 
-| Go | C# |
-| :--- | :--- |
-| `context.Background()` | `CancellationToken.None` |
-| `context.WithCancel(ctx)` | `new CancellationTokenSource()` + `.Token` |
-| `context.WithTimeout(ctx, d)` | `new CancellationTokenSource(timeSpan)` |
-| `context.WithValue(ctx, k, v)` | `AsyncLocal<T>` or pass as explicit parameter |
-| `ctx.Done()` channel | `token.WaitHandle` or `await Task.Delay(-1, token)` |
-| `ctx.Err()` | `token.IsCancellationRequested` or catch `OperationCanceledException` |
-| First parameter convention | Last parameter convention |
-
----
-
-## 3. Key Difference from Go
-
-> In Go, context is the **first** parameter. In C#, `CancellationToken` is the **last** parameter (by convention).
-
-```go
-// Go
-func DoWork(ctx context.Context, id int) error { ... }
-```
+> By convention, `CancellationToken` is always the **last** parameter in a method signature, and it should default to `default` to keep the API ergonomic.
 
 ```csharp
-// C#
 async Task DoWorkAsync(int id, CancellationToken cancellationToken = default) { ... }
 ```
 
 ---
 
-## 4. Implementation Examples
+## 3. Implementation Examples
 
 ### Basic cancellation
 
@@ -82,7 +62,7 @@ async Task ProcessOrderAsync(int orderId, CancellationToken ct)
 ### Linked token sources (combine parent + local timeout)
 
 ```csharp
-// Like context.WithTimeout on a parent context
+// Combine a parent token with a local timeout
 using var cts = CancellationTokenSource.CreateLinkedTokenSource(parentToken);
 cts.CancelAfter(TimeSpan.FromSeconds(5));
 await DoWorkAsync(cts.Token);
@@ -114,6 +94,21 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Context"
 
 - [Cancellation in managed threads](https://learn.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads)
 - [Task cancellation](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-cancellation)
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `context.Background()` | `CancellationToken.None` |
+| `context.WithCancel(ctx)` | `new CancellationTokenSource()` + `.Token` |
+| `context.WithTimeout(ctx, d)` | `new CancellationTokenSource(timeSpan)` |
+| `context.WithValue(ctx, k, v)` | `AsyncLocal<T>` or pass as explicit parameter |
+| `ctx.Done()` channel | `token.WaitHandle` or `await Task.Delay(-1, token)` |
+| `ctx.Err()` | `token.IsCancellationRequested` or catch `OperationCanceledException` |
+| First parameter convention | Last parameter convention |
+
+</details>
 
 ## Your Next Step
 Now that you've mastered the core features of C#, it's time to explore how to write more reusable, type-agnostic code.

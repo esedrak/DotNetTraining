@@ -1,6 +1,6 @@
 # 📍 Value Types vs Reference Types in C#
 
-In C#, memory semantics are determined by **where a type lives** and **how it is passed**. Unlike Go's explicit pointer syntax, C# uses the type system itself (structs vs classes) and keywords (`ref`, `out`, `in`) to control value vs reference semantics.
+In C#, memory semantics are determined by **where a type lives** and **how it is passed**. The type system itself -- structs vs classes -- combined with keywords (`ref`, `out`, `in`) gives you fine-grained control over value vs reference semantics, stack vs heap allocation, and mutation boundaries.
 
 ---
 
@@ -58,7 +58,7 @@ d.X = 99;
 Console.WriteLine(c.X); // 99 — c is affected!
 ```
 
-### `ref` parameters (equivalent to Go's `*T`)
+### `ref` parameters -- pass by reference
 
 ```csharp
 static void Increment(ref int n) => n++;
@@ -91,25 +91,11 @@ Console.WriteLine(numbers[0]); // 99
 
 ---
 
-## 4. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `*int` (pointer) | `ref int` parameter |
-| `&x` (address-of) | `ref x` argument |
-| `*p` (dereference) | just use the `ref` variable directly |
-| `nil` pointer | `null` reference / `null`-able value type |
-| Stack escape analysis | CLR GC manages heap; `stackalloc` / `Span<T>` for stack |
-| N/A | `out` for output-only parameters |
-| N/A | `in` for read-only ref parameters |
-
----
-
-## 5. Common Patterns
+## 4. Common Patterns
 
 - **Mutation across methods**: Use `ref` (or a `class` instance)
 - **Multiple return values**: Use `out` parameters or return a tuple `(T1, T2)`
-- **Optional values**: Use `T?` (nullable) instead of a nil pointer
+- **Optional values**: Use `T?` (nullable) to represent the absence of a value
 - **High-perf buffers**: Use `Span<T>` / `Memory<T>` to avoid allocations
 
 ---
@@ -140,6 +126,21 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Pointers"
 - [Reference types (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types)
 - [`ref`, `out`, `in` parameters](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters)
 - [`Span<T>` and `Memory<T>`](https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/memory-t-usage-guidelines)
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `*int` (pointer) | `ref int` parameter |
+| `&x` (address-of) | `ref x` argument |
+| `*p` (dereference) | just use the `ref` variable directly |
+| `nil` pointer | `null` reference / `null`-able value type |
+| Stack escape analysis | CLR GC manages heap; `stackalloc` / `Span<T>` for stack |
+| N/A | `out` for output-only parameters |
+| N/A | `in` for read-only ref parameters |
+
+</details>
 
 ## Your Next Step
 After learning how to handle value and reference types with pointers, you'll often need to control how data flows into your methods.

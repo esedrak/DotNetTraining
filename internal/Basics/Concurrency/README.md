@@ -1,6 +1,6 @@
-# ⚡ Concurrency in C#
+# Concurrency in C#
 
-C# uses **async/await**, **`Task`**, and **`Channel<T>`** where Go uses goroutines and channels. The mental model is similar — concurrent units of work communicate through typed channels or await results — but the primitives differ.
+C# provides a rich concurrency model built on **async/await**, **`Task`**, and **`Channel<T>`**. The `async`/`await` keywords let you write non-blocking code that reads like synchronous code, while `Task` represents a unit of asynchronous work and `Channel<T>` provides a high-performance, thread-safe producer-consumer queue.
 
 ---
 
@@ -8,68 +8,43 @@ C# uses **async/await**, **`Task`**, and **`Channel<T>`** where Go uses goroutin
 
 | Concept | Description |
 | :--- | :--- |
-| **`Task` / `Task<T>`** | Represents an asynchronous operation (like a goroutine's future) |
+| **`Task` / `Task<T>`** | Represents an asynchronous operation that may return a value |
 | **`async` / `await`** | Syntax for non-blocking asynchronous code |
-| **`Task.Run()`** | Schedule work on the thread pool (like `go func()`) |
-| **`Task.WhenAll()`** | Wait for all tasks (like `sync.WaitGroup`) |
-| **`Task.WhenAny()`** | Return first completed task (like Go's `select`) |
-| **`Channel<T>`** | Typed, async-safe FIFO queue (like Go's `chan T`) |
-| **`lock`** | Mutual exclusion (like `sync.Mutex`) |
+| **`Task.Run()`** | Schedule CPU-bound work on the thread pool |
+| **`Task.WhenAll()`** | Wait for multiple tasks to complete concurrently |
+| **`Task.WhenAny()`** | Return as soon as any one task completes |
+| **`Channel<T>`** | Typed, async-safe FIFO producer-consumer queue |
+| **`lock`** | Mutual exclusion for shared state |
 | **`SemaphoreSlim`** | Rate-limiting / async-compatible mutex |
-| **`Interlocked`** | Atomic operations (like `sync/atomic`) |
-| **`Lazy<T>`** | Thread-safe once-initialization (like `sync.Once`) |
+| **`Interlocked`** | Lock-free atomic operations on shared variables |
+| **`Lazy<T>`** | Thread-safe deferred initialization (computed once on first access) |
 
 ---
 
-## 2. Visual: Goroutine vs Task
+## 2. Visual: Task + Channel Producer-Consumer
 
 ```mermaid
 flowchart LR
-    subgraph Go
-        G1["go func()"] --> CH["chan T"]
-        G2["go func()"] --> CH
-        CH --> R["Receiver goroutine"]
-    end
-    subgraph CSharp ["C#"]
-        T1["Task.Run(...)"] --> CH2["Channel&lt;T&gt;"]
-        T2["Task.Run(...)"] --> CH2
-        CH2 --> R2["await reader.ReadAsync()"]
-    end
+    T1["Task.Run (producer 1)"] --> CH["Channel&lt;T&gt;"]
+    T2["Task.Run (producer 2)"] --> CH
+    CH --> R["await reader.ReadAllAsync()"]
 ```
 
 ---
 
-## 3. Go → C# Mapping
+## 3. Implementation Examples
 
-| Go | C# |
-| :--- | :--- |
-| `go func() { ... }()` | `Task.Run(() => ...)` |
-| `chan T` | `Channel<T>` |
-| `ch <- value` | `await writer.WriteAsync(value)` |
-| `v := <-ch` | `var v = await reader.ReadAsync()` |
-| `close(ch)` | `writer.Complete()` |
-| `select { case v := <-ch: }` | `Task.WhenAny(...)` |
-| `sync.WaitGroup` | `Task.WhenAll(tasks)` |
-| `sync.Mutex` | `lock` / `SemaphoreSlim` |
-| `sync.RWMutex` | `ReaderWriterLockSlim` |
-| `sync.Once` | `Lazy<T>` |
-| `atomic.AddInt64` | `Interlocked.Add` |
-
----
-
-## 4. Implementation Examples
-
-### Launching concurrent work (go func → Task.Run)
+### Launching concurrent work with Task.Run
 
 ```csharp
-// Fire and forget equivalent to: go func() { doWork() }()
+// Fire-and-forget background work
 _ = Task.Run(() => DoWork());
 
 // With result — await the Task
 var result = await Task.Run(() => ComputeSomething());
 ```
 
-### WaitGroup equivalent — Task.WhenAll
+### Waiting for multiple tasks with Task.WhenAll
 
 ```csharp
 var tasks = Enumerable.Range(0, 5)
@@ -111,7 +86,7 @@ public void SafeIncrement()
 
 ---
 
-## ⚠️ Pitfalls & Best Practices
+## 4. Pitfalls & Best Practices
 
 > [!WARNING]
 > Never use `async void` — exceptions are unobservable and can crash the process. Use `async Task` instead. The only valid use of `async void` is event handlers.
@@ -123,7 +98,7 @@ public void SafeIncrement()
 
 ---
 
-## 🏃 Running the Examples
+## 5. Running the Examples
 
 ```bash
 dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Concurrency"
@@ -131,11 +106,32 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Concurrency"
 
 ---
 
-## 📚 Further Reading
+## 6. Further Reading
 
 - [Asynchronous programming (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/)
 - [System.Threading.Channels](https://learn.microsoft.com/en-us/dotnet/core/extensions/channels)
 - [Task Parallel Library](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl)
+
+---
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `go func() { ... }()` | `Task.Run(() => ...)` |
+| `chan T` | `Channel<T>` |
+| `ch <- value` | `await writer.WriteAsync(value)` |
+| `v := <-ch` | `var v = await reader.ReadAsync()` |
+| `close(ch)` | `writer.Complete()` |
+| `select { case v := <-ch: }` | `Task.WhenAny(...)` |
+| `sync.WaitGroup` | `Task.WhenAll(tasks)` |
+| `sync.Mutex` | `lock` / `SemaphoreSlim` |
+| `sync.RWMutex` | `ReaderWriterLockSlim` |
+| `sync.Once` | `Lazy<T>` |
+| `atomic.AddInt64` | `Interlocked.Add` |
+
+</details>
 
 ## Your Next Step
 Now that you're running multiple tasks concurrently, you need a way to manage their lifecycles, cancellations, and timeouts.

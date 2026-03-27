@@ -1,6 +1,6 @@
 # 📬 Methods & Extension Methods in C#
 
-Go has **value receivers** and **pointer receivers**. C# uses **instance methods on classes** (always reference semantics) and **instance methods on structs** (value semantics). Additionally, C# has **extension methods** — a way to add methods to existing types without modifying them.
+C# provides **instance methods** (defined inside a type with access to `this`), **static methods** (utility/factory functions), and **extension methods** -- a powerful feature that lets you add methods to any existing type without modifying its source. C# 14 introduces `extension` blocks for even cleaner syntax.
 
 ---
 
@@ -15,24 +15,12 @@ Go has **value receivers** and **pointer receivers**. C# uses **instance methods
 
 ---
 
-## 2. Go → C# Mapping
-
-| Go | C# |
-| :--- | :--- |
-| `func (v T) Method()` — value receiver | Method on a `struct` (copies the struct) |
-| `func (p *T) Method()` — pointer receiver | Method on a `class` (reference, no copy) |
-| N/A | Extension methods on any type including sealed/third-party |
-| N/A | C# 14 `extension` blocks |
-| Static functions | `static` methods |
-
----
-
-## 3. Examples
+## 2. Examples
 
 ### Value vs reference semantics
 
 ```csharp
-// struct method — operates on a copy (like Go value receiver)
+// struct method -- operates on a copy of the struct
 public struct Temperature
 {
     public double Celsius { get; }
@@ -40,7 +28,7 @@ public struct Temperature
     public double ToFahrenheit() => Celsius * 9/5 + 32;  // read-only, no mutation
 }
 
-// class method — operates on the same instance (like Go pointer receiver)
+// class method -- operates on the same instance (reference semantics)
 public class BankAccount
 {
     public decimal Balance { get; private set; }
@@ -101,6 +89,19 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Receivers"
 
 - [Extension methods (C# docs)](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods)
 - [C# 14 extension members (preview)](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14)
+
+<details>
+<summary>Coming from Go?</summary>
+
+| Go | C# |
+|---|---|
+| `func (v T) Method()` -- value receiver | Method on a `struct` (copies the struct) |
+| `func (p *T) Method()` -- pointer receiver | Method on a `class` (reference, no copy) |
+| N/A | Extension methods on any type including sealed/third-party |
+| N/A | C# 14 `extension` blocks |
+| Static functions | `static` methods |
+
+</details>
 
 ## Your Next Step
 With methods providing behaviour to your types, the next step is to define contracts that decouple components and enable testability.

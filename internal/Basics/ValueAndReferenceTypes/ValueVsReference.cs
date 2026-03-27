@@ -1,4 +1,4 @@
-namespace DotNetTraining.Basics.Pointers;
+namespace DotNetTraining.Basics.ValueAndReferenceTypes;
 
 // ── Value Types (struct) ────────────────────────────────────────────────────
 
@@ -22,13 +22,11 @@ public static class RefOutExamples
 {
     /// <summary>
     /// Increment takes n by value — caller's variable is NOT changed.
-    /// Equivalent to Go: func IncrementValue(n int) int
     /// </summary>
     public static int IncrementValue(int n) => n + 1;
 
     /// <summary>
     /// IncrementRef takes n by reference — caller's variable IS changed.
-    /// Equivalent to Go: func IncrementPointer(n *int)
     /// </summary>
     public static void IncrementRef(ref int n) => n++;
 
@@ -79,7 +77,6 @@ public static class NullableExamples
 
 /// <summary>
 /// Counter uses a class so it can be shared by reference.
-/// Equivalent to Go's pointer receiver pattern.
 /// </summary>
 public class Counter
 {

@@ -1,12 +1,11 @@
 using System.Runtime.CompilerServices;
 
-namespace DotNetTraining.Basics.Init;
+namespace DotNetTraining.Basics.Initialization;
 
-// ── Static constructor — equivalent to Go's func init() ──────────────────────
+// ── Static constructor — runs once before first use of a type ────────────────
 
 /// <summary>
 /// Static constructors run automatically, once, before the first use of the class.
-/// Equivalent to Go's `func init()` in a package.
 /// You cannot call a static constructor manually.
 /// </summary>
 public class AppConfig
@@ -55,7 +54,6 @@ public class InitializationOrder
 
 /// <summary>
 /// [ModuleInitializer] runs once when the assembly loads, before any user code.
-/// More like Go's package-level init() than a class static constructor.
 /// Must be: internal, static, void, no parameters.
 /// </summary>
 internal static class ModuleStartup
@@ -80,7 +78,6 @@ internal static class ModuleStartup
 /// <summary>
 /// Lazy&lt;T&gt; is thread-safe and defers initialization until first access.
 /// Use this for expensive resources (DB connections, caches) instead of static constructors.
-/// Equivalent to sync.Once in Go.
 /// </summary>
 public static class ExpensiveResource
 {
