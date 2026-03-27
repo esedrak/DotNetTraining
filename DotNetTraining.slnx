@@ -1,6 +1,6 @@
 <Solution>
-  <Folder Name="/internal/">
-    <Project Path="internal/Basics/Basics.csproj" />
+  <Folder Name="/workshop/">
+    <Project Path="workshop/Basics/Basics.csproj" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Bank.Api/Bank.Api.csproj" />

@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\internal\Basics\Basics.csproj" />
+    <ProjectReference Include="..\..\workshop\Basics\Basics.csproj" />
   </ItemGroup>
 
 </Project>

@@ -37,7 +37,7 @@ DotNetTraining/
 │   ├── Bank.Tests/             # xUnit tests for Bank.*
 │   └── Basics.Tests/           # xUnit tests for Basics examples
 │
-└── internal/                   # Workshop learning materials (not .NET internal keyword)
+└── workshop/                   # Workshop learning materials
     ├── Basics/                 # 20 topic modules
     └── Fundamentals/           # Docs-heavy API concepts
 ```
@@ -82,7 +82,7 @@ flowchart TD
 | `go.mod` | `.sln` + `.csproj` |
 | `go.sum` | NuGet `packages.lock.json` |
 | `cmd/` | Executable projects (`Console`, `WebAPI`, `Worker`) |
-| `internal/` | `internal` access modifier + project boundaries |
+| `internal/` | `internal` access modifier; project boundaries enforce visibility |
 | `pkg/` | Shared class libraries referenced by multiple projects |
 | Package = directory | Namespace = directory (by convention) |
 | `go build ./...` | `dotnet build` |

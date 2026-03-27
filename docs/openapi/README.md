@@ -9,6 +9,6 @@ Welcome to the design phase! Before we write any code, we define our API contrac
 
 ## Your First Mission
 
-Designing the contract is Step 1 of the **[Go Bank Transfer Quest](../../internal/challenges/bank/README.md)**. 
+Designing the contract is Step 1 of the **[Bank Transfer Quest](../../workshop/Challenges/Bank/README.md)**. 
 
 Ready? Open [transfers.yaml](transfers.yaml), locate the `TODO` comments, and design your first endpoint!
