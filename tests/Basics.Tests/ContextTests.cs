@@ -26,8 +26,8 @@ public class ContextTests
     [Fact]
     public async Task TryWorkWithTimeout_ReturnsFalse_WhenWorkExceedsDeadline()
     {
-        // 200ms work, 50ms timeout — should timeout
-        var result = await CancellationExamples.TryWorkWithTimeoutAsync(workMs: 200);
+        // 10s work, 50ms timeout — should timeout
+        var result = await CancellationExamples.TryWorkWithTimeoutAsync(workMs: 10_000);
         result.Should().BeFalse("work takes longer than the timeout");
     }
 
