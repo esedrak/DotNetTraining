@@ -41,6 +41,12 @@ public class AccountController(IBankService bankService, ILogger<AccountControll
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request, CancellationToken ct)
     {
+        var scopes = User.FindAll("scope").Select(c => c.Value);
+        if (!scopes.Contains("accounts:write"))
+        {
+            return Forbid();
+        }
+
         try
         {
             var account = await bankService.CreateAccountAsync(request.Owner, request.InitialBalance, ct);
