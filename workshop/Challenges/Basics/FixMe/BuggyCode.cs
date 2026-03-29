@@ -61,7 +61,10 @@ public class OffByOne
     {
         var result = new int[values.Length];
         for (int i = 0; i < values.Length - 1; i++) // BUG: should be <= or just Length
+        {
             result[i] = values[i] * 2;
+        }
+
         return result;
     }
 }
@@ -104,7 +107,11 @@ public class StructMutationBug
 
     public void DepositToFirst(decimal amount)
     {
-        if (_accounts.Count == 0) return;
+        if (_accounts.Count == 0)
+        {
+            return;
+        }
+
         var account = _accounts[0]; // BUG: this copies the struct!
         account.Deposit(amount);    // Mutation is on the copy, not the list element
         // The original _accounts[0] is unchanged!
@@ -167,7 +174,10 @@ public class AsyncVoidBug
     {
         await Task.Delay(1);
         if (item == "bad")
+        {
             throw new InvalidOperationException("Processing failed!"); // Unobservable!
+        }
+
         Log.Add(item);
     }
 }
