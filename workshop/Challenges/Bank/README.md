@@ -39,10 +39,9 @@ Complete the partially filled `transfers.yaml` spec.
 The ASP.NET Core API uses controller routing via `app.MapControllers()`. Middleware is applied globally in the pipeline order. The `AuthMiddleware` already exists but is commented out. The account controller (`AccountController.cs`) is already wired up and working as your reference.
 
 **Task:**
-- Open `src/Bank.Api/Program.cs`.
-- Enable `AuthMiddleware` by uncommenting `app.UseMiddleware<AuthMiddleware>()`.
-- Open `src/Bank.Api/Controllers/TransferController.cs`.
-- Add a scope requirement to the `CreateTransfer` action — require the `transfers:write` claim, following the same pattern used to protect `CreateAccount`.
+- Open `src/Bank.Api/Program.cs` — enable `AuthMiddleware` by uncommenting `app.UseMiddleware<AuthMiddleware>()`.
+- Open `src/Bank.Api/Controllers/TransferController.cs` — add a `transfers:write` scope requirement to `CreateTransfer`, following the pattern in `AccountController.CreateAccount`.
+- Note: `TransferController` contains additional guided `TODO`s for the full action implementation — those are covered in Quest 3.
 
 **Definition of Done:**
 - The .NET code compiles successfully.
