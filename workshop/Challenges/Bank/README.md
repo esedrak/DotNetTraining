@@ -76,6 +76,84 @@ The controller action contains 5 guided `TODO`s. Each `TODO` points directly to 
   dotnet build src/Bank.Api
   ```
 
+<details>
+<summary>Common Mistakes &amp; Helpful Hints</summary>
+
+<details>
+<summary>TODO 1 — Parse &amp; Validate: nothing to write</summary>
+
+`[ApiController]` + `[FromBody]` handle this automatically. If the JSON is malformed or a required field is missing, the framework returns a `400 Bad Request` with a `ValidationProblemDetails` body before your method is ever called. TODO 1 is a reminder that the framework has your back — resist the urge to add manual null-checks or validation code here.
+
+</details>
+
+<details>
+<summary>TODO 2 — Activity disposal: always use <code>using</code></summary>
+
+`ActivitySource.StartActivity` returns an `Activity?` which implements `IDisposable`. Disposing it **closes the span** — without it the span never gets an end timestamp and OpenTelemetry exporters may silently drop or misreport it. It can also return `null` when no listener is registered, so use null-conditional operators for tag setting.
+
+```csharp
+// BAD — span never closes; .SetTag throws NullReferenceException if no listener
+var activity = activitySource.StartActivity("transfer.create");
+activity.SetTag("fromAccountId", request.FromAccountId);
+
+// GOOD — span closes on scope exit; tags are no-ops when null
+using var activity = activitySource.StartActivity("transfer.create");
+activity?.SetTag("fromAccountId", request.FromAccountId);
+```
+
+</details>
+
+<details>
+<summary>TODO 3 — Ownership check: don't forget <code>await</code></summary>
+
+`bankService.GetAccountAsync` returns `Task<Account>`. Without `await` the variable holds the `Task` itself — not the `Account` — and accessing `.Owner` on a `Task<Account>` is a compile error.
+
+```csharp
+// WRONG — sourceAccount is Task<Account>; .Owner does not exist on Task
+var sourceAccount = bankService.GetAccountAsync(request.FromAccountId, ct);
+
+// CORRECT — sourceAccount is Account
+var sourceAccount = await bankService.GetAccountAsync(request.FromAccountId, ct);
+if (User.Identity?.Name != sourceAccount.Owner)
+    return Forbid();
+```
+
+</details>
+
+<details>
+<summary>TODO 4 — 500s: let unexpected exceptions propagate</summary>
+
+Only catch exceptions you can map to a meaningful HTTP response. Anything else should bubble up to the global exception handler middleware (`app.UseExceptionHandler`), which converts it to a `500 Internal Server Error`. Catching bare `Exception` would swallow bugs and make them invisible in traces and logs.
+
+```csharp
+catch (AccountNotFoundException ex)   { return NotFound(...); }            // → 404
+catch (InsufficientFundsException ex) { return UnprocessableEntity(...); }  // → 422
+catch (ArgumentException ex)          { return BadRequest(...); }           // → 400
+// all other exceptions propagate → global handler → 500
+```
+
+</details>
+
+<details>
+<summary>TODO 5 — Structured logging: suppress CA1848 with <code>[LoggerMessage]</code></summary>
+
+Calling `logger.LogInformation(...)` directly triggers warning CA1848 because the arguments are evaluated at the call site even when the log level is disabled. Fix this by declaring a source-generated `[LoggerMessage]` partial method — the compiler wraps it in an `IsEnabled` guard automatically. The class declaration also needs `partial`.
+
+```csharp
+// BAD — arguments always evaluated regardless of log level; CA1848 warning
+logger.LogInformation("Transfer created: {TransferId} ...", transfer.Id, ...);
+
+// GOOD — compiler emits IsEnabled guard; zero overhead when logging is off
+[LoggerMessage(Level = LogLevel.Information,
+    Message = "Transfer created: {TransferId} from {From} to {To} for {Amount}")]
+private static partial void LogTransferCreated(
+    ILogger logger, Guid transferId, Guid from, Guid to, decimal amount);
+```
+
+</details>
+
+</details>
+
 ### Quest 4: Write Controller Tests
 
 **File:** [tests/Bank.Tests/Controllers/TransferControllerTests.cs](../../../tests/Bank.Tests/Controllers/TransferControllerTests.cs)
