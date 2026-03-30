@@ -19,7 +19,9 @@ public class TokenController(IHostEnvironment env, IConfiguration config) : Cont
     public IActionResult GenerateToken([FromBody] TokenRequest request)
     {
         if (!env.IsDevelopment())
+        {
             return NotFound();
+        }
 
         var secret = config["Jwt:Secret"] ?? "change-me-in-production-must-be-32-chars!!";
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secret));
