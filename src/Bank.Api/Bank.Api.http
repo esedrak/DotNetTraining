@@ -1,6 +1,66 @@
-@Bank.Api_HostAddress = http://localhost:5069
+@host = http://localhost:5069
 
-GET {{Bank.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+# ── 1. Get a dev token ────────────────────────────────────────────────────────
+# Copy the returned token value into @token below.
+
+POST {{host}}/v1/token
+Content-Type: application/json
+
+{
+  "userName": "alice",
+  "scopes": ["accounts:write", "transfers:write"]
+}
+
+###
+
+@token = <paste-token-here>
+
+# ── Accounts ──────────────────────────────────────────────────────────────────
+
+GET {{host}}/v1/accounts
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/v1/accounts
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "owner": "alice",
+  "initialBalance": 1000
+}
+
+###
+
+# Seeded by make db-migrate:
+#   alice  →  00000000-0000-0000-0000-000000000001
+#   bob    →  00000000-0000-0000-0000-000000000002
+@accountId = 00000000-0000-0000-0000-000000000001
+
+GET {{host}}/v1/accounts/{{accountId}}
+Authorization: Bearer {{token}}
+
+###
+
+# ── Transfers ─────────────────────────────────────────────────────────────────
+
+GET {{host}}/v1/transfers
+Authorization: Bearer {{token}}
+
+###
+
+@fromId = 00000000-0000-0000-0000-000000000001
+@toId   = 00000000-0000-0000-0000-000000000002
+
+POST {{host}}/v1/transfers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "fromAccountId": "{{fromId}}",
+  "toAccountId": "{{toId}}",
+  "amount": 100
+}
 
 ###

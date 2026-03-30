@@ -217,8 +217,8 @@ Two helpers are provided:
 - Open `tests/Bank.Tests/Controllers/TransferControllerIntegrationTests.cs`
 - Three tests are marked `TODO`. Read the comments in each and implement them following the patterns already in the file:
   - `CreateTransfer_Returns403_WhenCallerIsNotOwner`: mock `GetAccountAsync` to return an account owned by `"bob"`, sign the token for `"alice"`
-  - `CreateTransfer_Returns422_WhenInsufficientFunds`: mock `GetAccountAsync` successfully (alice owns it, low balance), mock `CreateTransferAsync` to throw `InsufficientFundsException`
   - `CreateTransfer_Returns404_WhenSourceAccountNotFound`: mock `GetAccountAsync` to throw `AccountNotFoundException`
+  - `CreateTransfer_Returns422_WhenInsufficientFunds`: mock `GetAccountAsync` successfully (alice owns it, low balance), mock `CreateTransferAsync` to throw `InsufficientFundsException`
 
 **Definition of Done:**
 - Remove the `[Fact(Skip = ...)]` attribute from each of the three tests you implemented and replace it with `[Fact]`
@@ -291,13 +291,18 @@ APIs are useless without clients. Building a strongly-typed .NET CLI client make
   ```bash
   make run-bank-api
   ```
-- Issue a test JWT using `POST /v1/token` and export the token:
+- Issue a dev JWT and export it:
   ```bash
-  export BANK_TOKEN="<your-token-here>"
+  export BANK_TOKEN=$(curl -s -X POST http://localhost:5069/v1/token \
+    -H "Content-Type: application/json" \
+    -d '{"userName":"alice","scopes":["accounts:write","transfers:write"]}' \
+    | jq -r '.token')
   ```
-- Confirm the command returns the account balance:
+- Confirm the command returns alice's account balance (`make db-migrate` seeds two fixed accounts):
   ```bash
-  dotnet run --project src/Bank.Cli -- account get <account-id>
+  # alice  →  00000000-0000-0000-0000-000000000001
+  # bob    →  00000000-0000-0000-0000-000000000002
+  dotnet run --project src/Bank.Cli -- account get 00000000-0000-0000-0000-000000000001
   ```
 
 ### Bonus Quest 2: Authenticated Transfer CLI
@@ -325,22 +330,31 @@ Implement the `transfer create` command. The `--from`, `--to`, and `--amount` op
 
 **Definition of Done:**
 - Ensure the Bank API is running (see Bonus Quest 1 setup if needed).
-- Export a valid JWT:
+- Export a valid JWT (same command as Bonus Quest 1):
   ```bash
-  export BANK_TOKEN="<your-token-here>"
+  export BANK_TOKEN=$(curl -s -X POST http://localhost:5069/v1/token \
+    -H "Content-Type: application/json" \
+    -d '{"userName":"alice","scopes":["accounts:write","transfers:write"]}' \
+    | jq -r '.token')
   ```
 - Check the CLI's built-in documentation:
   ```bash
   dotnet run --project src/Bank.Cli -- --help
   ```
-- Execute your CLI and see the balance successfully moved:
+- Execute your CLI and see the balance successfully moved (alice → bob):
   ```bash
-  dotnet run --project src/Bank.Cli -- transfer create --from <from-id> --to <to-id> --amount 5000
+  dotnet run --project src/Bank.Cli -- transfer create \
+    --from 00000000-0000-0000-0000-000000000001 \
+    --to   00000000-0000-0000-0000-000000000002 \
+    --amount 100
   ```
 - Verify a graceful error when the token is missing:
   ```bash
   unset BANK_TOKEN
-  dotnet run --project src/Bank.Cli -- transfer create --from <from-id> --to <to-id> --amount 5000
+  dotnet run --project src/Bank.Cli -- transfer create \
+    --from 00000000-0000-0000-0000-000000000001 \
+    --to   00000000-0000-0000-0000-000000000002 \
+    --amount 100
   # Expected: a clear "BANK_TOKEN not set" message, not a 401 from the API
   ```
 
@@ -372,7 +386,7 @@ A 401 means the token was missing or invalid — printing "token expired, re-run
 
 ```csharp
 if (r.StatusCode == HttpStatusCode.Unauthorized)
-    Console.WriteLine("Error: token missing or expired — re-export BANK_TOKEN.");
+    Console.WriteLine("Error: token missing or expired — re-run the curl POST /v1/token command and re-export BANK_TOKEN.");
 else if (r.StatusCode == HttpStatusCode.Forbidden)
     Console.WriteLine("Error: token lacks the 'transfers:write' scope.");
 else

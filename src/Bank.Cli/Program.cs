@@ -1,5 +1,4 @@
 // Bank CLI — command-line client for the Bank API
-// Equivalent to cmd/bank/cli in GoTraining (Cobra → System.CommandLine v3)
 //
 // Usage:
 //   dotnet run --project src/Bank.Cli -- account list

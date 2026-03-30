@@ -41,7 +41,7 @@ infra-up:
 infra-down:
 	docker compose down
 
-## Run EF Core migrations
+## Run EF Core migrations and seed development data
 db-migrate:
 	@echo "Waiting for PostgreSQL to be ready..."
 	@until docker compose exec -T postgres pg_isready -U dotnettrainer -d dotnetbank > /dev/null 2>&1; do \
@@ -49,6 +49,8 @@ db-migrate:
 		sleep 1; \
 	done
 	dotnet ef database update --project src/Bank.Repository
+	@echo "Seeding development accounts..."
+	docker compose exec -T postgres psql -U dotnettrainer -d dotnetbank -f /migration/001_seed_accounts.sql
 
 ## Format code
 fmt:
