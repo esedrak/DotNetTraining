@@ -7,14 +7,29 @@
 //   dotnet run --project src/Bank.Cli -- transfer create --from <id> --to <id> --amount 50
 
 using System.CommandLine;
+using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
 var httpClient = new HttpClient
 {
-    BaseAddress = new Uri(Environment.GetEnvironmentVariable("BANK_API_URL") ?? "http://localhost:8080/")
+    BaseAddress = new Uri(Environment.GetEnvironmentVariable("BANK_API_URL") ?? "http://localhost:5069/")
 };
 var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+bool TrySetBearerFromEnv()
+{
+    var token = Environment.GetEnvironmentVariable("BANK_TOKEN");
+    if (string.IsNullOrWhiteSpace(token))
+    {
+        Console.WriteLine("Error: BANK_TOKEN is not set. Export a token first.");
+        return false;
+    }
+
+    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    return true;
+}
 
 var root = new RootCommand("Bank CLI — interact with the Bank API");
 
@@ -26,11 +41,31 @@ var accountCmd = new Command("account", "Manage bank accounts");
 var listCmd = new Command("list", "List all accounts");
 listCmd.SetAction(async _ =>
 {
-    var accounts = await httpClient.GetFromJsonAsync<List<JsonElement>>("/v1/accounts", jsonOptions);
-    foreach (var a in accounts ?? [])
+    if (!TrySetBearerFromEnv())
     {
-        Console.WriteLine(a.GetRawText());
+        return;
     }
+
+    var r = await httpClient.GetAsync("/v1/accounts");
+    var body = await r.Content.ReadAsStringAsync();
+
+    if (r.IsSuccessStatusCode)
+    {
+        var accounts = JsonSerializer.Deserialize<List<JsonElement>>(body, jsonOptions);
+        foreach (var a in accounts ?? [])
+        {
+            Console.WriteLine(a.GetRawText());
+        }
+        return;
+    }
+
+    if (r.StatusCode == HttpStatusCode.Unauthorized)
+    {
+        Console.WriteLine("Error 401: token missing or expired. Re-run the token export command.");
+        return;
+    }
+
+    Console.WriteLine($"Error {(int)r.StatusCode}: {body}");
 });
 accountCmd.Add(listCmd);
 
