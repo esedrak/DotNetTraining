@@ -52,7 +52,7 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~ChallengeFixMe"
 dotnet test tests/Basics.Tests --filter "FullyQualifiedName~ChallengeImplMe"
 ```
 
-> **Note:** ImplMe tests will fail until you implement the stubs. FixMe tests document the buggy behavior — after fixing a bug, update the test to verify the correct behavior.
+> **Note:** ImplMe tests are skipped. FixMe tests document the buggy behavior — after fixing a bug, update the test to verify the correct behavior.
 
 ---
 
