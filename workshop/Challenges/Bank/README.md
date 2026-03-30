@@ -300,16 +300,35 @@ APIs are useless without clients. Building a strongly-typed .NET CLI client make
   dotnet run --project src/Bank.Cli -- account get <account-id>
   ```
 
-### Bonus Quest 2: Transfer Client & CLI
+### Bonus Quest 2: Authenticated Transfer CLI
 
 **Context:**
-Now that you've seen how the CLI consumes an existing endpoint, it's time to implement both sides from scratch. You'll implement the `transfer create` command that serialises the request body, sets the `Authorization: Bearer` header, and calls `POST /v1/transfers`.
+The `POST /v1/transfers` endpoint requires a `Authorization: Bearer <token>` header — without it the server returns 401. Unlike `account create`, this command can't just fire a POST and forget: it must read a stored JWT, attach it to the HTTP request, and handle the case where the token is missing or expired.
+
+This introduces `System.Net.Http.Headers.AuthenticationHeaderValue` — the standard .NET type for setting Bearer tokens — and teaches you to make deliberate decisions about *where* in your code to attach credentials.
 
 **Task:**
-1. **File:** [src/Bank.Cli/Program.cs](../../../src/Bank.Cli/Program.cs) — Implement the `transfer create` command. Parse `--from`, `--to`, and `--amount` options and invoke your newly wired `POST /v1/transfers` endpoint. Look at `account create` to see how we serialise the JSON body and handle error responses.
+
+**File:** [src/Bank.Cli/Program.cs](../../../src/Bank.Cli/Program.cs)
+
+Implement the `transfer create` command. The `--from`, `--to`, and `--amount` options are already wired up; you only need to fill in the `SetAction` body:
+
+1. Parse `--from`, `--to`, `--amount` via `parseResult.GetValue(...)`
+2. Read the JWT from the `BANK_TOKEN` environment variable. If the variable is absent, print a clear error message and return — do not call the API.
+3. Set the `Authorization` header on the shared `httpClient` instance:
+   ```csharp
+   httpClient.DefaultRequestHeaders.Authorization =
+       new AuthenticationHeaderValue("Bearer", token);
+   ```
+4. Call `httpClient.PostAsJsonAsync("/v1/transfers", new { fromAccountId, toAccountId, amount })`
+5. Print the response body to the console. If the response is `401 Unauthorized`, print a hint that the token may have expired.
 
 **Definition of Done:**
 - Ensure the Bank API is running (see Bonus Quest 1 setup if needed).
+- Export a valid JWT:
+  ```bash
+  export BANK_TOKEN="<your-token-here>"
+  ```
 - Check the CLI's built-in documentation:
   ```bash
   dotnet run --project src/Bank.Cli -- --help
@@ -318,6 +337,51 @@ Now that you've seen how the CLI consumes an existing endpoint, it's time to imp
   ```bash
   dotnet run --project src/Bank.Cli -- transfer create --from <from-id> --to <to-id> --amount 5000
   ```
+- Verify a graceful error when the token is missing:
+  ```bash
+  unset BANK_TOKEN
+  dotnet run --project src/Bank.Cli -- transfer create --from <from-id> --to <to-id> --amount 5000
+  # Expected: a clear "BANK_TOKEN not set" message, not a 401 from the API
+  ```
+
+<details>
+<summary>Common Mistakes &amp; Helpful Hints</summary>
+
+<details>
+<summary>DefaultRequestHeaders vs per-request headers</summary>
+
+`httpClient.DefaultRequestHeaders.Authorization` sets the header on **every** subsequent request made by that `HttpClient` instance. For a short-lived CLI tool with a single base address this is fine. In a long-running service you would instead pass a header per-request using `HttpRequestMessage` + `SendAsync` to avoid accidentally leaking credentials to other endpoints.
+
+</details>
+
+<details>
+<summary>AuthenticationHeaderValue namespace</summary>
+
+`AuthenticationHeaderValue` lives in `System.Net.Http.Headers`. The `using` directive is not in scope by default in top-level programs — add it at the top of `Program.cs`:
+
+```csharp
+using System.Net.Http.Headers;
+```
+
+</details>
+
+<details>
+<summary>Handling 401 vs other error codes</summary>
+
+A 401 means the token was missing or invalid — printing "token expired, re-run POST /v1/token" is genuinely useful. A 403 means the token was valid but lacked the `transfers:write` scope — a different message. Use `r.StatusCode` (a `HttpStatusCode` enum) to branch:
+
+```csharp
+if (r.StatusCode == HttpStatusCode.Unauthorized)
+    Console.WriteLine("Error: token missing or expired — re-export BANK_TOKEN.");
+else if (r.StatusCode == HttpStatusCode.Forbidden)
+    Console.WriteLine("Error: token lacks the 'transfers:write' scope.");
+else
+    Console.WriteLine($"Error {(int)r.StatusCode}: {await r.Content.ReadAsStringAsync()}");
+```
+
+</details>
+
+</details>
 
 ## Your Next Step
 
