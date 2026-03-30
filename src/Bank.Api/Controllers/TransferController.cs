@@ -2,11 +2,13 @@ using System.Diagnostics;
 using Bank.Domain;
 using Bank.Domain.Exceptions;
 using Bank.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("v1/transfers")]
 public partial class TransferController(IBankService bankService, ILogger<TransferController> logger, ActivitySource activitySource) : ControllerBase
 {
