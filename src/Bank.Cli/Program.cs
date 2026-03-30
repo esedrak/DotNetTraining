@@ -94,11 +94,14 @@ createTxCmd.Add(toOpt);
 createTxCmd.Add(amountOpt);
 createTxCmd.SetAction(async parseResult =>
 {
-    // TODO (Bonus Quest 2): Create a transfer.
+    // TODO (Bonus Quest 2): Create an authenticated transfer.
     // 1. Parse --from, --to, --amount options via parseResult.GetValue(...)
-    // 2. Set the Authorization: Bearer header from BANK_TOKEN environment variable
-    // 3. Call httpClient.PostAsJsonAsync("/v1/transfers", new { fromAccountId, toAccountId, amount })
-    // 4. Print the response body to the console (success or error)
+    // 2. Read the JWT from the BANK_TOKEN env var; print an error and return if absent
+    // 3. Set the Authorization header (hint: AuthenticationHeaderValue in System.Net.Http.Headers):
+    //      httpClient.DefaultRequestHeaders.Authorization =
+    //          new AuthenticationHeaderValue("Bearer", token);
+    // 4. Call httpClient.PostAsJsonAsync("/v1/transfers", new { fromAccountId, toAccountId, amount })
+    // 5. Print the response body; print a helpful message if StatusCode is 401 or 403
     await Task.CompletedTask;
     Console.WriteLine("Not yet implemented.");
 });
