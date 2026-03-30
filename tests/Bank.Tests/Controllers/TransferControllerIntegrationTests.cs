@@ -117,7 +117,7 @@ public class TransferControllerIntegrationTests(BankApiFactory factory)
 
     // ── POST /v1/transfers ────────────────────────────────────────────────────
 
-    [Fact(Skip = "Quest 3: Remove Skip after implementing CreateTransfer.")]
+    [Fact]
     public async Task CreateTransfer_Returns201_WhenValid()
     {
         // Arrange — alice owns the source account and has the right scope
@@ -147,7 +147,7 @@ public class TransferControllerIntegrationTests(BankApiFactory factory)
         response.Headers.Location!.ToString().Should().Contain(transfer.Id.ToString());
     }
 
-    [Fact(Skip = "Quest 2: Remove Skip after adding [Authorize] to TransferController.")]
+    [Fact]
     public async Task CreateTransfer_Returns401_WhenNoToken()
     {
         // Arrange — no Authorization header at all
@@ -163,7 +163,7 @@ public class TransferControllerIntegrationTests(BankApiFactory factory)
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 
-    [Fact(Skip = "Quest 2: Remove Skip after adding the transfers:write scope check.")]
+    [Fact]
     public async Task CreateTransfer_Returns403_WhenScopeMissing()
     {
         // Arrange — authenticated but no "transfers:write" scope
@@ -183,69 +183,77 @@ public class TransferControllerIntegrationTests(BankApiFactory factory)
             Times.Never);
     }
 
-    [Fact(Skip = "TODO (Quest 4): Implement this test.")]
+    [Fact]
     public async Task CreateTransfer_Returns403_WhenCallerIsNotOwner()
     {
-        // TODO (Quest 4): The source account belongs to "bob" but the caller is "alice".
-        //
-        // Arrange:
-        //   - factory.MockBankService.Reset()
-        //   - Create a fromId (Guid.NewGuid())
-        //   - Mock GetAccountAsync(fromId) to return new Account("bob", 500m)
-        //   - Create an authenticated client for "alice" with scope "transfers:write"
-        //
-        // Act:
-        //   - POST /v1/transfers with { fromAccountId = fromId, toAccountId = Guid.NewGuid(), amount = 50m }
-        //
-        // Assert:
-        //   - response.StatusCode should be HttpStatusCode.Forbidden
+        // (Quest 4): The source account belongs to "bob" but the caller is "alice".
+        factory.MockBankService.Reset();
 
-        throw new NotImplementedException();
+         var fromId = Guid.NewGuid();
+         var fromAccount = new Account("bob", 500m);
+         var toId = Guid.NewGuid();
+
+        factory.MockBankService
+            .Setup(s => s.GetAccountAsync(fromId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(fromAccount);
+
+        var client = CreateAuthenticatedClient("alice", "transfers:write");
+
+        var response = await client.PostAsync("/v1/transfers",
+        Json(new { fromAccountId = fromId, toAccountId = toId, amount = 50m }));
+
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
-    [Fact(Skip = "TODO (Quest 4): Implement this test.")]
+    [Fact]
     public async Task CreateTransfer_Returns404_WhenSourceAccountNotFound()
     {
-        // TODO (Quest 4): The source account does not exist.
-        //
-        // Arrange:
-        //   - factory.MockBankService.Reset()
-        //   - Create a fromId (Guid.NewGuid())
-        //   - Mock GetAccountAsync(fromId) to throw new AccountNotFoundException(fromId)
-        //   - Create an authenticated client for "alice" with scope "transfers:write"
-        //
-        // Act:
-        //   - POST /v1/transfers with { fromAccountId = fromId, toAccountId = Guid.NewGuid(), amount = 50m }
-        //
-        // Assert:
-        //   - response.StatusCode should be HttpStatusCode.NotFound
+        // (Quest 4): The source account does not exist.
+        factory.MockBankService.Reset();
 
-        throw new NotImplementedException();
+         var fromId = Guid.NewGuid();
+         var toId = Guid.NewGuid();
+         var fromAccount = new Account("alice", 50m);
+
+        factory.MockBankService
+            .Setup(s => s.GetAccountAsync(fromId, It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new AccountNotFoundException(fromId));
+
+        var client = CreateAuthenticatedClient("alice", "transfers:write");
+
+        var response = await client.PostAsync("/v1/transfers",
+        Json(new { fromAccountId = fromId, toAccountId = toId, amount = 50m }));
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
-    [Fact(Skip = "TODO (Quest 4): Implement this test.")]
+    [Fact]
     public async Task CreateTransfer_Returns422_WhenInsufficientFunds()
     {
-        // TODO (Quest 4): Alice owns the account but does not have enough balance.
-        //
-        // Arrange:
-        //   - factory.MockBankService.Reset()
-        //   - Create fromId and toId (Guid.NewGuid() each)
-        //   - Mock GetAccountAsync(fromId) to return new Account("alice", 10m)
-        //   - Mock CreateTransferAsync(fromId, toId, 500m) to throw
-        //       new InsufficientFundsException(fromId, requested: 500m, available: 10m)
-        //   - Create an authenticated client for "alice" with scope "transfers:write"
-        //
-        // Act:
-        //   - POST /v1/transfers with { fromAccountId = fromId, toAccountId = toId, amount = 500m }
-        //
-        // Assert:
-        //   - response.StatusCode should be HttpStatusCode.UnprocessableEntity
+        // (Quest 4): Alice owns the account but does not have enough balance.
+        factory.MockBankService.Reset();
 
-        throw new NotImplementedException();
+         var fromId = Guid.NewGuid();
+         var fromAccount = new Account("alice", 10m);
+         var toId = Guid.NewGuid();
+
+        factory.MockBankService
+            .Setup(s => s.GetAccountAsync(fromId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(fromAccount);
+
+        factory.MockBankService
+            .Setup(s => s.CreateTransferAsync(fromId, toId, 500m, It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new InsufficientFundsException(fromId, requested: 500m, available: 10m));
+
+        var client = CreateAuthenticatedClient("alice", "transfers:write");
+
+        var response = await client.PostAsync("/v1/transfers",
+        Json(new { fromAccountId = fromId, toAccountId = toId, amount = 500m }));
+
+        response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
     }
 
-    [Fact(Skip = "Quest 3: Remove Skip after implementing CreateTransfer.")]
+    [Fact]
     public async Task CreateTransfer_Returns400_WhenArgumentInvalid()
     {
         // Arrange — service rejects negative amount
