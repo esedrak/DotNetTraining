@@ -6,7 +6,6 @@ namespace DotNetTraining.Basics.Entity;
 
 /// <summary>
 /// Positional record: compiler generates constructor, properties, Equals, GetHashCode, ToString.
-/// Equivalent to a Go struct with manual equality methods.
 /// </summary>
 public record Account(Guid Id, string Owner, decimal Balance)
 {
@@ -19,7 +18,6 @@ public record Account(Guid Id, string Owner, decimal Balance)
 
 /// <summary>
 /// Records work seamlessly with System.Text.Json.
-/// Attributes replace Go's struct tags: json:"field_name" → [JsonPropertyName("field_name")]
 /// </summary>
 public record TransferRequest
 {

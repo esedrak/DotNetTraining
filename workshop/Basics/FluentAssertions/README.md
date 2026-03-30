@@ -94,23 +94,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~FluentAssertions"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go (testify) | C# (FluentAssertions) |
-| :--- | :--- |
-| `assert.Equal(t, expected, actual)` | `actual.Should().Be(expected)` |
-| `assert.NotEqual(t, a, b)` | `actual.Should().NotBe(unexpected)` |
-| `assert.Nil(t, x)` | `x.Should().BeNull()` |
-| `assert.NotNil(t, x)` | `x.Should().NotBeNull()` |
-| `assert.NoError(t, err)` | `act.Should().NotThrow()` |
-| `assert.ErrorIs(t, err, target)` | `act.Should().Throw<SpecificException>()` |
-| `assert.Contains(t, slice, elem)` | `collection.Should().Contain(elem)` |
-| `assert.Len(t, slice, n)` | `collection.Should().HaveCount(n)` |
-| `require.Equal(...)` (stops test) | FluentAssertions throws immediately by default |
-
-</details>
-
 ## Your Next Step
 After writing expressive assertions, the next step is to isolate your dependencies so your tests remain fast and focused.
 Explore **[Mocking with Moq](../Mocking/README.md)** to learn how to generate type-safe mocks for your interfaces.

@@ -5,7 +5,6 @@ namespace DotNetTraining.Basics.Testing;
 /// <summary>
 /// Simple calculator — the "system under test" in xUnit pattern examples
 /// (see tests/Basics.Tests/TestingTests.cs).
-/// Go equivalent: any package that has exported functions to test.
 /// </summary>
 public static class Calculator
 {

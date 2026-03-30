@@ -3,12 +3,11 @@ using System.Text.Json;
 
 namespace DotNetTraining.Basics.Http;
 
-// ── Typed HttpClient — replaces Go's &http.Client{} ──────────────────────────
+// ── Typed HttpClient ──────────────────────────
 
 /// <summary>
 /// Typed HttpClient pattern: inject HttpClient via constructor, register with IHttpClientFactory.
 /// This avoids socket exhaustion from creating new HttpClient instances.
-/// Equivalent to Go's http.Client with a base URL.
 /// </summary>
 public class BankApiClient(HttpClient client)
 {
@@ -58,7 +57,6 @@ public record AccountDto(Guid Id, string Owner, decimal Balance);
 
 /// <summary>
 /// Shows how to register typed clients in DI — call this in Program.cs.
-/// Equivalent to Go's: client := &http.Client{Timeout: 10 * time.Second}
 /// </summary>
 public static class HttpRegistration
 {

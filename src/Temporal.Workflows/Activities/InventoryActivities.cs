@@ -9,7 +9,6 @@ namespace Temporal.Workflows.Activities;
 /// <summary>
 /// Inventory check activities — call an external inventory service via HTTP.
 /// In tests and local dev, WireMock stubs the responses (see <c>wiremock/</c>).
-/// Equivalent to GoTraining's <c>InventoryActivities</c>.
 /// </summary>
 public class InventoryActivities(HttpClient httpClient, ILogger<InventoryActivities> logger)
 {

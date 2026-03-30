@@ -14,7 +14,7 @@ public static class CancellationExamples
         int count = 0;
         for (int i = 0; i < limit; i++)
         {
-            // Cooperative cancellation check — equivalent to checking ctx.Done() in Go
+            // Cooperative cancellation check
             cancellationToken.ThrowIfCancellationRequested();
             await Task.Delay(10, cancellationToken);
             count++;
@@ -62,7 +62,6 @@ public static class AsyncLocalExamples
 {
     /// <summary>
     /// AsyncLocal&lt;T&gt; flows a value through an async call chain without passing it explicitly.
-    /// This is the closest C# equivalent to context.WithValue in Go.
     /// Use sparingly — prefer explicit parameters for most cases.
     /// </summary>
     private static readonly AsyncLocal<string?> _correlationId = new();

@@ -7,7 +7,6 @@ namespace Temporal.Workflows.Encryption;
 
 /// <summary>
 /// Custom Temporal payload codec that encrypts all workflow data at rest.
-/// Equivalent to GoTraining's <c>PayloadCodec</c>.
 ///
 /// Temporal serialises workflow inputs/outputs as <c>Payload</c> protobufs.
 /// This codec intercepts encode/decode to wrap every payload in AES-256-CBC

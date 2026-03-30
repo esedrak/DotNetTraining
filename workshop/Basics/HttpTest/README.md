@@ -72,18 +72,6 @@ dotnet test tests/Bank.Tests --filter "FullyQualifiedName~Integration"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `httptest.NewRecorder()` | `WebApplicationFactory.CreateClient()` |
-| `httptest.NewServer(handler)` | `WebApplicationFactory<TEntryPoint>` |
-| `ts.Client().Get(ts.URL + "/path")` | `client.GetAsync("/path")` |
-| Swap handler for tests | `WithWebHostBuilder(b => b.ConfigureServices(...))` |
-
-</details>
-
 ## Your Next Step
 Now that your services are verified, it's time to measure and optimise their performance.
 Explore **[Benchmarking with BenchmarkDotNet](../Benchmark/README.md)** to learn how to identify and eliminate bottlenecks.

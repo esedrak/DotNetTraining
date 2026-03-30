@@ -105,20 +105,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Interface"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| Implicit satisfaction | `: IInterface` declaration required |
-| Consumer-side definition | Same pattern works (define interface near consumer) |
-| Interface composition | Interface inheritance: `interface IA : IB, IC` |
-| Empty interface `any` | `object` or `T` (generic) |
-| N/A | Default interface methods |
-| N/A | DI container registration |
-
-</details>
-
 ## Your Next Step
 Now that you understand how to define and consume interfaces, learn how to safely convert between types and verify interface values at runtime.
 Explore **[Type Assertions & Casting](../Casting/README.md)** to master how C# handles dynamic type checks and conversions.

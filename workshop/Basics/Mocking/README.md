@@ -97,21 +97,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Mocking"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go (Mockery) | C# (Moq) |
-| :--- | :--- |
-| Generated mock struct | `new Mock<IInterface>()` |
-| `mock.On("Method").Return(val)` | `mock.Setup(x => x.Method()).Returns(val)` |
-| `mock.On("Method").Return(nil, err)` | `mock.Setup(x => x.Method()).ThrowsAsync(ex)` |
-| `mock.AssertCalled(t, "Method")` | `mock.Verify(x => x.Method(), Times.Once())` |
-| `mock.AssertNotCalled(t, "Method")` | `mock.Verify(x => x.Method(), Times.Never())` |
-| `mock.AssertExpectations(t)` | `mock.VerifyAll()` |
-| Argument matchers | `It.IsAny<T>()`, `It.Is<T>(pred)` |
-
-</details>
-
 ## Your Next Step
 With your code fully testable, you're ready to expose it to the world through a production-ready HTTP API.
 Explore **[HTTP Client & Server](../Http/README.md)** to learn how to build and consume web services with ASP.NET Core.

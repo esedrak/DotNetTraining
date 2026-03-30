@@ -101,19 +101,6 @@ dotnet run --project tests/Basics.Tests -c Release -- --filter "*Benchmark*"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `func BenchmarkXxx(b *testing.B)` | `[Benchmark]` method on a class |
-| `for i := 0; i < b.N; i++` | Handled automatically by BenchmarkDotNet |
-| `b.ReportAllocs()` | `[MemoryDiagnoser]` attribute on class |
-| `benchstat` | Built-in statistical output (mean, stddev, etc.) |
-| `b.SetBytes(n)` | `[Benchmark(OperationsPerInvoke = n)]` |
-
-</details>
-
 ## Your Next Step
 With your code measured and optimised, you're ready to leverage .NET's powerful async/await model for concurrent operations.
 Explore **[Concurrency](../Concurrency/README.md)** to learn about `async/await`, `Task`, and `Channel<T>`.

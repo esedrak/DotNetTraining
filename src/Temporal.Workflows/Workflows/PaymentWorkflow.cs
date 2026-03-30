@@ -6,7 +6,6 @@ namespace Temporal.Workflows.Workflows;
 
 /// <summary>
 /// Payment processing child workflow.
-/// Demonstrates child workflow pattern — equivalent to workflow.ExecuteChildWorkflow in Go SDK.
 /// </summary>
 [Workflow]
 public class PaymentWorkflow

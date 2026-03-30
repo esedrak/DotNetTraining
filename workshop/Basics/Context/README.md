@@ -95,21 +95,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Context"
 - [Cancellation in managed threads](https://learn.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads)
 - [Task cancellation](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-cancellation)
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `context.Background()` | `CancellationToken.None` |
-| `context.WithCancel(ctx)` | `new CancellationTokenSource()` + `.Token` |
-| `context.WithTimeout(ctx, d)` | `new CancellationTokenSource(timeSpan)` |
-| `context.WithValue(ctx, k, v)` | `AsyncLocal<T>` or pass as explicit parameter |
-| `ctx.Done()` channel | `token.WaitHandle` or `await Task.Delay(-1, token)` |
-| `ctx.Err()` | `token.IsCancellationRequested` or catch `OperationCanceledException` |
-| First parameter convention | Last parameter convention |
-
-</details>
-
 ## Your Next Step
 Now that you've mastered the core features of C#, it's time to explore how to write more reusable, type-agnostic code.
 Explore **[Generics](../Generics/README.md)** to see how to use type parameters to reduce code duplication.

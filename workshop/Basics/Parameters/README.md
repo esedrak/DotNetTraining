@@ -84,20 +84,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Parameters"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `func F(n int)` | `void F(int n)` |
-| `func F(p *int)` | `void F(ref int p)` |
-| `func F() (int, error)` | `(int result, string error)` tuple, or `out` param |
-| `func F(args ...int)` | `void F(params int[] args)` |
-| N/A | `void F(int x = 0)` -- optional with default |
-| N/A | `F(y: 2, x: 1)` -- named arguments |
-
-</details>
-
 ## Your Next Step
 With a solid grasp of how data flows through methods, you're ready to start handling the inevitable errors that occur at runtime.
 Explore **[Error Handling](../ErrorHandling/README.md)** to learn C#'s idiomatic approach to exceptions and the `Result<T>` pattern.

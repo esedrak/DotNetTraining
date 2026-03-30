@@ -2,13 +2,12 @@ using System.Threading.Channels;
 
 namespace DotNetTraining.Basics.Concurrency;
 
-// ── Task.Run — equivalent to `go func()` ────────────────────────────────────
+// ── Task.Run ────────────────────────────────────
 
 public static class TaskExamples
 {
     /// <summary>
     /// Run work concurrently and wait for all to finish.
-    /// Equivalent to spawning goroutines + sync.WaitGroup.
     /// </summary>
     public static async Task<int[]> RunConcurrentAsync(int count)
     {
@@ -20,7 +19,7 @@ public static class TaskExamples
     }
 
     /// <summary>
-    /// Return the first result — equivalent to Go's select on multiple channels.
+    /// Return the first result
     /// </summary>
     public static async Task<int> FirstToFinishAsync()
     {
@@ -32,7 +31,7 @@ public static class TaskExamples
     }
 }
 
-// ── Channel<T> — equivalent to Go's chan T ────────────────────────────────────
+// ── Channel<T> ────────────────────────────────────
 
 public static class ChannelExamples
 {
@@ -45,7 +44,7 @@ public static class ChannelExamples
         var channel = Channel.CreateUnbounded<int>();
         var results = new List<int>();
 
-        // Producer — equivalent to `go func() { ch <- i; close(ch) }()`
+        // Producer
         _ = Task.Run(async () =>
         {
             for (int i = 0; i < count; i++)
@@ -131,7 +130,6 @@ public class AsyncSafeCounter
 
 /// <summary>
 /// Interlocked provides lock-free atomic operations.
-/// Equivalent to Go's sync/atomic package.
 /// </summary>
 public static class AtomicCounter
 {

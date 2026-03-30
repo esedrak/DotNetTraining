@@ -11,13 +11,11 @@ public static class ParameterExamples
 
     /// <summary>
     /// ref — pass by reference, caller's variable IS changed.
-    /// Equivalent to Go: func Increment(n *int)
     /// </summary>
     public static void IncrementRef(ref int n) => n++;
 
     /// <summary>
     /// out — output parameter. Compiler enforces assignment before return.
-    /// Equivalent to Go's (T, error) or (bool, T) multi-return idiom.
     /// </summary>
     public static bool TryParsePositive(string input, out int result)
     {
@@ -45,7 +43,6 @@ public static class ParameterExamples
 
     /// <summary>
     /// params allows calling with any number of arguments.
-    /// Equivalent to Go: func Sum(nums ...int) int
     /// </summary>
     public static int Sum(params int[] nums)
     {

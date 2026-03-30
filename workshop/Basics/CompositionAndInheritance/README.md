@@ -82,18 +82,6 @@ public class LoggingRepository(IBankRepository inner, ILogger<LoggingRepository>
 - [Embedded resources](https://learn.microsoft.com/en-us/dotnet/core/extensions/create-resource-files)
 - [Composition vs Inheritance](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/architectural-principles)
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `//go:embed file.txt` | `<EmbeddedResource Include="file.txt" />` in `.csproj` |
-| `embed.FS` | `Assembly.GetManifestResourceStream()` |
-| Struct embedding `type B struct { A }` | Inheritance `class B : A` or composition field |
-| Promoted methods | Inherited/delegated methods |
-
-</details>
-
 ## Your Next Step
 Now that you've mastered composition and embedded resources, it's time to learn how to organise your code into a clean and maintainable project structure.
 Explore **[Package Layout](../Layout/README.md)** to understand the idiomatic way to structure .NET solutions.

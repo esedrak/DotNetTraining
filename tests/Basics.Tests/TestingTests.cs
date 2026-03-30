@@ -3,17 +3,6 @@ using FluentAssertions;
 
 namespace Basics.Tests;
 
-/// <summary>
-/// Demonstrates xUnit patterns — C# equivalent of Go's table-driven tests.
-///
-/// | Go                         | xUnit                        |
-/// |----------------------------|------------------------------|
-/// | func TestXxx(t *testing.T) | [Fact] method                |
-/// | t.Run("name", ...)         | [Theory] + [InlineData]      |
-/// | testing.T helper           | ITestOutputHelper            |
-/// | TestMain                   | IClassFixture&lt;T&gt;            |
-/// | t.Parallel()               | automatic in xUnit           |
-/// </summary>
 public class TestingTests
 {
     // ── [Fact] — simplest test, no parameters ─────────────────────────────────
@@ -24,7 +13,7 @@ public class TestingTests
         Calculator.Add(2, 3).Should().Be(5);
     }
 
-    // ── [Theory] + [InlineData] — table-driven, Go equivalent: t.Run ─────────
+    // ── [Theory] + [InlineData] — table-driven
 
     [Theory]
     [InlineData(1, 1, 2)]
@@ -73,7 +62,6 @@ public class TestingTests
 
 /// <summary>
 /// Demonstrates IClassFixture — shared expensive setup across all tests in a class.
-/// Go equivalent: TestMain with shared state, or sync.Once.
 /// </summary>
 public class DatabaseFixtureTests(DatabaseFixture db) : IClassFixture<DatabaseFixture>
 {

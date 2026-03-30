@@ -10,7 +10,6 @@ namespace Basics.Tests;
 
 /// <summary>
 /// Demonstrates in-process HTTP testing with <c>WebApplication</c> +
-/// <c>UseTestServer()</c> — the C# equivalent of Go's <c>httptest.NewServer</c>.
 ///
 /// <c>UseTestServer()</c> replaces the real Kestrel socket with an in-process
 /// transport, so the full middleware pipeline runs with no network overhead.
@@ -57,7 +56,7 @@ public class HttpTestTests : IAsyncLifetime
     // ── GET ───────────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Equivalent to Go's TestHandlerUsingRecorder — no real network.
+    ///  no real network.
     /// </summary>
     [Fact]
     public async Task Get_HelloEndpoint_Returns200WithBody()
@@ -72,7 +71,7 @@ public class HttpTestTests : IAsyncLifetime
     // ── POST with JSON body ───────────────────────────────────────────────────
 
     /// <summary>
-    /// Equivalent to Go's TestPostWithJSONBody — POST a JSON payload and inspect
+    /// POST a JSON payload and inspect
     /// the response body and status code.
     /// </summary>
     [Fact]
@@ -91,7 +90,7 @@ public class HttpTestTests : IAsyncLifetime
     // ── Non-2xx status codes ──────────────────────────────────────────────────
 
     /// <summary>
-    /// Equivalent to Go's TestNonSuccessStatusCode — 4xx/5xx are NOT exceptions
+    /// 4xx/5xx are NOT exceptions
     /// in .NET; callers must inspect <c>response.StatusCode</c>.
     /// </summary>
     [Theory]
@@ -118,7 +117,7 @@ public class HttpTestTests : IAsyncLifetime
     // ── Custom request headers ────────────────────────────────────────────────
 
     /// <summary>
-    /// Equivalent to Go's TestRequestHeadersArePassedThrough — custom headers
+    /// custom headers
     /// on the outgoing request arrive at the handler unchanged.
     /// </summary>
     [Fact]

@@ -5,7 +5,6 @@ namespace DotNetTraining.Basics.Benchmark;
 
 /// <summary>
 /// Benchmarks comparing different string concatenation approaches.
-/// BenchmarkDotNet is the .NET equivalent of Go's testing.B benchmarks.
 ///
 /// To run: dotnet run --project tests/Basics.Tests -c Release -- --filter "*String*"
 /// </summary>

@@ -7,7 +7,6 @@ namespace Temporal.Worker;
 
 /// <summary>
 /// Temporal worker — polls the Temporal server for tasks to execute.
-/// Equivalent to the Go SDK's worker.New() + worker.Start().
 /// </summary>
 public class TemporalWorkerService(ILogger<TemporalWorkerService> logger) : BackgroundService
 {

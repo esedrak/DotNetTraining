@@ -6,7 +6,6 @@ namespace Temporal.Workflows.Workflows;
 
 /// <summary>
 /// Order processing workflow.
-/// Equivalent to the OrderWorkflow in GoTraining's Temporal module.
 ///
 /// A workflow orchestrates activities (steps) in a durable, fault-tolerant way.
 /// If the worker crashes, Temporal replays the workflow history to resume from where it left off.

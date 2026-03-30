@@ -76,19 +76,6 @@ else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `//go:build linux` | `#if LINUX` + `<DefineConstants>LINUX</DefineConstants>` |
-| `//go:build !windows` | `#if !WINDOWS` |
-| `//go:build debug` | `#if DEBUG` |
-| `runtime.GOOS == "linux"` | `RuntimeInformation.IsOSPlatform(OSPlatform.Linux)` |
-| Separate build tag files | All in one file with `#if` blocks, or partial classes |
-
-</details>
-
 ## Your Next Step
 You've completed the C# Language Basics module! You now have a solid foundation in the core building blocks of .NET.
 

@@ -86,19 +86,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Generics"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-| :--- | :--- |
-| `func F[T any](x T)` | `void F<T>(T x)` |
-| `[T comparable]` | `where T : IEquatable<T>` |
-| `[T any]` | `<T>` (unconstrained) |
-| `var zero T` | `default(T)` or `default` |
-| No runtime type info | `typeof(T)`, reflection available at runtime |
-
-</details>
-
 ## Your Next Step
 Finally, you'll want to learn how to control which parts of your code are compiled based on the environment or specific build needs.
 Explore **[Conditional Compilation](../ConditionalCompilation/README.md)** to master `#if DEBUG`, `DefineConstants`, and `RuntimeInformation`.

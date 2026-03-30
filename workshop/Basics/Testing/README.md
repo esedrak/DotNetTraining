@@ -117,21 +117,6 @@ dotnet test tests/Basics.Tests --logger "console;verbosity=detailed"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-| :--- | :--- |
-| `func TestXxx(t *testing.T)` | `[Fact] public void TestXxx()` |
-| `t.Error("msg")` / `t.Fatal("msg")` | `Assert.True(condition)` / `Assert.Equal(expected, actual)` |
-| Table-driven `tests := []struct{...}` | `[Theory] [InlineData(...)]` |
-| `t.Run("name", func(t))` | `[Theory]` runs automatically per data set |
-| `t.Parallel()` | xUnit runs tests in parallel by default |
-| `TestMain(m *testing.M)` | `IAsyncLifetime` or `IClassFixture<T>` |
-| `t.Context()` | Pass `CancellationToken` via fixture |
-
-</details>
-
 ## Your Next Step
 Now that you know the basics of testing, you can make your assertions more readable and expressive using FluentAssertions.
 Explore **[FluentAssertions](../FluentAssertions/README.md)** to see how to write fluent, human-readable assertions.

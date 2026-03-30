@@ -6,14 +6,12 @@ public static class GenericMethods
 {
     /// <summary>
     /// Min works for any type that supports ordering.
-    /// Equivalent to Go: func Min[T constraints.Ordered](a, b T) T
     /// </summary>
     public static T Min<T>(T a, T b) where T : IComparable<T>
         => a.CompareTo(b) <= 0 ? a : b;
 
     /// <summary>
     /// Returns the zero/default value for any type.
-    /// Equivalent to Go: var zero T
     /// </summary>
     public static T GetDefault<T>() => default!;
 

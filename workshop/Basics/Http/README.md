@@ -88,22 +88,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Http"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `http.HandleFunc(path, handler)` | `app.MapGet(path, handler)` |
-| `http.ListenAndServe(addr, nil)` | `app.Run()` |
-| `http.NewRequest(...)` | `new HttpRequestMessage(...)` |
-| `http.DefaultClient.Do(req)` | `httpClient.SendAsync(req)` |
-| `json.NewDecoder(r.Body).Decode(&v)` | `await req.ReadFromJsonAsync<T>()` |
-| `json.NewEncoder(w).Encode(v)` | `Results.Ok(v)` / `TypedResults.Ok(v)` |
-| `w.WriteHeader(status)` | Return `Results.StatusCode(n)` |
-| `r.Header.Get("key")` | `req.Headers["key"]` |
-
-</details>
-
 ## Your Next Step
 With your HTTP services built, you need a way to test them efficiently without relying on an actual network.
 Explore **[HTTP Testing](../HttpTest/README.md)** to learn how to test handlers and clients in isolation using `WebApplicationFactory<T>`.

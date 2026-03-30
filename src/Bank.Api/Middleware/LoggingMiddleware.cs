@@ -8,7 +8,6 @@ namespace Bank.Api.Middleware;
 /// Enriches the Serilog log context with request metadata so all log lines
 /// emitted during the request carry the same correlation fields.
 ///
-/// Go equivalent: custom <c>net/http</c> middleware logging via <c>slog</c>.
 /// </summary>
 public class LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> logger)
 {

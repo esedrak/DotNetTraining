@@ -1,5 +1,4 @@
 // Temporal Client — starts an order workflow
-// Equivalent to cmd/temporal/client in GoTraining
 //
 // Usage: dotnet run --project src/Temporal.Client
 //

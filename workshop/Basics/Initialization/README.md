@@ -99,19 +99,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Init"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-| :--- | :--- |
-| `func init()` | `static ClassName()` constructor |
-| Package-level `init()` | `[ModuleInitializer]` on a static method |
-| Called automatically | Called automatically — cannot be invoked manually |
-| Multiple `init()` per package OK | One static constructor per class |
-| `var x = computeX()` at package level | `static readonly T X = ComputeX()` |
-
-</details>
-
 ## Your Next Step
 Now that your application is starting up correctly, you need a robust way to verify it works through automated testing.
 Explore **[Testing](../Testing/README.md)** to learn xUnit's idiomatic approach to unit and table-driven tests.

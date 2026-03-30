@@ -166,31 +166,6 @@ Live demonstration and hands-on challenge: leveraging AI agents for ultra-effici
 
 ---
 
-## Go → .NET Concept Map
-
-| Go | .NET / C# |
-|----|-----------|
-| `go.mod` | `.sln` + `.csproj` |
-| goroutines | `async/await`, `Task.Run()` |
-| `chan T` | `Channel<T>` |
-| `context.Context` | `CancellationToken` |
-| `error` interface | `Exception` hierarchy |
-| Implicit interfaces | Explicit `: IInterface` |
-| `testing.T` | xUnit `[Fact]` |
-| `testify/assert` | FluentAssertions |
-| `httptest` | `WebApplicationFactory<T>` |
-| Mockery | Moq |
-| Gin | ASP.NET Core |
-| go-jet | Entity Framework Core |
-| Cobra | System.CommandLine |
-| Viper | `IConfiguration` / `IOptions<T>` |
-| slog | `ILogger<T>` / Serilog |
-| `//go:build` | `#if`, `<DefineConstants>` |
-| `go:embed` | `<EmbeddedResource>` |
-| `testing.B` | BenchmarkDotNet |
-
----
-
 ## Useful Commands
 
 ```bash

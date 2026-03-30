@@ -1,5 +1,4 @@
 // 👋 Hello — DotNetTraining introduction app
-// Equivalent to cmd/hello in GoTraining
 //
 // Run with: dotnet run --project src/Hello
 //           make run-hello

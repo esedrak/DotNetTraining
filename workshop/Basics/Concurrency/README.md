@@ -114,25 +114,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Concurrency"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `go func() { ... }()` | `Task.Run(() => ...)` |
-| `chan T` | `Channel<T>` |
-| `ch <- value` | `await writer.WriteAsync(value)` |
-| `v := <-ch` | `var v = await reader.ReadAsync()` |
-| `close(ch)` | `writer.Complete()` |
-| `select { case v := <-ch: }` | `Task.WhenAny(...)` |
-| `sync.WaitGroup` | `Task.WhenAll(tasks)` |
-| `sync.Mutex` | `lock` / `SemaphoreSlim` |
-| `sync.RWMutex` | `ReaderWriterLockSlim` |
-| `sync.Once` | `Lazy<T>` |
-| `atomic.AddInt64` | `Interlocked.Add` |
-
-</details>
-
 ## Your Next Step
 Now that you're running multiple tasks concurrently, you need a way to manage their lifecycles, cancellations, and timeouts.
 Explore **[Context & CancellationToken](../Context/README.md)** to learn how to propagate deadlines and signals across your application.

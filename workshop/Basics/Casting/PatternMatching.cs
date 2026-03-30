@@ -22,7 +22,6 @@ public static class TypeCheckingExamples
 {
     /// <summary>
     /// Safe cast using 'as' — returns null on failure (no exception).
-    /// Equivalent to Go's comma-ok type assertion: d, ok := i.(Dog)
     /// </summary>
     public static string? GetBreed(IAnimal animal)
     {
@@ -51,7 +50,6 @@ public static class TypeCheckingExamples
 
     /// <summary>
     /// Switch expression with type patterns.
-    /// Equivalent to Go's type switch: switch v := i.(type)
     /// </summary>
     public static string WhatIsIt(object value) => value switch
     {
@@ -69,7 +67,6 @@ public static class TypeCheckingExamples
 public static class ConversionExamples
 {
     /// <summary>
-    /// C# never performs implicit numeric conversion (same as Go).
     /// You must cast explicitly. Narrowing conversions can lose data.
     /// </summary>
     public static void NumericConversions()
@@ -95,7 +92,7 @@ public static class ConversionExamples
     }
 
     /// <summary>
-    /// String ↔ byte/char conversions (equivalent to Go's []byte / []rune conversions).
+    /// String ↔ byte/char conversions
     /// </summary>
     public static void StringConversions()
     {

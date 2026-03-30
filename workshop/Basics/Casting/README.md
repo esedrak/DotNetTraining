@@ -90,19 +90,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Casting"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `x.(T)` (unsafe assertion) | `(T)x` -- throws on failure |
-| `v, ok := x.(T)` (safe) | `x as T` + null check, or `x is T v` |
-| `switch v := i.(type)` | `switch (x) { case T t: ... }` or switch expression |
-| `interface{}` / `any` | `object` |
-| Numeric cast `int(f)` | `(int)f` |
-
-</details>
-
 ## Your Next Step
 Now that you understand how to work with interfaces and dynamic types, you can explore how C# uses composition and embedded resources.
 Explore **[Composition & Inheritance](../CompositionAndInheritance/README.md)** to see how to compose types and bundle files into your assemblies.

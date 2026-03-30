@@ -2,7 +2,7 @@ namespace DotNetTraining.Basics.ErrorHandling;
 
 // ── Custom exception types ────────────────────────────────────────────────────
 
-/// <summary>Domain exception for a missing resource. Equivalent to a Go sentinel error.</summary>
+/// <summary>Domain exception for a missing resource.</summary>
 public class NotFoundException : Exception
 {
     public string ResourceType { get; }
@@ -85,7 +85,6 @@ public class BankService
 /// <summary>
 /// Discriminated union for success/failure without exceptions.
 /// Use for *expected* failure paths where the caller should handle both cases.
-/// Equivalent to Go's (T, error) multi-return pattern.
 /// </summary>
 public readonly record struct Result<T>
 {

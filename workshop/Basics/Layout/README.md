@@ -74,23 +74,6 @@ flowchart TD
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `go.mod` | `.sln` + `.csproj` |
-| `go.sum` | NuGet `packages.lock.json` |
-| `cmd/` | Executable projects (`Console`, `WebAPI`, `Worker`) |
-| `internal/` | `internal` access modifier; project boundaries enforce visibility |
-| `pkg/` | Shared class libraries referenced by multiple projects |
-| Package = directory | Namespace = directory (by convention) |
-| `go build ./...` | `dotnet build` |
-| `go test ./...` | `dotnet test` |
-| `go run cmd/app/main.go` | `dotnet run --project src/App` |
-
-</details>
-
 ## Your Next Step
 After organising your solution, you'll want to learn how to run code at startup and control initialisation order.
 Explore **[Initialization & Static Constructors](../Initialization/README.md)** to understand how C# handles type-level initialisation.

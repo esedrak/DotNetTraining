@@ -3,7 +3,7 @@ namespace DotNetTraining.Basics.Receivers;
 // ── Value type (struct) methods — copy semantics ──────────────────────────────
 
 /// <summary>
-/// Struct methods operate on a copy of the struct (like Go's value receiver).
+/// Struct methods operate on a copy of the struct
 /// Mutation requires returning a new value.
 /// </summary>
 public readonly struct Temperature
@@ -11,7 +11,7 @@ public readonly struct Temperature
     public double Celsius { get; }
     public Temperature(double celsius) => Celsius = celsius;
 
-    // Read-only method — equivalent to Go's value receiver
+    // Read-only method
     public double ToFahrenheit() => Celsius * 9.0 / 5.0 + 32.0;
     public double ToKelvin() => Celsius + 273.15;
     public Temperature Add(double degrees) => new(Celsius + degrees);
@@ -22,14 +22,14 @@ public readonly struct Temperature
 // ── Class methods — reference semantics ──────────────────────────────────────
 
 /// <summary>
-/// Class methods operate on the same instance (like Go's pointer receiver).
+/// Class methods operate on the same instance
 /// Mutations are visible to all references.
 /// </summary>
 public class Counter
 {
     public int Value { get; private set; }
 
-    // Mutating method — equivalent to Go's pointer receiver
+    // Mutating method
     public void Increment() => Value++;
     public void Reset() => Value = 0;
 
@@ -41,7 +41,7 @@ public class Counter
 
 /// <summary>
 /// Extension methods on string — adds utility methods without inheriting from string
-/// (which is sealed). Equivalent to adding methods to a Go type in a separate package.
+/// (which is sealed).
 /// </summary>
 public static class StringExtensions
 {

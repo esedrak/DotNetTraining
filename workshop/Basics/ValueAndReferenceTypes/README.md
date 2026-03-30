@@ -127,21 +127,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Pointers"
 - [`ref`, `out`, `in` parameters](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters)
 - [`Span<T>` and `Memory<T>`](https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/memory-t-usage-guidelines)
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `*int` (pointer) | `ref int` parameter |
-| `&x` (address-of) | `ref x` argument |
-| `*p` (dereference) | just use the `ref` variable directly |
-| `nil` pointer | `null` reference / `null`-able value type |
-| Stack escape analysis | CLR GC manages heap; `stackalloc` / `Span<T>` for stack |
-| N/A | `out` for output-only parameters |
-| N/A | `in` for read-only ref parameters |
-
-</details>
-
 ## Your Next Step
 After learning how to handle value and reference types with pointers, you'll often need to control how data flows into your methods.
 Explore **[Function Parameters](../Parameters/README.md)** to master how C# handles `params`, optional, and named arguments.

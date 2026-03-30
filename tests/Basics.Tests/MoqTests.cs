@@ -5,7 +5,7 @@ using Moq;
 namespace Basics.Tests;
 
 /// <summary>
-/// Demonstrates Moq — the C# equivalent of Go's Mockery code-generated mocks.
+/// Demonstrates Moq
 /// Pattern: Setup → Act → Verify  (analogous to On → Execute → AssertCalled)
 /// </summary>
 public class MoqTests

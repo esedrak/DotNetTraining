@@ -4,7 +4,6 @@ namespace Temporal.Workflows.Encryption;
 
 /// <summary>
 /// AES-256-CBC encryption helper used by the Temporal payload codec.
-/// Equivalent to GoTraining's <c>pkg/encryption</c> package.
 /// </summary>
 public static class EncryptionHelper
 {

@@ -242,16 +242,18 @@ The inventory activity in `src/Temporal.Workflows/Activities/InventoryActivities
 
 To configure how Temporal retries the Validate activity when it encounters retryable errors (503/500), update your activity options in the workflow:
 
-```go
-activityOptions := workflow.ActivityOptions{
-    StartToCloseTimeout: 10 * time.Second,
-    RetryPolicy: &temporal.RetryPolicy{
-        InitialInterval:    time.Second,
-        BackoffCoefficient: 2.0,
-        MaximumInterval:    time.Minute,
-        MaximumAttempts:    5,
-    },
-}
+```csharp
+var activityOptions = new ActivityOptions
+{
+    StartToCloseTimeout = TimeSpan.FromSeconds(10),
+    RetryPolicy = new()
+    {
+        InitialInterval = TimeSpan.FromSeconds(1),
+        BackoffCoefficient = 2.0f,
+        MaximumInterval = TimeSpan.FromMinutes(1),
+        MaximumAttempts = 5,
+    }
+};
 ```
 
 ### WireMock Configuration

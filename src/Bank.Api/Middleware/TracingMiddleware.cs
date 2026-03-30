@@ -6,7 +6,6 @@ namespace Bank.Api.Middleware;
 /// new <see cref="Guid"/> is generated. The ID is written back on the response
 /// so clients can correlate their own logs.
 ///
-/// Go equivalent: middleware that reads / writes <c>X-Correlation-Id</c> and
 /// stores it in <c>context.Context</c>.
 /// </summary>
 public class TracingMiddleware(RequestDelegate next)

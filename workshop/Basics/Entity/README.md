@@ -105,21 +105,6 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Entity"
 
 ---
 
-<details>
-<summary>Coming from Go?</summary>
-
-| Go | C# |
-|---|---|
-| `type X struct { ... }` | `class X`, `struct X`, `record X` |
-| Factory `func NewX() X` | Constructor `new X()`, or primary constructor |
-| Struct tags `json:"name"` | `[JsonPropertyName("name")]` attribute |
-| Manual value equality | `record` provides it automatically |
-| Pointer receiver mutations | `class` or `ref struct` |
-| N/A | `init` -- settable only during object initialization |
-| N/A | `required` -- must be set in object initializer |
-
-</details>
-
 ## Your Next Step
 Now that you're defining your own data structures, it's time to add behaviour to them using methods.
 Explore **[Receivers & Extension Methods](../Receivers/README.md)** to learn how to define instance methods and extend existing types.
