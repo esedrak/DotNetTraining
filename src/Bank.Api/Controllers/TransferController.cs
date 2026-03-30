@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Bank.Domain;
 using Bank.Domain.Exceptions;
 using Bank.Service;
@@ -7,7 +8,7 @@ namespace Bank.Api.Controllers;
 
 [ApiController]
 [Route("v1/transfers")]
-public class TransferController(IBankService bankService, ILogger<TransferController> logger) : ControllerBase
+public partial class TransferController(IBankService bankService, ILogger<TransferController> logger, ActivitySource activitySource) : ControllerBase
 {
     /// <summary>List all transfers.</summary>
     [HttpGet]
@@ -36,43 +37,73 @@ public class TransferController(IBankService bankService, ILogger<TransferContro
     }
 
     /// <summary>Create a new transfer between accounts.</summary>
-    // TODO Quest 1: Add [ProducesResponseType] attributes for every possible HTTP response.
-    //   Think about: success (201), client errors (400, 401, 403, 404, 422), and server errors (500).
-    //   Study AccountController.CreateAccount for the pattern, then document all seven codes here.
+    // Quest 1: Add [ProducesResponseType] attributes for every possible HTTP response.
     [HttpPost]
+    [ProducesResponseType<Transfer>(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> CreateTransfer([FromBody] CreateTransferRequest request, CancellationToken ct)
     {
-        // TODO Quest 2: Scope check
+        // Quest 2: Scope check.
+        var scopes = User.FindAll("scope").Select(c => c.Value);
+        if (!scopes.Contains("transfers:write"))
+        {
+            return Forbid();
+        }
 
+        // Quest 3: Implement the controller action
+        // TODO 3: Verify ownership — fetch source account, confirm caller owns it
+        try
+        {
+            var sourceAccount = await bankService.GetAccountAsync(request.FromAccountId, ct);
+            if (User.Identity?.Name != sourceAccount.Owner)
+            {
+                return Forbid();
+            }
+        }
+        catch (AccountNotFoundException)
+        {
+            return NotFound(new { message = $"Account '{request.FromAccountId}' not found." });
+        }
 
-        // TODO Quest 3 below:
-        // TODO 1: Model binding is handled by [ApiController] and [FromBody].
-        //         Refer to AccountController.CreateAccount for the error-mapping pattern.
+        // TODOs 2, 4, 5: Create transfer, trace, map exceptions, log, return 201
+        try
+        {
+            // TODO 2: Start activity BEFORE the service call so it spans the work
+            using var activity = activitySource.StartActivity("transfer.create");
+            activity?.SetTag("fromAccountId", request.FromAccountId);
+            activity?.SetTag("toAccountId", request.ToAccountId);
+            activity?.SetTag("amount", request.Amount);
 
-        // TODO 2: Start an OpenTelemetry activity.
-        //         Use ActivitySource.StartActivity("transfer.create") and set tags for
-        //         fromAccountId, toAccountId, and amount.
-        //         See TracingMiddleware.cs for the ActivitySource pattern.
+            var transfer = await bankService.CreateTransferAsync(request.FromAccountId, request.ToAccountId, request.Amount, ct);
 
-        // TODO 3: Verify ownership.
-        //         Extract the caller's identity from HttpContext.User.
-        //         Fetch the source account via bankService.GetAccountAsync.
-        //         If User.Identity.Name does not match account.Owner, return Forbid().
+            // TODO 5: Log success and return 201
+            LogTransferCreated(logger, transfer.Id, request.FromAccountId, request.ToAccountId, request.Amount);
 
-        // TODO 4: Call the service and map domain exceptions to HTTP responses.
-        //         AccountNotFoundException   → NotFound(new { message = ... })
-        //         InsufficientFundsException → UnprocessableEntity(new { message = ... })
-        //         ArgumentException          → BadRequest(new { message = ... })
-
-        // TODO 5: Log success and return 201 Created.
-        //         logger.LogInformation("Transfer created: ...")
-        //         return CreatedAtAction(nameof(GetTransfer), new { id = transfer.Id }, transfer)
-
-        // REMOVE THESE LINES when TODOs are implemented:
-        _ = logger;
-        await Task.CompletedTask;
-        return StatusCode(StatusCodes.Status501NotImplemented, new { message = "Not yet implemented." });
+            return CreatedAtAction(nameof(GetTransfer), new { id = transfer.Id }, transfer);
+        }
+        catch (AccountNotFoundException ex)  // TODO 4: → 404
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InsufficientFundsException ex)  // TODO 4: → 422
+        {
+            return UnprocessableEntity(new { message = ex.Message });
+        }
+        catch (ArgumentException ex)  // TODO 4: → 400
+        {
+            logger.LogWarning("Invalid transfer creation request: {Message}", ex.Message);
+            return BadRequest(new { message = ex.Message });
+        }
+        // All other exceptions propagate → global exception handler → 500
     }
+
+    [LoggerMessage(Level = LogLevel.Information,
+           Message = "Transfer created: {TransferId} from {From} to {To} for {Amount}")]
+    private static partial void LogTransferCreated(
+        ILogger logger, Guid transferId, Guid from, Guid to, decimal amount);
 }
 
 public record CreateTransferRequest(Guid FromAccountId, Guid ToAccountId, decimal Amount);
