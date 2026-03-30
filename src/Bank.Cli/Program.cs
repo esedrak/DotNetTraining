@@ -75,12 +75,17 @@ var getCmd = new Command("get", "Get account by ID");
 getCmd.Add(idArg);
 getCmd.SetAction(async parseResult =>
 {
-    // TODO (Bonus Quest 1): Check an account balance.
-    // 1. Parse the account ID argument: parseResult.GetValue(idArg)
-    // 2. Call httpClient.GetAsync($"/v1/accounts/{id}")
-    // 3. Print the response body to the console (success or error)
-    await Task.CompletedTask;
-    Console.WriteLine("Not yet implemented.");
+    // (Bonus Quest 1): Check an account balance.
+    if (!TrySetBearerFromEnv())
+    {
+        return;
+    }
+
+    var id = parseResult.GetValue(idArg);
+    var r = await httpClient.GetAsync($"/v1/accounts/{id}");
+    Console.WriteLine(r.IsSuccessStatusCode
+        ? await r.Content.ReadAsStringAsync()
+        : $"Error {(int)r.StatusCode}: {await r.Content.ReadAsStringAsync()}");
 });
 accountCmd.Add(getCmd);
 
@@ -138,16 +143,38 @@ createTxCmd.Add(toOpt);
 createTxCmd.Add(amountOpt);
 createTxCmd.SetAction(async parseResult =>
 {
-    // TODO (Bonus Quest 2): Create an authenticated transfer.
-    // 1. Parse --from, --to, --amount options via parseResult.GetValue(...)
-    // 2. Read the JWT from the BANK_TOKEN env var; print an error and return if absent
-    // 3. Set the Authorization header (hint: AuthenticationHeaderValue in System.Net.Http.Headers):
-    //      httpClient.DefaultRequestHeaders.Authorization =
-    //          new AuthenticationHeaderValue("Bearer", token);
-    // 4. Call httpClient.PostAsJsonAsync("/v1/transfers", new { fromAccountId, toAccountId, amount })
-    // 5. Print the response body; print a helpful message if StatusCode is 401 or 403
-    await Task.CompletedTask;
-    Console.WriteLine("Not yet implemented.");
+    // (Bonus Quest 2): Create an authenticated transfer.
+    if (!TrySetBearerFromEnv())
+    {
+        return;
+    }
+
+    var fromAccountId = parseResult.GetValue(fromOpt);
+    var toAccountId = parseResult.GetValue(toOpt);
+    var amount = parseResult.GetValue(amountOpt);
+
+    var r = await httpClient.PostAsJsonAsync("/v1/transfers", new { fromAccountId, toAccountId, amount });
+    var body = await r.Content.ReadAsStringAsync();
+
+    if (r.IsSuccessStatusCode)
+    {
+        Console.WriteLine(body);
+        return;
+    }
+
+    if (r.StatusCode == HttpStatusCode.Unauthorized)
+    {
+        Console.WriteLine("Error 401: token missing or expired. Re-run the token export command.");
+        return;
+    }
+
+    if (r.StatusCode == HttpStatusCode.Forbidden)
+    {
+        Console.WriteLine("Error 403: insufficient scope. Your token needs the 'transfers:write' scope.");
+        return;
+    }
+
+    Console.WriteLine($"Error {(int)r.StatusCode}: {body}");
 });
 transferCmd.Add(createTxCmd);
 root.Add(transferCmd);
