@@ -9,7 +9,7 @@ namespace Basics.Tests;
 /// </summary>
 public class ChallengeImplMeTests
 {
-    // ── Challenge 4: LINQ banking queries ────────────────────────────────────
+    // ── Challenge 3: LINQ banking queries ────────────────────────────────────
 
     private static readonly List<BankTransaction> Transactions =
     [
@@ -56,43 +56,4 @@ public class ChallengeImplMeTests
         LinqChallenge.LargestByAbsoluteAmount([]).Should().BeNull();
     }
 
-    // ── Challenge 5: Result<T> pattern ───────────────────────────────────────
-
-    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
-    public void TryCatch_ReturnsSuccess_WhenNoException()
-    {
-        var result = ResultExtensions.TryCatch(() => 42);
-
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().Be(42);
-    }
-
-    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
-    public void TryCatch_ReturnsFailure_WhenExceptionThrown()
-    {
-        var result = ResultExtensions.TryCatch<int>(() => throw new InvalidOperationException("boom"));
-
-        result.IsSuccess.Should().BeFalse();
-        result.Error.Should().Contain("boom");
-    }
-
-    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
-    public void Map_TransformsSuccessValue()
-    {
-        var result = Result<int>.Success(5);
-        var mapped = ResultExtensions.Map(result, x => x * 2);
-
-        mapped.IsSuccess.Should().BeTrue();
-        mapped.Value.Should().Be(10);
-    }
-
-    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
-    public void Map_PropagatesFailure()
-    {
-        var result = Result<int>.Failure("error");
-        var mapped = ResultExtensions.Map(result, x => x * 2);
-
-        mapped.IsSuccess.Should().BeFalse();
-        mapped.Error.Should().Be("error");
-    }
 }

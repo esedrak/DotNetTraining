@@ -33,11 +33,9 @@ You'll find `throw new NotImplementedException()` methods. Your task is to imple
 
 | # | Class | C# Focus Area | Task |
 |---|---|---|---|
-| 1 | `CollectionExtensions` | Generics / IEnumerable | Implement `Chunk`, `MostFrequent`, `Flatten` |
-| 2 | `AsyncPipeline` | Async / SemaphoreSlim | Implement concurrent processing with retry |
-| 3 | `CorrelationIdMiddleware` | ASP.NET Core middleware | Add correlation ID to request/response headers |
-| 4 | `LinqChallenge` | LINQ queries | Filter, group, and aggregate bank transactions |
-| 5 | `ResultExtensions` | Result pattern / error handling | Implement `TryCatch` and `Map` for `Result<T>` |
+| 1 | `AsyncPipeline` | Async / SemaphoreSlim | Implement concurrent processing with retry |
+| 2 | `CorrelationIdMiddleware` | ASP.NET Core middleware | Add correlation ID to request/response headers |
+| 3 | `LinqChallenge` | LINQ queries | Filter, group, and aggregate bank transactions |
 
 ---
 

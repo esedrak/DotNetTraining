@@ -1,39 +1,6 @@
 namespace DotNetTraining.Challenges.Basics.ImplMe;
 
-// ── Challenge 1: Implement generic collection methods ────────────────────────
-
-public static class CollectionExtensions
-{
-    /// <summary>
-    /// Returns the elements of <paramref name="source"/> in groups of <paramref name="size"/>.
-    /// Last group may have fewer than <paramref name="size"/> elements.
-    /// Example: [1,2,3,4,5].Chunk(2) → [[1,2],[3,4],[5]]
-    /// </summary>
-    public static IEnumerable<T[]> Chunk<T>(IEnumerable<T> source, int size)
-    {
-        throw new NotImplementedException("Implement me!");
-    }
-
-    /// <summary>
-    /// Returns the most frequent element in <paramref name="source"/>.
-    /// Throws <see cref="InvalidOperationException"/> if source is empty.
-    /// </summary>
-    public static T MostFrequent<T>(IEnumerable<T> source) where T : notnull
-    {
-        throw new NotImplementedException("Implement me!");
-    }
-
-    /// <summary>
-    /// Flattens one level of nesting.
-    /// Example: [[1,2],[3],[4,5]].Flatten() → [1,2,3,4,5]
-    /// </summary>
-    public static IEnumerable<T> Flatten<T>(IEnumerable<IEnumerable<T>> source)
-    {
-        throw new NotImplementedException("Implement me!");
-    }
-}
-
-// ── Challenge 2: Async pipeline ───────────────────────────────────────────────
+// ── Challenge 1: Async pipeline ───────────────────────────────────────────────
 
 public static class AsyncPipeline
 {
@@ -65,7 +32,7 @@ public static class AsyncPipeline
     }
 }
 
-// ── Challenge 3: Custom middleware ────────────────────────────────────────────
+// ── Challenge 2: Custom middleware ────────────────────────────────────────────
 
 /// <summary>
 /// ASP.NET Core middleware that adds a request correlation ID header.
@@ -83,7 +50,7 @@ public class CorrelationIdMiddleware(RequestDelegate next)
     }
 }
 
-// ── Challenge 4: LINQ banking queries ────────────────────────────────────────
+// ── Challenge 3: LINQ banking queries ────────────────────────────────────────
 
 public record BankTransaction(string Owner, decimal Amount, string Category);
 
@@ -119,44 +86,3 @@ public static class LinqChallenge
     }
 }
 
-// ── Challenge 5: Result<T> pattern (structured error handling) ───────────────
-
-/// <summary>
-/// A Result type that wraps either a success value or an error message.
-/// This is an alternative to exceptions for expected failure cases.
-/// </summary>
-public readonly record struct Result<T>
-{
-    public T? Value { get; }
-    public string? Error { get; }
-    public bool IsSuccess { get; }
-
-    private Result(T value) { Value = value; IsSuccess = true; Error = null; }
-    private Result(string error) { Value = default; IsSuccess = false; Error = error; }
-
-    public static Result<T> Success(T value) => new(value);
-    public static Result<T> Failure(string error) => new(error);
-}
-
-public static class ResultExtensions
-{
-    /// <summary>
-    /// Execute <paramref name="operation"/> and wrap the outcome in a Result.
-    /// If the operation succeeds, return Result.Success with the value.
-    /// If it throws, return Result.Failure with the exception message.
-    /// </summary>
-    public static Result<T> TryCatch<T>(Func<T> operation)
-    {
-        throw new NotImplementedException("Implement me!");
-    }
-
-    /// <summary>
-    /// If the result is success, apply <paramref name="mapper"/> to transform the value.
-    /// If the result is failure, propagate the error unchanged.
-    /// This is the "map" operation (functor) for Result.
-    /// </summary>
-    public static Result<TOut> Map<TIn, TOut>(Result<TIn> result, Func<TIn, TOut> mapper)
-    {
-        throw new NotImplementedException("Implement me!");
-    }
-}
