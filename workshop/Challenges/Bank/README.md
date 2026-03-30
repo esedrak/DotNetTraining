@@ -2,7 +2,7 @@
 
 Welcome to the **C# Bank Transfer Quest**! In this challenge, you will implement a `POST /v1/transfers` endpoint in a pre-scaffolded ASP.NET Core bank service.
 
-This quest focuses on idiomatic ASP.NET Core controller patterns, OpenTelemetry tracing, structured logging (`ILogger<T>`/Serilog), JWT authentication/authorisation, and controller testing — without getting distracted by database or repository concerns.
+This quest focuses on idiomatic ASP.NET Core controller patterns, OpenTelemetry tracing, structured logging (`ILogger<T>`/Serilog), JWT authentication/authorisation, and integration testing — without getting distracted by database or repository concerns.
 
 Everything below the API layer is pre-built. If you want to understand how the underlying layers work, check out the [Bank Architecture](../../../src/Bank.Api/README.md).
 
@@ -31,24 +31,63 @@ Complete the partially filled `transfers.yaml` spec.
 - Using a swagger viewer extension or going to [Swagger Editor](https://editor.swagger.io/), you can validate that your OpenAPI spec is well-formed and renders correctly.
 - Solution can be found in [docs/openapi/solution/transfers.yaml](../../../docs/openapi/solution/transfers.yaml).
 
-### Quest 2: Wire the Routes
+### Quest 2: Wire Authentication to the Transfer Controller
 
-**File:** [src/Bank.Api/Program.cs](../../../src/Bank.Api/Program.cs)
+**File:** [`src/Bank.Api/Controllers/TransferController.cs`](../../../src/Bank.Api/Controllers/TransferController.cs)
 
 **Context:**
-The ASP.NET Core API uses controller routing via `app.MapControllers()`. Middleware is applied globally in the pipeline order. The `AuthMiddleware` already exists but is commented out. The account controller (`AccountController.cs`) is already wired up and working as your reference.
+`Program.cs` already has JWT Bearer authentication fully configured: `AddJwtBearer` validates every incoming `Authorization: Bearer <token>` header and populates `HttpContext.User` with the caller's claims. `UseAuthentication()` and `UseAuthorization()` are already in the middleware pipeline.
+
+What's missing is applying this to `TransferController`. `[Authorize]` on the controller class tells the authorization middleware to reject unauthenticated requests with `401 Unauthorized` before they reach your action methods. Once inside the action, `User.FindAll("scope")` reads the claims from the validated JWT so you can enforce fine-grained scope checks.
+
+`AccountController` is already complete — read how `[Authorize]` and the scope check are applied there, then replicate the same two patterns for `TransferController`.
 
 **Task:**
-- Open `src/Bank.Api/Program.cs` — enable `AuthMiddleware` by uncommenting `app.UseMiddleware<AuthMiddleware>()`.
-- Open `src/Bank.Api/Controllers/TransferController.cs` — add a `transfers:write` scope requirement to `CreateTransfer`, following the pattern in `AccountController.CreateAccount`.
-- Note: `TransferController` contains additional guided `TODO`s for the full action implementation — those are covered in Quest 3.
+1. Add `[Authorize]` to the `TransferController` class, following the pattern in `AccountController`
+2. Add a `transfers:write` scope check inside `CreateTransfer`, following the pattern in `AccountController.CreateAccount`
+3. Remove the `Skip` attribute from these two tests in `TransferControllerIntegrationTests.cs` and confirm they now pass:
+   - `CreateTransfer_Returns401_WhenNoToken`
+   - `CreateTransfer_Returns403_WhenScopeMissing`
 
 **Definition of Done:**
-- The .NET code compiles successfully.
-- You can run the following command with no errors:
+- The .NET code compiles successfully:
   ```bash
   dotnet build src/Bank.Api
   ```
+- Both un-skipped tests pass:
+  ```bash
+  dotnet test tests/Bank.Tests --filter "FullyQualifiedName~TransferController"
+  ```
+
+<details>
+<summary>Common Mistakes &amp; Helpful Hints</summary>
+
+<details>
+<summary>How AddJwtBearer and [Authorize] fit together</summary>
+
+`AddJwtBearer` (in `Program.cs`) is the authentication handler — it reads and validates the token. `[Authorize]` (on the controller) is the policy enforcement point — it rejects requests where authentication failed or was absent. They are two separate concerns wired together by `UseAuthentication()` → `UseAuthorization()` in the pipeline. If you add `[Authorize]` but skip `UseAuthentication()`, the user is never populated and every request returns 401 even with a valid token. Open `Program.cs` and read the pipeline order to see how they connect.
+
+</details>
+
+<details>
+<summary>Scope claims: FindAll vs FindFirst</summary>
+
+A JWT can carry multiple `scope` claims (one per granted permission). `User.FindFirst("scope")` returns only the first one. `User.FindAll("scope")` returns all of them. Always use `FindAll` for scope checks so you don't silently miss permissions.
+
+```csharp
+// WRONG — only checks the first scope claim; breaks with multiple scopes
+if (User.FindFirst("scope")?.Value != "transfers:write")
+    return Forbid();
+
+// CORRECT — checks all scope claims
+var scopes = User.FindAll("scope").Select(c => c.Value);
+if (!scopes.Contains("transfers:write"))
+    return Forbid();
+```
+
+</details>
+
+</details>
 
 ### Quest 3: Implement the Controller Action
 
@@ -70,10 +109,15 @@ The controller action contains 5 guided `TODO`s. Each `TODO` points directly to 
 5. **Log & Return:** Use `logger.LogInformation` to log the successful transfer (Serilog automatically injects trace IDs via log context enrichment). Return `CreatedAtAction(nameof(GetTransfer), ...)` with a 201 response.
 
 **Definition of Done:**
-- Code compiles without syntax errors or unused variables.
-- You can run the following command cleanly:
+- Code compiles without syntax errors or unused variables:
   ```bash
   dotnet build src/Bank.Api
+  ```
+- Remove the `Skip` attribute from these two tests in `TransferControllerIntegrationTests.cs` and confirm they now pass:
+  - `CreateTransfer_Returns201_WhenValid`
+  - `CreateTransfer_Returns400_WhenArgumentInvalid`
+  ```bash
+  dotnet test tests/Bank.Tests --filter "FullyQualifiedName~TransferController"
   ```
 
 <details>
@@ -154,30 +198,73 @@ private static partial void LogTransferCreated(
 
 </details>
 
-### Quest 4: Write Controller Tests
+### Quest 4: Write Integration Tests
 
-**File:** [tests/Bank.Tests/Controllers/TransferControllerTests.cs](../../../tests/Bank.Tests/Controllers/TransferControllerTests.cs)
+**File:** [tests/Bank.Tests/Controllers/TransferControllerIntegrationTests.cs](../../../tests/Bank.Tests/Controllers/TransferControllerIntegrationTests.cs)
 
 **Context:**
-We use `WebApplicationFactory<Program>` for integration tests and `Moq` to unit test controllers in isolation from real dependencies. The existing `BankServiceTests.cs` shows how to construct mocks with `Mock<T>` and write assertions with `FluentAssertions`.
+The .NET way to test HTTP controllers is `WebApplicationFactory<Program>` from `Microsoft.AspNetCore.Mvc.Testing`. It boots a real in-process test server and runs your full middleware pipeline — JWT authentication, routing, model binding, exception handling, JSON serialization — on every test request. Tests make calls via `HttpClient`, exactly as a real client would.
+
+This is meaningfully different from calling controller methods directly. A direct call bypasses the pipeline: there is no auth check, no model binding, no response serialization. An `HttpClient` test proves the endpoint actually works end-to-end.
+
+Two helpers are provided:
+- **`BankApiFactory`** — a custom `WebApplicationFactory<Program>` that swaps the real Postgres `DbContext` for an in-memory one and replaces `IBankService` with a `Mock<IBankService>`. It exposes `MockBankService` so tests can control what the service returns. Call `factory.MockBankService.Reset()` at the start of each test to clear previous setups.
+- **`JwtTokenHelper`** — generates signed JWT tokens using the same key as the app's `AddJwtBearer` configuration. Tests go through the real authentication middleware.
+
+**`AccountControllerIntegrationTests.cs` is your reference** — study the arrange/act/assert pattern and the `JsonDocument` response assertions before writing your own tests. Note: `JsonDocument` is used instead of deserializing to `Account` because `Account.Balance` has a `private set` that the JSON deserializer cannot populate.
 
 **Task:**
-- Open `tests/Bank.Tests/Controllers/TransferControllerTests.cs`.
-- Read how the happy path (201) and invalid body (400) cases are constructed in the existing tests.
-- Implement the "wrong owner" (403) case: Mock `GetAccountAsync` to return an account owned by `"bob"`, but set the test JWT subject to `"alice"`.
-- Implement "insufficient funds" (422): Mock `GetAccountAsync` successfully, but mock `CreateTransferAsync` to throw `InsufficientFundsException`.
-- Implement "source account not found" (404): Mock `GetAccountAsync` to throw `AccountNotFoundException`.
+- Open `tests/Bank.Tests/Controllers/TransferControllerIntegrationTests.cs`
+- Three tests are marked `TODO`. Read the comments in each and implement them following the patterns already in the file:
+  - `CreateTransfer_Returns403_WhenCallerIsNotOwner`: mock `GetAccountAsync` to return an account owned by `"bob"`, sign the token for `"alice"`
+  - `CreateTransfer_Returns422_WhenInsufficientFunds`: mock `GetAccountAsync` successfully (alice owns it, low balance), mock `CreateTransferAsync` to throw `InsufficientFundsException`
+  - `CreateTransfer_Returns404_WhenSourceAccountNotFound`: mock `GetAccountAsync` to throw `AccountNotFoundException`
 
 **Definition of Done:**
-- Run the controller tests:
+- Remove the `[Fact(Skip = ...)]` attribute from each of the three tests you implemented and replace it with `[Fact]`
+- All transfer tests pass, 0 skipped:
   ```bash
   dotnet test tests/Bank.Tests --filter "FullyQualifiedName~Transfer"
   ```
-- All tests pass successfully, confirming your controller perfectly maps edge cases.
-- Finally, verify the entire service is still green:
+- Verify the full suite is green:
   ```bash
   dotnet test
   ```
+
+<details>
+<summary>Common Mistakes &amp; Helpful Hints</summary>
+
+<details>
+<summary>Always call MockBankService.Reset() first</summary>
+
+`BankApiFactory` is shared across all tests in the class (one server boot). If you forget to reset the mock, a setup from a previous test can bleed into the current one and make it pass or fail for the wrong reason.
+
+```csharp
+[Fact]
+public async Task MyTest()
+{
+    factory.MockBankService.Reset(); // always first
+    factory.MockBankService.Setup(...).ReturnsAsync(...);
+    ...
+}
+```
+
+</details>
+
+<details>
+<summary>JsonDocument for response body assertions</summary>
+
+`Account.Balance` has a `private set`, so `JsonSerializer.Deserialize<Account>(body)` will always give you `Balance = 0` regardless of what the API returned. Use `JsonDocument` to read the serialized output directly:
+
+```csharp
+var body = await response.Content.ReadAsStringAsync();
+using var doc = JsonDocument.Parse(body);
+doc.RootElement.GetProperty("balance").GetDecimal().Should().Be(500m);
+```
+
+</details>
+
+</details>
 
 ### Bonus Quest 1: Check Account Balance CLI
 

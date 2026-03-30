@@ -5,13 +5,13 @@ using Microsoft.IdentityModel.Tokens;
 namespace Bank.Api.Middleware;
 
 /// <summary>
-/// Validates a Bearer JWT on protected routes.
-/// Skips health and OpenAPI endpoints so they remain public.
+/// Reference implementation showing what JWT validation looks like when written by hand.
 ///
-/// NOTE: In production prefer <c>builder.Services.AddAuthentication().AddJwtBearer()</c>
-/// — this class is a teaching example showing what the framework does internally.
-///
-/// Go equivalent: JWT validation middleware for Gin or <c>net/http</c>.
+/// The application uses <c>AddAuthentication().AddJwtBearer()</c> in <c>Program.cs</c>,
+/// which is the idiomatic ASP.NET Core approach and handles this automatically.
+/// This class is kept to illustrate what the framework does internally:
+/// extract the Bearer token, validate the signature, populate <c>HttpContext.User</c>,
+/// and short-circuit with 401 on failure.
 /// </summary>
 public class AuthMiddleware(RequestDelegate next, IConfiguration config, ILogger<AuthMiddleware> logger)
 {

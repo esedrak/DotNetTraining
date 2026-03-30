@@ -1,7 +1,10 @@
+using System.Diagnostics;
 using Bank.Api.Middleware;
 using Bank.Repository;
 using Bank.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +26,25 @@ builder.Services.AddDbContext<BankDbContext>(options =>
 // ── Dependency Injection ─────────────────────────────────────────────────────
 builder.Services.AddScoped<IBankRepository, PostgresBankRepository>();
 builder.Services.AddScoped<IBankService, BankService>();
+builder.Services.AddSingleton(new ActivitySource("Bank.Api"));
+
+// ── Authentication & Authorisation ───────────────────────────────────────────
+var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "change-me-in-production-must-be-32-chars!!";
+var signingKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(jwtSecret));
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = signingKey,
+            ValidateIssuer = false,   // set ValidIssuer in production
+            ValidateAudience = false, // set ValidAudience in production
+            ClockSkew = TimeSpan.FromSeconds(30)
+        };
+    });
 
 // ── ASP.NET Core ─────────────────────────────────────────────────────────────
 builder.Services.AddControllers();
@@ -42,11 +64,8 @@ app.UseMiddleware<TracingMiddleware>();
 // Structured request/response logging
 app.UseMiddleware<LoggingMiddleware>();
 
-// JWT auth — uncomment to enable (requires Jwt:Secret in appsettings.json)
-// TODO (Quest 2): Uncomment the line below to enable JWT authentication.
-// app.UseMiddleware<AuthMiddleware>();
-
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

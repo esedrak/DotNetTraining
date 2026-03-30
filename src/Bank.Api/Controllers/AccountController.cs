@@ -1,11 +1,13 @@
 using Bank.Domain;
 using Bank.Domain.Exceptions;
 using Bank.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("v1/accounts")]
 public class AccountController(IBankService bankService, ILogger<AccountController> logger) : ControllerBase
 {
