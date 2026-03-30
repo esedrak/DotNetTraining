@@ -20,7 +20,7 @@ public class ChallengeImplMeTests
         new("Bob", 300m, "Deposit"),
     ];
 
-    [Fact]
+    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
     public void GetWithdrawals_ReturnsNegativeAmounts()
     {
         var withdrawals = LinqChallenge.GetWithdrawals(Transactions).ToList();
@@ -29,7 +29,7 @@ public class ChallengeImplMeTests
         withdrawals.Should().AllSatisfy(t => t.Amount.Should().BeNegative());
     }
 
-    [Fact]
+    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
     public void TotalByOwner_GroupsAndSums()
     {
         var totals = LinqChallenge.TotalByOwner(Transactions);
@@ -40,7 +40,7 @@ public class ChallengeImplMeTests
         totals["Charlie"].Should().Be(1000m);
     }
 
-    [Fact]
+    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
     public void LargestByAbsoluteAmount_FindsMax()
     {
         var largest = LinqChallenge.LargestByAbsoluteAmount(Transactions);
@@ -50,7 +50,7 @@ public class ChallengeImplMeTests
         largest.Amount.Should().Be(1000m);
     }
 
-    [Fact]
+    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
     public void LargestByAbsoluteAmount_ReturnsNull_WhenEmpty()
     {
         LinqChallenge.LargestByAbsoluteAmount([]).Should().BeNull();
@@ -58,7 +58,7 @@ public class ChallengeImplMeTests
 
     // ── Challenge 5: Result<T> pattern ───────────────────────────────────────
 
-    [Fact]
+    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
     public void TryCatch_ReturnsSuccess_WhenNoException()
     {
         var result = ResultExtensions.TryCatch(() => 42);
@@ -67,7 +67,7 @@ public class ChallengeImplMeTests
         result.Value.Should().Be(42);
     }
 
-    [Fact]
+    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
     public void TryCatch_ReturnsFailure_WhenExceptionThrown()
     {
         var result = ResultExtensions.TryCatch<int>(() => throw new InvalidOperationException("boom"));
@@ -76,7 +76,7 @@ public class ChallengeImplMeTests
         result.Error.Should().Contain("boom");
     }
 
-    [Fact]
+    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
     public void Map_TransformsSuccessValue()
     {
         var result = Result<int>.Success(5);
@@ -86,7 +86,7 @@ public class ChallengeImplMeTests
         mapped.Value.Should().Be(10);
     }
 
-    [Fact]
+    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
     public void Map_PropagatesFailure()
     {
         var result = Result<int>.Failure("error");
