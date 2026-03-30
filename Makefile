@@ -3,11 +3,11 @@
 
 ## Build all projects
 build:
-	dotnet build DotNetTraining.sln
+	dotnet build DotNetTraining.slnx
 
 ## Run all tests
 test:
-	dotnet test DotNetTraining.sln --logger "console;verbosity=normal"
+	dotnet test DotNetTraining.slnx --logger "console;verbosity=normal"
 
 ## Run Hello console app
 run-hello:
@@ -60,7 +60,7 @@ lint:
 
 ## Clean build artifacts
 clean:
-	dotnet clean DotNetTraining.sln
+	dotnet clean DotNetTraining.slnx
 	find . -type d \( -name bin -o -name obj \) -not -path "./.git/*" -exec rm -rf {} + 2>/dev/null; true
 
 ## Show this help
