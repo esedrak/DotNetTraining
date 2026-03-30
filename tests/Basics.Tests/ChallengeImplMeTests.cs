@@ -1,16 +1,20 @@
 using DotNetTraining.Challenges.Basics.ImplMe;
 using FluentAssertions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.TestHost;
 
 namespace Basics.Tests;
 
 /// <summary>
-/// Tests for the ImplMe challenges. These tests will FAIL until you implement the stubs.
+/// Tests for the ImplMe challenges.
 /// Run with: dotnet test tests/Basics.Tests --filter "FullyQualifiedName~ChallengeImplMe"
 /// </summary>
-public class ChallengeImplMeTests
-{
-    // ── Challenge 3: LINQ banking queries ────────────────────────────────────
 
+// ── Challenge 3: LINQ banking queries ────────────────────────────────────────
+
+public class ChallengeImplMe_LinqTests
+{
     private static readonly List<BankTransaction> Transactions =
     [
         new("Alice", 500m, "Deposit"),
@@ -20,7 +24,7 @@ public class ChallengeImplMeTests
         new("Bob", 300m, "Deposit"),
     ];
 
-    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
+    [Fact]
     public void GetWithdrawals_ReturnsNegativeAmounts()
     {
         var withdrawals = LinqChallenge.GetWithdrawals(Transactions).ToList();
@@ -29,7 +33,7 @@ public class ChallengeImplMeTests
         withdrawals.Should().AllSatisfy(t => t.Amount.Should().BeNegative());
     }
 
-    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
+    [Fact]
     public void TotalByOwner_GroupsAndSums()
     {
         var totals = LinqChallenge.TotalByOwner(Transactions);
@@ -40,7 +44,7 @@ public class ChallengeImplMeTests
         totals["Charlie"].Should().Be(1000m);
     }
 
-    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
+    [Fact]
     public void LargestByAbsoluteAmount_FindsMax()
     {
         var largest = LinqChallenge.LargestByAbsoluteAmount(Transactions);
@@ -50,10 +54,9 @@ public class ChallengeImplMeTests
         largest.Amount.Should().Be(1000m);
     }
 
-    [Fact(Skip = "Not yet implemented — remove Skip= when complete")]
+    [Fact]
     public void LargestByAbsoluteAmount_ReturnsNull_WhenEmpty()
     {
         LinqChallenge.LargestByAbsoluteAmount([]).Should().BeNull();
     }
-
 }

@@ -1,8 +1,7 @@
 namespace DotNetTraining.Challenges.Basics.FixMe;
 
 // ── Challenge 1: Race condition ───────────────────────────────────────────────
-// BUG: Multiple tasks increment _count concurrently without synchronization.
-// Fix: Use thread-safe operations (Interlocked, lock, or SemaphoreSlim).
+// FIX: Use Interlocked.Increment for atomic, thread-safe increments.
 
 public class RaceCounter
 {
@@ -12,7 +11,7 @@ public class RaceCounter
     {
         var tasks = Enumerable.Range(0, times).Select(_ => Task.Run(() =>
         {
-            _count++; // BUG: not thread-safe — data race!
+            Interlocked.Increment(ref _count); // FIX: atomic operation, no data race
         }));
         await Task.WhenAll(tasks);
     }
@@ -21,15 +20,13 @@ public class RaceCounter
 }
 
 // ── Challenge 2: Async deadlock ────────────────────────────────────────────────
-// BUG: Calling .Result on an async method blocks the current thread,
-//      which can deadlock in contexts with a single-threaded synchronization context.
-// Fix: Use async/await all the way up, or use ConfigureAwait(false).
+// FIX: Propagate async/await all the way up instead of blocking with .Result.
 
 public class DeadlockExample
 {
-    public string GetData()
+    public async Task<string> GetDataAsync() // FIX: async Task<string>, not blocking string
     {
-        return FetchDataAsync().Result; // BUG: blocking on async — potential deadlock!
+        return await FetchDataAsync();
     }
 
     private async Task<string> FetchDataAsync()
@@ -40,27 +37,30 @@ public class DeadlockExample
 }
 
 // ── Challenge 3: Null reference exception ────────────────────────────────────
-// BUG: GetFirstName doesn't handle the case where names is null or empty.
-// Fix: Add null and empty checks, or use null-conditional operators.
+// FIX: Guard against null and empty input before indexing.
 
 public class NullBug
 {
-    public string GetFirstName(List<string>? names)
+    public string? GetFirstName(List<string>? names)
     {
-        return names![0].ToUpper(); // BUG: throws if names is null or empty!
+        if (names is null || names.Count == 0)
+        {
+            return null;
+        }
+
+        return names[0].ToUpper();
     }
 }
 
 // ── Challenge 4: Off-by-one ───────────────────────────────────────────────────
-// BUG: The last element is always skipped.
-// Fix: Use correct loop bounds or LINQ.
+// FIX: Loop to values.Length (not Length - 1) so the last element is included.
 
 public class OffByOne
 {
     public int[] DoubleAll(int[] values)
     {
         var result = new int[values.Length];
-        for (int i = 0; i < values.Length - 1; i++) // BUG: should be <= or just Length
+        for (int i = 0; i < values.Length; i++) // FIX: removed erroneous - 1
         {
             result[i] = values[i] * 2;
         }
@@ -70,31 +70,29 @@ public class OffByOne
 }
 
 // ── Challenge 5: Improper resource disposal ───────────────────────────────────
-// BUG: The HttpClient is created but never disposed, leaking socket connections.
-// Fix: Use `using`, `IHttpClientFactory`, or a shared static HttpClient.
+// FIX: Wrap HttpClient in a using statement so it is disposed after the request.
 
 public class ResourceLeak
 {
     public async Task<string> FetchAsync(string url)
     {
-        var client = new HttpClient(); // BUG: not disposed, socket leak!
+        using var client = new HttpClient(); // FIX: disposed when request completes
         return await client.GetStringAsync(url);
     }
 }
 
 // ── Challenge 6: Struct mutation (copy semantics) ────────────────────────────
-// BUG: Modifying a struct through a method operates on a copy, not the original.
-// The balance change is silently lost because structs have value semantics.
-// Fix: Use a class instead of a struct, or use `ref` to pass by reference.
+// FIX: Change AccountBalance from a struct to a class so the list holds a
+//      reference and mutations via Deposit are visible through the original reference.
 
-public struct AccountBalance
+public class AccountBalance // FIX: class, not struct — reference semantics
 {
-    public string Owner;
+    public string Owner = "";
     public decimal Balance;
 
     public void Deposit(decimal amount)
     {
-        Balance += amount; // This works on the struct itself...
+        Balance += amount;
     }
 }
 
@@ -112,9 +110,8 @@ public class StructMutationBug
             return;
         }
 
-        var account = _accounts[0]; // BUG: this copies the struct!
-        account.Deposit(amount);    // Mutation is on the copy, not the list element
-        // The original _accounts[0] is unchanged!
+        var account = _accounts[0]; // FIX: now a reference — mutation is visible
+        account.Deposit(amount);
     }
 
     public decimal GetFirstBalance()
@@ -122,9 +119,7 @@ public class StructMutationBug
 }
 
 // ── Challenge 7: Disposable leak in a loop ───────────────────────────────────
-// BUG: Each iteration creates a new disposable resource that is never disposed.
-// In a real app with SqlConnection, this exhausts the connection pool.
-// Fix: Wrap each resource creation in a `using` statement.
+// FIX: Add `using` so each resource is disposed at the end of its loop iteration.
 
 public class DisposableLeakBug
 {
@@ -154,7 +149,7 @@ public class DisposableLeakBug
         var results = new List<string>();
         foreach (var name in names)
         {
-            var resource = new LeakyResource(name); // BUG: never disposed!
+            using var resource = new LeakyResource(name); // FIX: disposed after each iteration
             results.Add(resource.Process());
         }
         return results;
@@ -162,20 +157,18 @@ public class DisposableLeakBug
 }
 
 // ── Challenge 8: async void swallows exceptions ─────────────────────────────
-// BUG: async void methods fire-and-forget. Exceptions crash the process
-// or are silently lost (no Task to observe them).
-// Fix: Change to async Task so callers can await and observe exceptions.
+// FIX: Return async Task so callers can await the method and observe exceptions.
 
 public class AsyncVoidBug
 {
     public List<string> Log { get; } = [];
 
-    public async void ProcessItemAsync(string item) // BUG: async void!
+    public async Task ProcessItemAsync(string item) // FIX: async Task, not async void
     {
         await Task.Delay(1);
         if (item == "bad")
         {
-            throw new InvalidOperationException("Processing failed!"); // Unobservable!
+            throw new InvalidOperationException("Processing failed!");
         }
 
         Log.Add(item);
