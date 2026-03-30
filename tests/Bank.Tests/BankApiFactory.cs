@@ -34,13 +34,17 @@ public class BankApiFactory : WebApplicationFactory<Program>
             var dbDescriptor = services.SingleOrDefault(
                 d => d.ServiceType == typeof(DbContextOptions<BankDbContext>));
             if (dbDescriptor is not null)
+            {
                 services.Remove(dbDescriptor);
+            }
 
             // Also remove the DbContext registration itself
             var ctxDescriptor = services.SingleOrDefault(
                 d => d.ServiceType == typeof(BankDbContext));
             if (ctxDescriptor is not null)
+            {
                 services.Remove(ctxDescriptor);
+            }
 
             services.AddDbContext<BankDbContext>(options =>
                 options.UseInMemoryDatabase("BankTests"));
@@ -49,7 +53,9 @@ public class BankApiFactory : WebApplicationFactory<Program>
             var svcDescriptor = services.SingleOrDefault(
                 d => d.ServiceType == typeof(IBankService));
             if (svcDescriptor is not null)
+            {
                 services.Remove(svcDescriptor);
+            }
 
             services.AddScoped<IBankService>(_ => MockBankService.Object);
         });
