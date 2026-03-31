@@ -18,4 +18,8 @@ public interface IBankRepository
     Task<IReadOnlyList<Transfer>> ListTransfersAsync(CancellationToken ct = default);
     Task<Transfer> CreateTransferAsync(Transfer transfer, CancellationToken ct = default);
     Task UpdateTransferAsync(Transfer transfer, CancellationToken ct = default);
+
+    // Transactions (idempotent activity support)
+    Task<bool> TransactionExistsAsync(Guid accountId, string description, CancellationToken ct = default);
+    Task CreateTransactionAsync(Transaction transaction, CancellationToken ct = default);
 }

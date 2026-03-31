@@ -36,4 +36,14 @@ public class PostgresBankRepository(BankDbContext db) : IBankRepository
         db.Transfers.Update(transfer);
         await db.SaveChangesAsync(ct);
     }
+
+    public async Task<bool> TransactionExistsAsync(Guid accountId, string description, CancellationToken ct = default)
+        => await db.Transactions.AnyAsync(
+            t => t.AccountId == accountId && t.Description == description, ct);
+
+    public async Task CreateTransactionAsync(Transaction transaction, CancellationToken ct = default)
+    {
+        db.Transactions.Add(transaction);
+        await db.SaveChangesAsync(ct);
+    }
 }

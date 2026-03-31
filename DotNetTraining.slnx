@@ -13,6 +13,7 @@
     <Project Path="src/Temporal.Domain/Temporal.Domain.csproj" />
     <Project Path="src/Temporal.Worker/Temporal.Worker.csproj" />
     <Project Path="src/Temporal.Workflows/Temporal.Workflows.csproj" />
+    <Project Path="src/Bank.Temporal/Bank.Temporal.csproj" />
   </Folder>
   <Folder Name="/src/Shared/">
     <Project Path="src/Shared/Shared.Api/Shared.Api.csproj" />
@@ -23,5 +24,6 @@
     <Project Path="tests/Basics.Tests/Basics.Tests.csproj" />
     <Project Path="tests/Hello.Tests/Hello.Tests.csproj" />
     <Project Path="tests/Temporal.Tests/Temporal.Tests.csproj" />
+    <Project Path="tests/Bank.Temporal.Tests/Bank.Temporal.Tests.csproj" />
   </Folder>
 </Solution>
