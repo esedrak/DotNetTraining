@@ -45,7 +45,9 @@ Evaluate your work using the **[Competition Grading Rubric](Temporal/GRADING_PRO
 
 Ready to put your skills to the test? We've prepared a series of challenges that increase in complexity as you progress through the training.
 
-Start with the basics: **[Challenges: Detective Briefs](Basics/README.md)**.
+- The basics: **[Challenge: Detective Briefs](Basics/README.md)**.
+- Introduction to building production API handlers: **[Challenge: Bank Transfer](Bank/README.md)**
+- Agentic engineering for implementing a durable bank-transfer distributed transaction in Temporal: **[Challenge: Durable Transfer](Temporal/README.md)**
 
 ---
 [← Back to Main README](../../README.md)

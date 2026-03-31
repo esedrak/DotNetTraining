@@ -120,3 +120,5 @@ dotnet test tests/Basics.Tests --logger "console;verbosity=detailed"
 ## Your Next Step
 Now that you know the basics of testing, you can make your assertions more readable and expressive using FluentAssertions.
 Explore **[FluentAssertions](../FluentAssertions/README.md)** to see how to write fluent, human-readable assertions.
+
+> Note: Advanced testing styles, including full ASP.NET Core integration tests, are covered later in the Challenges module. For an early preview, see **[AccountControllerIntegrationTests](../../../tests/Bank.Tests/Controllers/AccountControllerIntegrationTests.cs)**
