@@ -160,9 +160,9 @@ Live demonstration and hands-on challenge: leveraging AI agents for ultra-effici
 ## Challenges [`workshop/Challenges/`](workshop/Challenges/)
 
 - [Challenges Overview](workshop/Challenges/README.md)
-- [Day 1: Basics Challenges](workshop/Challenges/Basics/README.md) — Detective mysteries covering core C# concepts.
-- [Day 2: .NET Bank Transfer Quest](workshop/Challenges/Bank/) — Build the `POST /v1/transfers` API endpoint end-to-end.
-- [Day 2: Durable Transfer Quest](workshop/Challenges/Temporal/README.md) — Build a robust distributed transaction with Temporal.
+- [Basics Challenges](workshop/Challenges/Basics/README.md) — Detective mysteries covering core C# concepts.
+- [.NET Bank Transfer Quest](workshop/Challenges/Bank/) — Build the `POST /v1/transfers` API endpoint end-to-end.
+- [Durable Transfer Quest](workshop/Challenges/Temporal/README.md) — Build a robust distributed transaction with Temporal.
 
 ---
 
@@ -179,3 +179,5 @@ make db-migrate     # Run EF Core migrations
 make clean          # Clean build artifacts
 make help           # Show all targets
 ```
+
+> Note: Solution branches are available for each of the challenges

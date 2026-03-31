@@ -1,4 +1,4 @@
-# Day 1 Challenges: Detective Briefs
+# Basics Challenges: Detective Briefs
 
 Short exercises covering core C# building blocks, concurrency pitfalls, and idiomatic patterns. Each challenge is a self-contained mystery.
 

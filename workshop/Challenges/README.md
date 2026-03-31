@@ -11,7 +11,7 @@ Challenges/
 
 ## Basics/
 
-The **[Day 1 Challenges: Detective Briefs](Basics/README.md)** are short exercises covering core C# building blocks, interfaces, concurrency, and testing.
+The **[Basics Challenges: Detective Briefs](Basics/README.md)** are short exercises covering core C# building blocks, interfaces, concurrency, and testing.
 
 Each challenge is a short mystery. You will encounter different types of quests:
 - **FixMe**: Buggy code is provided. Your task is to identify the problem and fix it.
@@ -45,7 +45,7 @@ Evaluate your work using the **[Competition Grading Rubric](Temporal/GRADING_PRO
 
 Ready to put your skills to the test? We've prepared a series of challenges that increase in complexity as you progress through the training.
 
-Start with the basics: **[Day 1 Challenges: Detective Briefs](Basics/README.md)**.
+Start with the basics: **[Challenges: Detective Briefs](Basics/README.md)**.
 
 ---
 [← Back to Main README](../../README.md)
