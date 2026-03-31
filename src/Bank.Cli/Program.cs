@@ -92,6 +92,11 @@ createAccCmd.Add(ownerArg);
 createAccCmd.Add(balanceOpt);
 createAccCmd.SetAction(async parseResult =>
 {
+    if (!TrySetBearerFromEnv())
+    {
+        return;
+    }
+
     var owner = parseResult.GetValue(ownerArg)!;
     var balance = parseResult.GetValue(balanceOpt);
     var r = await httpClient.PostAsJsonAsync("/v1/accounts", new { owner, initialBalance = balance });
@@ -110,6 +115,11 @@ var transferCmd = new Command("transfer", "Manage transfers");
 var listTxCmd = new Command("list", "List all transfers");
 listTxCmd.SetAction(async _ =>
 {
+    if (!TrySetBearerFromEnv())
+    {
+        return;
+    }
+
     var txs = await httpClient.GetFromJsonAsync<List<JsonElement>>("/v1/transfers", jsonOptions);
     foreach (var t in txs ?? [])
     {
