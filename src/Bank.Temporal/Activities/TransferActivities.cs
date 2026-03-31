@@ -16,22 +16,30 @@ public class TransferActivities(IBankRepository repository, ILogger<TransferActi
     public async Task ValidateAccountsAsync(ValidateAccountsInput input)
     {
         if (input.Amount <= 0)
+        {
             throw new ApplicationFailureException(
                 $"Transfer amount must be positive, got {input.Amount}.", nonRetryable: true);
+        }
 
         if (input.FromAccountId == input.ToAccountId)
+        {
             throw new ApplicationFailureException(
                 "Source and destination accounts must be different.", nonRetryable: true);
+        }
 
         var from = await _repository.GetAccountAsync(input.FromAccountId);
         if (from is null)
+        {
             throw new ApplicationFailureException(
                 $"Source account '{input.FromAccountId}' not found.", nonRetryable: true);
+        }
 
         var to = await _repository.GetAccountAsync(input.ToAccountId);
         if (to is null)
+        {
             throw new ApplicationFailureException(
                 $"Destination account '{input.ToAccountId}' not found.", nonRetryable: true);
+        }
     }
 
     [Activity]
@@ -46,8 +54,10 @@ public class TransferActivities(IBankRepository repository, ILogger<TransferActi
 
         var account = await _repository.GetAccountAsync(input.AccountId);
         if (account is null)
+        {
             throw new ApplicationFailureException(
                 $"Account '{input.AccountId}' not found.", nonRetryable: true);
+        }
 
         try
         {
@@ -74,8 +84,10 @@ public class TransferActivities(IBankRepository repository, ILogger<TransferActi
 
         var account = await _repository.GetAccountAsync(input.AccountId);
         if (account is null)
+        {
             throw new ApplicationFailureException(
                 $"Account '{input.AccountId}' not found.", nonRetryable: true);
+        }
 
         account.Deposit(input.Amount);
 
@@ -95,8 +107,10 @@ public class TransferActivities(IBankRepository repository, ILogger<TransferActi
 
         var account = await _repository.GetAccountAsync(input.AccountId);
         if (account is null)
+        {
             throw new ApplicationFailureException(
                 $"Account '{input.AccountId}' not found.", nonRetryable: true);
+        }
 
         account.Deposit(input.Amount);
 

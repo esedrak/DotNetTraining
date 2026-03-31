@@ -5,6 +5,10 @@
 //   dotnet run --project src/Bank.Cli -- account create "Alice" --balance 100
 //   dotnet run --project src/Bank.Cli -- account get <id>
 //   dotnet run --project src/Bank.Cli -- transfer create --from <id> --to <id> --amount 50
+//   dotnet run --project src/Bank.Cli -- durable-transfer create --from <id> --to <id> --amount 5000
+//   dotnet run --project src/Bank.Cli -- durable-transfer approve transfer-<guid>
+//   dotnet run --project src/Bank.Cli -- durable-transfer reject transfer-<guid>
+//   dotnet run --project src/Bank.Cli -- durable-transfer status transfer-<guid>
 
 using System.CommandLine;
 using System.Net;
@@ -151,5 +155,86 @@ createTxCmd.SetAction(async parseResult =>
 });
 transferCmd.Add(createTxCmd);
 root.Add(transferCmd);
+
+// ── durable-transfer commands ─────────────────────────────────────────────────
+
+var durableCmd = new Command("durable-transfer", "Manage durable (Temporal-backed) transfers");
+
+// durable-transfer create --from <id> --to <id> --amount <decimal> [--reference <string>] [--transfer-id <guid>]
+var dtFromOpt = new Option<Guid>("--from") { Description = "Source account ID", Required = true };
+var dtToOpt = new Option<Guid>("--to") { Description = "Destination account ID", Required = true };
+var dtAmountOpt = new Option<decimal>("--amount") { Description = "Transfer amount", Required = true };
+var dtReferenceOpt = new Option<string?>("--reference") { Description = "Optional human-readable reference" };
+var dtTransferIdOpt = new Option<Guid?>("--transfer-id") { Description = "Optional idempotency key (generated if omitted)" };
+var dtCreateCmd = new Command("create", "Start a new durable transfer workflow");
+dtCreateCmd.Add(dtFromOpt);
+dtCreateCmd.Add(dtToOpt);
+dtCreateCmd.Add(dtAmountOpt);
+dtCreateCmd.Add(dtReferenceOpt);
+dtCreateCmd.Add(dtTransferIdOpt);
+dtCreateCmd.SetAction(async parseResult =>
+{
+    if (!TrySetBearerFromEnv()) return;
+    var body = new
+    {
+        fromAccountId = parseResult.GetValue(dtFromOpt),
+        toAccountId   = parseResult.GetValue(dtToOpt),
+        amount        = parseResult.GetValue(dtAmountOpt),
+        reference     = parseResult.GetValue(dtReferenceOpt),
+        transferId    = parseResult.GetValue(dtTransferIdOpt),
+    };
+    var r = await httpClient.PostAsJsonAsync("/v1/durable-transfers", body);
+    Console.WriteLine(r.IsSuccessStatusCode
+        ? await r.Content.ReadAsStringAsync()
+        : $"Error {(int)r.StatusCode}: {await r.Content.ReadAsStringAsync()}");
+});
+durableCmd.Add(dtCreateCmd);
+
+// durable-transfer approve <workflow-id>
+var dtApproveWorkflowIdArg = new Argument<string>("workflow-id") { Description = "Workflow ID (e.g. transfer-<guid>)" };
+var dtApproveCmd = new Command("approve", "Approve a pending high-value transfer");
+dtApproveCmd.Add(dtApproveWorkflowIdArg);
+dtApproveCmd.SetAction(async parseResult =>
+{
+    if (!TrySetBearerFromEnv()) return;
+    var workflowId = parseResult.GetValue(dtApproveWorkflowIdArg)!;
+    var r = await httpClient.PostAsync($"/v1/durable-transfers/{workflowId}/approve", null);
+    Console.WriteLine(r.IsSuccessStatusCode
+        ? $"Approved: {workflowId}"
+        : $"Error {(int)r.StatusCode}: {await r.Content.ReadAsStringAsync()}");
+});
+durableCmd.Add(dtApproveCmd);
+
+// durable-transfer reject <workflow-id>
+var dtRejectWorkflowIdArg = new Argument<string>("workflow-id") { Description = "Workflow ID (e.g. transfer-<guid>)" };
+var dtRejectCmd = new Command("reject", "Reject a pending high-value transfer");
+dtRejectCmd.Add(dtRejectWorkflowIdArg);
+dtRejectCmd.SetAction(async parseResult =>
+{
+    if (!TrySetBearerFromEnv()) return;
+    var workflowId = parseResult.GetValue(dtRejectWorkflowIdArg)!;
+    var r = await httpClient.PostAsync($"/v1/durable-transfers/{workflowId}/reject", null);
+    Console.WriteLine(r.IsSuccessStatusCode
+        ? $"Rejected: {workflowId}"
+        : $"Error {(int)r.StatusCode}: {await r.Content.ReadAsStringAsync()}");
+});
+durableCmd.Add(dtRejectCmd);
+
+// durable-transfer status <workflow-id>
+var dtStatusWorkflowIdArg = new Argument<string>("workflow-id") { Description = "Workflow ID (e.g. transfer-<guid>)" };
+var dtStatusCmd = new Command("status", "Query the current status of a durable transfer");
+dtStatusCmd.Add(dtStatusWorkflowIdArg);
+dtStatusCmd.SetAction(async parseResult =>
+{
+    if (!TrySetBearerFromEnv()) return;
+    var workflowId = parseResult.GetValue(dtStatusWorkflowIdArg)!;
+    var r = await httpClient.GetAsync($"/v1/durable-transfers/{workflowId}");
+    Console.WriteLine(r.IsSuccessStatusCode
+        ? await r.Content.ReadAsStringAsync()
+        : $"Error {(int)r.StatusCode}: {await r.Content.ReadAsStringAsync()}");
+});
+durableCmd.Add(dtStatusCmd);
+
+root.Add(durableCmd);
 
 return await root.Parse(args).InvokeAsync();

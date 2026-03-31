@@ -14,6 +14,7 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.11.1" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.13.18" />
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Temporalio" Version="1.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +22,7 @@
     <ProjectReference Include="..\Bank.Service\Bank.Service.csproj" />
     <ProjectReference Include="..\Bank.Repository\Bank.Repository.csproj" />
     <ProjectReference Include="..\Shared\Shared.Api\Shared.Api.csproj" />
+    <ProjectReference Include="..\Bank.Temporal\Bank.Temporal.csproj" />
   </ItemGroup>
 
 </Project>

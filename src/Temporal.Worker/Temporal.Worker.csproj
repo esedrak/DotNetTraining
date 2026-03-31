@@ -15,5 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Temporal.Workflows\Temporal.Workflows.csproj" />
+    <ProjectReference Include="..\Bank.Temporal\Bank.Temporal.csproj" />
+    <ProjectReference Include="..\Bank.Repository\Bank.Repository.csproj" />
   </ItemGroup>
 </Project>

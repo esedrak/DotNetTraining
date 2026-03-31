@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
+using Temporalio.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,11 @@ builder.Services.AddDbContext<BankDbContext>(options =>
         builder.Configuration.GetConnectionString("Default")
         ?? "Host=localhost;Port=5432;Database=dotnetbank;Username=dotnettrainer;Password=verysecret",
         npgsql => npgsql.MigrationsAssembly(typeof(BankDbContext).Assembly.FullName)));
+
+// ── Temporal Client ───────────────────────────────────────────────────────────
+var temporalAddress = builder.Configuration["Temporal:Address"] ?? "localhost:7233";
+var temporalClient = await TemporalClient.ConnectAsync(new(temporalAddress));
+builder.Services.AddSingleton<ITemporalClient>(temporalClient);
 
 // ── Dependency Injection ─────────────────────────────────────────────────────
 builder.Services.AddScoped<IBankRepository, PostgresBankRepository>();

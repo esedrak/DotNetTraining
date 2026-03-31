@@ -48,12 +48,16 @@ public class DurableTransferWorkflow
                 TimeSpan.FromHours(24));
 
             if (!conditionMet)
+            {
                 return new TransferResult(input.TransferId, TransferStatus.Failed,
                     "Approval timed out after 24 hours");
+            }
 
             if (_rejected)
+            {
                 return new TransferResult(input.TransferId, TransferStatus.Failed,
                     "Transfer rejected by approver");
+            }
         }
 
         // Step 3 — Debit the source account
