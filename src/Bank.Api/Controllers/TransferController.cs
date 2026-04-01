@@ -42,6 +42,9 @@ public class TransferController(IBankService bankService, ILogger<TransferContro
     [HttpPost]
     public async Task<IActionResult> CreateTransfer([FromBody] CreateTransferRequest request, CancellationToken ct)
     {
+        // TODO Quest 2: Scope check
+
+
         // TODO Quest 3 below:
         // TODO 1: Model binding is handled by [ApiController] and [FromBody].
         //         Refer to AccountController.CreateAccount for the error-mapping pattern.
