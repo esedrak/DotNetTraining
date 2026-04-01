@@ -1,14 +1,23 @@
 # API Contracts (OpenAPI)
 
-Welcome to the design phase! Before we write any code, we define our API contracts using OpenAPI (Swagger) 3.0. This ensures frontend and backend engineers are perfectly aligned on the data shapes.
+This directory contains OpenAPI specs for reference and comparison.
+
+The Bank API uses **code-first** design — the live spec is generated automatically from C# annotations (`[ProducesResponseType]`, XML `<summary>` tags) by .NET's built-in OpenAPI support. You can always inspect it from a running API instance:
+
+```bash
+make run-bank-api
+```
+
+- **Visual UI (Scalar):** http://localhost:5069/scalar/v1
+- **Raw JSON:** http://localhost:5069/openapi/v1.json
 
 ## What's inside?
 
-- **[accounts.yaml](accounts.yaml)**: Your reference guide. This is a fully fleshed-out spec for the Accounts API. Look here to see how we define requests, responses, and standard error shapes.
-- **[transfers.yaml](transfers.yaml)**: Your canvas. This spec for the Transfers API is partially incomplete and waiting for your input!
+- **[accounts.yaml](accounts.yaml)**: A hand-written reference spec for the Accounts API. Useful for understanding OpenAPI structure and comparing against the generated output.
 
-## Your First Mission
+## Further Reading
 
-Designing the contract is Step 1 of the **[Bank Transfer Quest](../../workshop/Challenges/Bank/README.md)**. 
-
-Ready? Open [transfers.yaml](transfers.yaml), locate the `TODO` comments, and design your first endpoint!
+- [Microsoft.AspNetCore.OpenApi — built-in OpenAPI (.NET 9+)](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview)
+- [Scalar for ASP.NET Core](https://scalar.com/blog/scalar-for-aspnet-core)
+- [Swashbuckle / Swagger in ASP.NET Core (.NET 8 and earlier)](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle)
+- [Contract-First vs Code-First](../../workshop/Fundamentals/ApiFundamentals/04-contract-first-vs-code-first.md)

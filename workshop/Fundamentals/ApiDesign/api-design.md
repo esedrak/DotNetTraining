@@ -47,7 +47,7 @@ Is this an internal microservice-to-microservice call?
 │         ├── YES → gRPC (HTTP/2 + Protobuf)
 │         └── NO  → REST or gRPC (both fine internally)
 └── NO  → Is it consumed by browsers or external partners?
-          ├── YES → REST (JSON, OpenAPI spec, Swashbuckle)
+          ├── YES → REST (JSON + OpenAPI spec)
           └── NO  → REST (default unless you have a specific reason)
 ```
 
@@ -161,8 +161,8 @@ Design → Build → Test → Document → Publish → Monitor → Version → D
 ```
 
 In .NET:
-- **Design**: OpenAPI YAML (contract-first) or Swashbuckle attributes (code-first)
-- **Document**: Swagger UI via `app.MapOpenApi()` + Swashbuckle
+- **Design**: OpenAPI YAML (contract-first) or `[ProducesResponseType]` + XML comments (code-first)
+- **Document**: `app.MapOpenApi()` (spec) + Scalar (UI) on .NET 9+; Swashbuckle on .NET 8 and earlier
 - **Monitor**: Serilog + OpenTelemetry + Prometheus (`prometheus-net.AspNetCore`)
 - **Version**: URL path versioning (`/v1/`, `/v2/`) via `Asp.Versioning.Http`
 - **Deprecate**: `Deprecation` + `Sunset` response headers via middleware

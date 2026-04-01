@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Bank.Api.Middleware;
+using Scalar.AspNetCore;
 using Bank.Repository;
 using Bank.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -55,7 +56,8 @@ var app = builder.Build();
 // ── Middleware pipeline ───────────────────────────────────────────────────────
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi();               // → GET /openapi/v1.json
+    app.MapScalarApiReference();    // → GET /scalar/v1
 }
 
 // Correlation ID propagation — must be first so all subsequent middleware can use it

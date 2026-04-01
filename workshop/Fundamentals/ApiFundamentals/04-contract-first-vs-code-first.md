@@ -70,17 +70,17 @@ public class AccountsController : ControllerBase, IAccountsClient
 
 ## Code-First
 
-Write the controllers and handlers first. The spec is auto-generated from the code via Swashbuckle or NSwag.
+Write the controllers and handlers first. The spec is auto-generated from the code via the built-in OpenAPI stack (.NET 9+) or Swashbuckle (.NET 8 and earlier).
 
 ### Workflow
 
 ```
-1. Write the controller/handler
-2. Swashbuckle generates OpenAPI spec from the running application
-3. Publish spec to developer portal
+1. Write the controller/handler with [ProducesResponseType] and XML <summary> comments
+2. Built-in OpenAPI generates the spec from the running application
+3. Scalar (or any OpenAPI UI) renders it for humans; publish the JSON to a developer portal
 ```
 
-### Example: Swashbuckle (most common in .NET)
+### Example: Built-in OpenAPI + Scalar (.NET 9+)
 
 ```csharp
 [ApiController]
@@ -101,14 +101,23 @@ public class AccountsController(IBankService svc) : ControllerBase
 }
 
 // Program.cs
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bank API", Version = "v1" });
-    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Bank.Api.xml"));
-});
-app.UseSwagger();
-app.UseSwaggerUI();
+builder.Services.AddOpenApi();       // built-in spec generation
+app.MapOpenApi();                    // → GET /openapi/v1.json
+app.MapScalarApiReference();         // → GET /scalar/v1  (visual UI)
 ```
+
+> **On .NET 8 or earlier?** The built-in OpenAPI stack wasn't available. Swashbuckle was the de-facto standard — and it still works in .NET 9/10, it's just no longer the preferred path:
+>
+> ```csharp
+> // Program.cs — Swashbuckle approach (.NET 8 and earlier, or when you need its ecosystem)
+> builder.Services.AddSwaggerGen(c =>
+> {
+>     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bank API", Version = "v1" });
+>     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Bank.Api.xml"));
+> });
+> app.UseSwagger();
+> app.UseSwaggerUI();  // → GET /swagger/index.html
+> ```
 
 ### Pros
 - Zero spec drift — spec is always in sync with the code
@@ -155,23 +164,26 @@ Multiple teams / external consumers / public API / compliance requirement?
 └── YES → Contract-First (NSwag / Kiota)
 
 Single team / internal API / rapid iteration / startup?
-└── YES → Code-First (Swashbuckle) with good XML comment discipline
+└── YES → Code-First (built-in OpenAPI + Scalar on .NET 9+; Swashbuckle on .NET 8 and earlier) with good XML comment discipline
 ```
 
 ---
 
 ## In This Course
 
-The Bank API uses **code-first with Swashbuckle** because:
+The Bank API uses **code-first** because:
 - Single team, rapid iteration
 - Internal API consumed by Bank.Cli (not external partners)
-- `app.MapOpenApi()` in .NET 10 makes the spec available with zero configuration
+- `app.MapOpenApi()` generates and serves the spec (`GET /openapi/v1.json`) with zero configuration
+- `Scalar.AspNetCore` adds a visual UI at `GET /scalar/v1` — no Swashbuckle required
 
 ---
 
 ## Further Reading
 
-- [Swashbuckle / Swagger in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle)
+- [Microsoft.AspNetCore.OpenApi — built-in OpenAPI (.NET 9+)](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview)
+- [Scalar for ASP.NET Core](https://scalar.com/blog/scalar-for-aspnet-core)
+- [Swashbuckle / Swagger in ASP.NET Core (.NET 8 and earlier)](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle)
 - [NSwag](https://github.com/RicoSuter/NSwag)
 - [Kiota (Microsoft's OpenAPI client generator)](https://learn.microsoft.com/en-us/openapi/kiota/)
 - [Schemathesis (contract testing)](https://schemathesis.io/)

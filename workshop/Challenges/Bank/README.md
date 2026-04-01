@@ -12,24 +12,44 @@ The **account controller is your fully working reference** — read it, understa
 
 Work through the quests in order. Each step builds on the previous one.
 
-### Quest 1: OpenAPI Spec Design
+### Quest 1: Annotate the Transfer Endpoint
 
-**File:** [docs/openapi/transfers.yaml](../../../docs/openapi/transfers.yaml)
+**File:** [`src/Bank.Api/Controllers/TransferController.cs`](../../../src/Bank.Api/Controllers/TransferController.cs)
 
 **Context:**
-Before writing code, we design the contract. Designing APIs contract-first ensures frontend and backend engineers agree on the API shape without waiting for the implementation.
+The Bank API uses **code-first** design — there is no `transfers.yaml` to fill in. Instead, you annotate C# with `[ProducesResponseType]` attributes and .NET's built-in OpenAPI support (`app.MapOpenApi()`) generates the spec automatically. The contract lives in the code.
+
+`AccountController` is fully annotated and is your reference. Study how `[ProducesResponseType]` attributes declare every possible HTTP response on `CreateAccount`, then apply the same discipline to `CreateTransfer`.
 
 **Task:**
-Complete the partially filled `transfers.yaml` spec.
-- Define the request body schema. It needs `fromAccountId` (string/uuid), `toAccountId` (string/uuid), and `amount` (number).
-- Define responses for success (201) returning the created transfer object.
-- Define responses for various error scenarios (400, 401, 403, 404, 422, 500), following the patterns established in `accounts.yaml`.
+`TransferController.CreateTransfer` is missing its response documentation. Add `[ProducesResponseType]` attributes for all seven possible response codes:
+
+| Code | When |
+| :--- | :--- |
+| `201 Created` | Transfer succeeded |
+| `400 Bad Request` | Malformed or invalid input |
+| `401 Unauthorized` | Missing or invalid JWT token |
+| `403 Forbidden` | Valid token but missing `transfers:write` scope, or caller is not the source account owner |
+| `404 Not Found` | Source or destination account does not exist |
+| `422 Unprocessable Entity` | Business rule violation (e.g. insufficient funds) |
+| `500 Internal Server Error` | Unexpected error (global exception handler) |
 
 **Definition of Done:**
-- Your `transfers.yaml` clearly maps out the endpoint, required properties, and all possible HTTP error codes.
-- You can compare it side-by-side with `accounts.yaml` and see they share the same consistent structure.
-- Using a swagger viewer extension or going to [Swagger Editor](https://editor.swagger.io/), you can validate that your OpenAPI spec is well-formed and renders correctly.
-- Solution can be found in [docs/openapi/solution/transfers.yaml](../../../docs/openapi/solution/transfers.yaml).
+- The .NET code compiles successfully:
+  ```bash
+  dotnet build src/Bank.Api
+  ```
+- Run the Bank API and inspect the generated spec:
+  ```bash
+  make run-bank-api
+  ```
+  Then open **http://localhost:5069/scalar/v1** in your browser and find `POST /v1/transfers` — all seven status codes should be listed under Responses.
+
+  Alternatively, check the raw JSON:
+  ```bash
+  curl http://localhost:5069/openapi/v1.json | jq '.paths["/v1/transfers"].post.responses | keys'
+  ```
+- For reference, [`docs/openapi/accounts.yaml`](../../../docs/openapi/accounts.yaml) shows the equivalent hand-written spec for the Accounts API — compare the structure to see how annotations map to spec output.
 
 ### Quest 2: Wire Authentication to the Transfer Controller
 

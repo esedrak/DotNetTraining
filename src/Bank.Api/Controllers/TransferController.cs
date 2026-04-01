@@ -36,13 +36,13 @@ public class TransferController(IBankService bankService, ILogger<TransferContro
     }
 
     /// <summary>Create a new transfer between accounts.</summary>
+    // TODO Quest 1: Add [ProducesResponseType] attributes for every possible HTTP response.
+    //   Think about: success (201), client errors (400, 401, 403, 404, 422), and server errors (500).
+    //   Study AccountController.CreateAccount for the pattern, then document all seven codes here.
     [HttpPost]
-    [ProducesResponseType<Transfer>(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> CreateTransfer([FromBody] CreateTransferRequest request, CancellationToken ct)
     {
+        // TODO Quest 3 below:
         // TODO 1: Model binding is handled by [ApiController] and [FromBody].
         //         Refer to AccountController.CreateAccount for the error-mapping pattern.
 
