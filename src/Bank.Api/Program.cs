@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using Bank.Api.Middleware;
-using Scalar.AspNetCore;
 using Bank.Repository;
 using Bank.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
