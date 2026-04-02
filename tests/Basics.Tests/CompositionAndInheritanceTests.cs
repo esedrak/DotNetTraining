@@ -7,7 +7,7 @@ namespace Basics.Tests;
 /// <summary>
 /// Tests for composition and inheritance — base classes, decorators, embedded resources.
 /// </summary>
-public class EmbeddingTests
+public class CompositionAndInheritanceTests
 {
     // ── TimestampedEntity base (inheritance) ──────────────────────────────────
 

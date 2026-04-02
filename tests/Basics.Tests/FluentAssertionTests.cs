@@ -6,7 +6,7 @@ namespace Basics.Tests;
 /// <summary>
 /// Demonstrates FluentAssertions — expressive, readable test assertions for C#.
 /// </summary>
-public class TestifyTests
+public class FluentAssertionTests
 {
     private readonly ProductCatalog _catalog = new();
 
@@ -47,7 +47,6 @@ public class TestifyTests
     {
         var act = () => _catalog.GetById(999);
 
-        // Equivalent to assert.ErrorAs(t, err, &target) — checks type and message
         act.Should().Throw<ProductNotFoundException>()
            .WithMessage("*999*");
     }

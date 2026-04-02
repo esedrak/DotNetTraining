@@ -1,6 +1,6 @@
 # Module 2 — C# Language Basics
 
-This module covers 23 core C# / .NET concepts organized by theme. Every topic has:
+This module covers 30 core C# / .NET concepts organized by theme. Every topic has:
 
 1. `README.md` — concept explanation with Mermaid diagrams
 2. `.cs` implementation files — working code examples
@@ -19,7 +19,9 @@ This module covers 23 core C# / .NET concepts organized by theme. Every topic ha
 ### OOP & Patterns
 - **[Receivers](./Receivers/)** — Instance methods, extension methods, C# 14 `extension` blocks
 - **[Interfaces](./Interface/)** — Explicit `: IInterface`, DI container, default methods
-- **[Type Assertions & Casting](./Casting/)** — `is`, `as`, switch expression, pattern matching
+- **[Abstract Classes](./AbstractClasses/)** — `abstract`, `virtual`, `override`, `sealed`, Template Method
+- **[Type Assertions & Casting](./Casting/)** — `is`, `as`, switch expression, basic pattern matching
+- **[Advanced Pattern Matching](./AdvancedPatternMatching/)** — Relational, logical, property, positional, list patterns (C# 8–12)
 - **[Composition & Inheritance](./CompositionAndInheritance/)** — `<EmbeddedResource>`, base classes, decorator pattern
 - **[Generics](./Generics/)** — `void F<T>`, `where T : constraint`, `default(T)`
 
@@ -27,9 +29,16 @@ This module covers 23 core C# / .NET concepts organized by theme. Every topic ha
 - **[Error Handling](./ErrorHandling/)** — Exceptions, `catch when`, `Result<T>` pattern
 - **[Disposable & Resource Management](./Disposable/)** — `IDisposable`, `using`, `IAsyncDisposable`, `await using`
 
+### .NET Runtime & Application Model
+- **[Dependency Injection](./DependencyInjection/)** — `IServiceCollection`, Singleton / Scoped / Transient lifetimes
+- **[Configuration](./Configuration/)** — `IConfiguration`, `appsettings.json`, `IOptions<T>`, provider layering
+- **[Background Services](./BackgroundServices/)** — `IHostedService`, `BackgroundService`, queue-based workers
+- **[Async Streams](./AsyncStreams/)** — `IAsyncEnumerable<T>`, `yield return`, `await foreach`, `[EnumeratorCancellation]`
+
 ### Code Organisation
 - **[Project Layout](./Layout/)** — `.sln`, `.csproj`, namespaces, `internal` modifier
 - **[Initialization](./Initialization/)** — Static constructors, `[ModuleInitializer]`, `Lazy<T>`
+- **[Modern C# Syntax](./ModernSyntax/)** — Primary constructors, collection expressions, `with`, `required` / `init` (C# 9–12)
 
 ### Data & Queries
 - **[LINQ](./Linq/)** — `Where`, `Select`, `GroupBy`, deferred execution, method vs query syntax

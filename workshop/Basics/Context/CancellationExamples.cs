@@ -24,8 +24,7 @@ public static class CancellationExamples
 
     /// <summary>
     /// Demonstrates cancellation with a timeout.
-    /// Equivalent to: ctx, cancel := context.WithTimeout(ctx, 100*time.Millisecond)
-    /// </summary>
+    ///</summary>
     public static async Task<bool> TryWorkWithTimeoutAsync(int workMs)
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
@@ -43,8 +42,7 @@ public static class CancellationExamples
     /// <summary>
     /// Demonstrates linking a parent token with a local deadline.
     /// If the parent cancels OR the deadline expires, work stops.
-    /// Equivalent to context.WithTimeout on a parent context.
-    /// </summary>
+    ///</summary>
     public static async Task ProcessWithLinkedTokenAsync(
         CancellationToken parentToken,
         TimeSpan localTimeout)
@@ -56,7 +54,7 @@ public static class CancellationExamples
     }
 }
 
-// ── AsyncLocal<T> — ambient values (like context.WithValue) ──────────────────
+// ── AsyncLocal<T> — ambient values per async execution context ───────────────
 
 public static class AsyncLocalExamples
 {

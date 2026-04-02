@@ -6,7 +6,7 @@ namespace Basics.Tests;
 /// <summary>
 /// Tests for C# conditional compilation: preprocessor directives and runtime platform detection.
 /// </summary>
-public class BuildTagsTests
+public class ConditionalCompilationTests
 {
     // ── Runtime OS detection ──────────────────────────────────────────────────
 
@@ -14,7 +14,7 @@ public class BuildTagsTests
     public void RuntimeOsPlatform_ReturnsKnownValue()
     {
         var os = ConditionalCompilation.RuntimeOsPlatform();
-        os.Should().BeOneOf("windows", "linux", "darwin");
+        os.Should().BeOneOf("windows", "linux", "macos");
     }
 
     // ── Runtime architecture ──────────────────────────────────────────────────
@@ -23,7 +23,7 @@ public class BuildTagsTests
     public void RuntimeArchitecture_ReturnsKnownValue()
     {
         var arch = ConditionalCompilation.RuntimeArchitecture();
-        arch.Should().BeOneOf("amd64", "arm64", "386", "unknown");
+        arch.Should().BeOneOf("x64", "arm64", "x86", "unknown");
     }
 
     // ── Build mode ────────────────────────────────────────────────────────────

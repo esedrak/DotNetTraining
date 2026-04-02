@@ -115,7 +115,7 @@ Console.WriteLine(numbers[0]); // 99
 ## 🏃 Running the Examples
 
 ```bash
-dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Pointers"
+dotnet test tests/Basics.Tests --filter "FullyQualifiedName~ValueAndReferenceTypes"
 ```
 
 ---
@@ -128,5 +128,5 @@ dotnet test tests/Basics.Tests --filter "FullyQualifiedName~Pointers"
 - [`Span<T>` and `Memory<T>`](https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/memory-t-usage-guidelines)
 
 ## Your Next Step
-After learning how to handle value and reference types with pointers, you'll often need to control how data flows into your methods.
+After learning how C# handles value and reference types, you'll often need to control how data flows into your methods.
 Explore **[Function Parameters](../Parameters/README.md)** to master how C# handles `params`, optional, and named arguments.

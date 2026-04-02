@@ -55,7 +55,7 @@ public static class ConditionalCompilation
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            return "darwin";
+            return "macos";
         }
 
         return "unknown";
@@ -67,9 +67,9 @@ public static class ConditionalCompilation
     public static string RuntimeArchitecture()
         => RuntimeInformation.ProcessArchitecture switch
         {
-            Architecture.X64 => "amd64",
+            Architecture.X64 => "x64",
             Architecture.Arm64 => "arm64",
-            Architecture.X86 => "386",
+            Architecture.X86 => "x86",
             _ => "unknown"
         };
 }

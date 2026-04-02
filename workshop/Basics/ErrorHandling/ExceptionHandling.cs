@@ -16,7 +16,7 @@ public class NotFoundException : Exception
     }
 }
 
-/// <summary>Wrap an inner exception with context. Equivalent to fmt.Errorf("ctx: %w", err).</summary>
+/// <summary>Wrap an inner exception with context, preserving the original as InnerException.</summary>
 public class OperationFailedException : Exception
 {
     public OperationFailedException(string operation, Exception inner)

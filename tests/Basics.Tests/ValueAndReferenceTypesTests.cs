@@ -3,7 +3,7 @@ using FluentAssertions;
 
 namespace Basics.Tests;
 
-public class PointersTests
+public class ValueAndReferenceTypesTests
 {
     [Fact]
     public void IncrementValue_DoesNotModifyCallerVariable()

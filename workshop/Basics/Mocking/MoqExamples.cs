@@ -48,8 +48,7 @@ public static class MockExamples
 {
     /// <summary>
     /// Demonstrates: Setup → Returns → Verify
-    /// Equivalent to: mock.On("GetById").Return(product) + mock.AssertCalled(...)
-    /// </summary>
+    ///</summary>
     public static Mock<IProductRepository> CreateRepoWithProduct(Product product)
     {
         var mock = new Mock<IProductRepository>();
@@ -62,8 +61,7 @@ public static class MockExamples
 
     /// <summary>
     /// Demonstrates: Setup → ThrowsAsync
-    /// Equivalent to: mock.On("GetById").Return(nil, errors.New("not found"))
-    /// </summary>
+    ///</summary>
     public static Mock<IProductRepository> CreateRepoThatThrows(int id, Exception ex)
     {
         var mock = new Mock<IProductRepository>();

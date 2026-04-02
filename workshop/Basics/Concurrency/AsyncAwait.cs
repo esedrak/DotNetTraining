@@ -55,7 +55,7 @@ public static class ChannelExamples
             channel.Writer.Complete();
         });
 
-        // Consumer — equivalent to `for v := range ch`
+        // Consumer: ReadAllAsync completes when the writer calls Complete()
         await foreach (var item in channel.Reader.ReadAllAsync())
         {
             results.Add(item);
@@ -82,7 +82,7 @@ public class SafeCounter
     private readonly object _lock = new();
     private int _count;
 
-    /// <summary>Thread-safe increment using `lock` (equivalent to sync.Mutex).</summary>
+    /// <summary>Thread-safe increment using `lock` — guards a critical section.</summary>
     public void Increment()
     {
         lock (_lock)
@@ -140,7 +140,7 @@ public static class AtomicCounter
 }
 
 /// <summary>
-/// Lazy&lt;T&gt; is the equivalent of sync.Once — thread-safe single initialization.
+/// Lazy&lt;T&gt; guarantees thread-safe single initialization on first access.
 /// </summary>
 public class SingletonService
 {

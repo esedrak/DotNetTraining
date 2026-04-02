@@ -58,7 +58,7 @@ public static class NullableExamples
 {
     /// <summary>
     /// FindFirst returns null if the predicate matches nothing.
-    /// int? is shorthand for Nullable&lt;int&gt; — equivalent to a nil-able value.
+    /// int? is shorthand for Nullable&lt;int&gt; — a value type that can also be null.
     /// </summary>
     public static int? FindFirst(IEnumerable<int> source, Func<int, bool> predicate)
     {
