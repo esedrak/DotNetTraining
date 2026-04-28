@@ -421,7 +421,7 @@ else
 
 Mastered the standard API controller? Now it's time to handle long-running, complex business processes that need to survive restarts and failures.
 
-Discover how to orchestrate durable workflows in **[Module 4: Temporal Orchestration](../../../src/Temporal.Worker/README.md)**.
+Discover how to orchestrate durable workflows in **[Module 4: Temporal Orchestration](../Temporal/README.md)**.
 
 ---
 [← Back to Challenges Overview](../README.md)
